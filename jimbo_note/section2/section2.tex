@@ -1,0 +1,403 @@
+\documentclass[dvipdfmx]{jsarticle}
+%
+\usepackage{amsmath}
+\usepackage{emath}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{mediabb}%pdfを簡単に取り込み
+\usepackage{here}
+\usepackage{ascmac}%screenのため
+\usepackage{yhmath}%長いtildeのため
+\usepackage{color}
+\usepackage{ulem}%取り消し線のため
+\allowdisplaybreaks[4]%式変形中の改ページの許可
+\usepackage[dvipdfmx]{hyperref}%ハイパーリンクの埋め込み
+\usepackage{pxjahyper} %%hyperref読み込みの直後に読み込んでおくおまじない
+\usepackage[all]{xy}%xypic
+\usepackage{comment}
+\usepackage{braket}
+\usepackage[stable]{footmisc}%セクション名に脚注をつけてもエラーにならない
+%
+\pagestyle{plain}
+\title{\empty}
+\author{\empty}
+\date{\today}
+%
+\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+\newtheorem{instance}{例}[section]%定義から通し番号にする
+\newtheorem{theorem}{定理}[section]%section単位でカウントをリセット．こうしておくとsetcounterで番号をコントロールできる
+\newtheorem{prop}{命題}[section]
+\newtheorem{lemma}{補題}[section]
+\newtheorem{corollary}{系}[section]
+\newtheorem{example}{例題}[section]
+\makeatletter
+\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+\makeatother
+%
+%\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+%\newtheorem{instance}[definition]{例}%定義から通し番号にする
+%\newtheorem{theorem}[definition]{定理}
+%\newtheorem{prop}[definition]{命題}
+%\newtheorem{lemma}[definition]{補題}
+%\newtheorem{corollary}[definition]{系}
+%\makeatletter
+%\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+%\makeatother
+%
+\newtheorem{proof}{証明}
+\renewcommand{\theproof}{}%カウントしない
+\usepackage{latexsym}
+\def\qed{\hfill $\Box$}
+%
+\newtheorem{agree}{規約}
+\renewcommand{\theagree}{}%カウントしない
+\newtheorem{attention}{注意}
+\renewcommand{\theattention}{}%カウントしない
+%
+\newcommand{\st}{\mathrm{s.t.}\,}  %s.t.
+%
+%おまじない
+\setlength{\textwidth}{\fullwidth}
+\setlength{\textheight}{39\baselineskip}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.5in}
+\setlength{\headsep}{0.3in}
+\setlength{\abovedisplayskip}{3pt}%上部のマージン
+\setlength{\belowdisplayskip}{3pt}%下部のマージン
+%
+%一応引き継いで書いてあるが，今は機能していない
+\usepackage{stmaryrd}%\longmapsfrom
+\usepackage{bm}%数式中の太字
+\usepackage{graphicx}%写像の図式のため
+\usepackage[all]{xy}%xypic
+\renewcommand{\abstractname}{\empty}
+%
+\begin{document}
+%\maketitle
+%
+%
+%
+%
+\section*{$\S 2${\ }$U_q(\mathfrak{sl}(2,\mathbb{C}))$}
+\section*{三角分解}
+ベクトル空間としての$U_q$の基底を与える．
+\begin{align*}
+\begin{cases}
+{\ }N^\pm=X^\pm が生成する U_q の部分代数 \\
+{\ }T=K,K^{-1} が生成する U_q の部分代数
+\end{cases}
+\end{align*}
+とおく．代数の定義はP.12で与えられている．部分代数というのは和の単位元$0$を含み，任意の元に対してマイナスをつけた元(和の逆元)を含み，和と積について閉じていて，今は代数の定義に単位元を持つことが含まれているので，積の単位元$1$も含むようなものである．上で定義した部分代数は関係式を用いると''混ざる''が，とにかく代表元を混ざらないように取れることを言っている．特にdisjointとは言っていない．\par
+また別に不定文字$\xi^\pm,\zeta$を導入して
+\begin{align*}
+\widetilde{N}^\pm=\mathbb{C}[\xi^\pm], \quad \widetilde{T}=\mathbb{C}[\zeta,\zeta^{-1}]
+\end{align*}
+と定める．
+\begin{align*}
+M=\widetilde{N}^-\otimes\widetilde{T}\otimes\widetilde{N}^+ \quad (ベクトル空間のテンソル積) \\
+\xi_{lmn}=(\xi^-)^l\otimes \zeta^m\otimes (\xi^+)^n\in M \quad (l,n\in\mathbb{Z}_{\geq 0},m\in\mathbb{Z})
+\end{align*}
+とおけば，線形写像$\rho$
+\begin{eqnarray*}
+\begin{array}{ccc}
+M & \stackrel{\rho}{\longrightarrow} & U_q \\
+\rotatebox{90}{$\in$} & & \rotatebox{90}{$\in$} \\
+\xi_{lmn} & \longmapsto & (X^-)^lK^m(X^+)^n
+\end{array}
+\end{eqnarray*}
+が定義できる．多項式のときはこれを線形写像になるように拡張する．$\rho$の$\widetilde{N}^-\otimes 1\otimes 1,{\ }1\otimes \widetilde{T}\times 1,{\ }1\otimes 1\otimes \widetilde{N}^+$への制限は，それぞれ$N^-,T,N^+$への全射を与えている．それぞれ$N^-,T,N^+$への同型を与えていることも定理2.7から言えるが，この時点では各生成元が代数的独立かどうかわからないのでひょっとすると単射になっていないかもしれない．
+%
+%
+%
+\setcounter{section}{2}
+\setcounter{theorem}{6}
+\begin{theorem}[三角分解]
+上の$\rho$はベクトル空間の同型を与える．特に代数として$\widetilde{N}^\pm\simeq N^\pm,{\ }\widetilde{T}\simeq T$であり，$U_q$の任意の元は$(X^-)^lK^m(X^+)^n{\ }(l,n\in\mathbb{Z}_{\geq 0},m\in\mathbb{Z})$の形の線型結合で一意的に表される．
+\end{theorem}
+この同型を$N^-TN^+=U_q$と表し，$U_q$の三角分解と呼ぶ．証明のため次の補題を示す．今後しばしば$q$-整数$[n]_q$を$[n]$と略記する．$q$-整数の定義はP.0にあるように
+\begin{align*}
+[n]_q=\frac{q^n-q^{-n}}{q-q^{-1}}
+\end{align*}
+である．$q\to 1$で$[n]\to n$となる．
+%
+%
+%
+\setcounter{lemma}{7}
+\begin{lemma}
+$l\in\mathbb{N}$に対して
+\begin{align*}
+\begin{cases}
+{\ }[X^+,(X^-)^l]=[{\ }l{\ }](X^-)^{l-1}[H-l+1] \\
+{\ }[(X^+)^l,X^-]=[{\ }l{\ }]\cdot[H-l+1](X^+)^{l-1}
+\end{cases}
+\end{align*}
+ただし$K=q^H$を意識して次の記法を用いた．
+\begin{align*}
+[H+\nu]:=\frac{q^\nu K-q^{-\nu}K^{-1}}{q-q^{-1}}\in U_q
+\end{align*}
+\end{lemma}
+$q\to 1$で$[H+\nu]\to H+\nu$となる．
+%
+%
+%
+%
+\begin{proof}
+第2の式は第1の式に$\theta$を施して得られる．$\theta$が代数射であることを考えれば，左辺は$-1$がつき，右辺は
+\begin{align*}
+\theta\left((X^-)^{l-1}[H-l+1]\right)
+=\theta\left((X^-)^{l-1}\right)\theta\left(\frac{q^{-l+1} K-q^{-(-l+1)}K^{-1}}{q-q^{-1}}\right)
+=(X^+)^{l-1}\frac{q^{-l+1} K^{-1}-q^{-(-l+1)}K}{q-q^{-1}}
+\end{align*}
+において，関係式$X^+K^{-1}=q^2K^{-1}X^+,{\ }X^+K=q^{-2}KX^+$を用いれば
+\begin{align*}
+(X^+)^{l-1}\frac{q^{-l+1} K^{-1}-q^{-(-l+1)}K}{q-q^{-1}}
+&=\frac{q^{-l+1} q^{2(l-1)}K^{-1}-q^{-(-l+1)}q^{-2(l-1)}K}{q-q^{-1}}(X^+)^{l-1} \\
+&=\frac{q^{-(-l+1)} K^{-1}-q^{-l+1}K}{q-q^{-1}}(X^+)^{l-1} \\
+&=-[H-l+1](X^+)^{l-1}
+\end{align*}
+となり，第2の式が第1の式から得られることが示された．\par
+では，第1の式を数学的帰納法で示す．$l=1$のときは$[X^+,X^-]=[H]$でこれは関係式そのものなので成り立つ．$l$のとき正しいとする．このとき
+\begin{align*}
+[X^+,(X^-)^{l+1}]
+&=[X^+,X^-](X^-)^l+X^-[X^+,(X^-)^l] \quad (略記をバラせばわかる) \\
+&=[H](X^-)^l+(X^-)^l[{\ }l{\ }]\cdot[H-l+1]
+\end{align*}
+となる．上で第1の式から第2の式を示すときにやったように，関係式$KX^-=q^{-2}X^-K,{\ }K^{-1}X^+=q^{2}X^+K^{-1}$を用いれば
+\begin{align*}
+[H+\nu]X^-=\frac{q^\nu K-q^{-\nu}K^{-1}}{q-q^{-1}}X^-=X^-\frac{q^{\nu-2} K-q^{-(\nu-2)}K^{-1}}{q-q^{-1}}=X^-[H+\nu-2]
+\end{align*}
+が成り立つので，結局
+\begin{align*}
+[X^+,(X^-)^{l+1}]
+&=(X^-)^l(\textcolor{red}{[H-2\l]+[l][H-l+1]}) \\
+&=(X^-)^l\left(\frac{q^{-2l} K-q^{2l}K^{-1}}{q-q^{-1}}+\frac{q^l-q^{-l}}{q-q^{-1}}\frac{q^{-l+1} K-q^{-(-l+1)}K^{-1}}{q-q^{-1}}\right) \\
+&=(X^-)^l\frac{(q-q^{-1})(q^{-2l} K-q^{2l}K^{-1})+(q^l-q^{-l})(q^{-l+1} K-q^{-(-l+1)}K^{-1})}{(q-q^{-1})(q-q^{-1})} \\
+&=(X^-)^l\textcolor{red}{[l+1][H-l]} \quad (結果を展開すると確かに一致する)
+\end{align*}
+となり，第1の式が示された．なお，赤字で示した恒等式は$q\to 1$で自明に成り立っていることを観察することができる．\qed
+\end{proof}
+%
+%
+%
+\begin{proof}[定理2.7]
+\begin{description}
+\item[\underline{第1段}]
+$\rho$は全射である．それには，$U_q$の生成元からなる任意の語$y=y_1\cdots y_p{\ }(y_i\in\{X^+,X^-,K,K^{-1}\})$が，「標準形」$(X^-)^lK^m(X^+)^n$の一次結合に帰着できることを言えば良い．生成元からなる任意の語$y$の長さ$p$についての数学的帰納法を用いて示す．$p=1$ならば標準形である．$p$のとき正しいとして，長さ$p+1$の語$y=y_1\cdots y_{p+1}$を考える．
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $y_1=X^-$なら$y_2\cdots y_{p+1}$に対して帰納法の仮定を用いて正しい．
+\item $y_i$の中に$K^\pm$があるときは，まず，関係式を用いて$K^\pm$を先頭に持ってくる．つまり$y=y_1'\cdots y_{p+1}',{\ }y_1'=K^\pm$である．そして$y_2'\cdots y_{p+1}'$に対して帰納法の仮定を用いる．そして，関係式を用いて$y_1'=K^\pm$を$(X^-)^l$の右側まで持ってくれば標準形に帰着する．
+\item 上記以外の場合，すなわち$y_1=\cdots=y_r=X^+,{\ }y_{r+1}=X^-$のとき，$y'=y_{r+2}\cdots y_p$とおき補題2.8を用いると
+\begin{align*}
+y=[(X^+)^r,X^-]y'+X^-(X^+)^r y'=[r][H-r+1](X^+)^r y'+X^-(X^+)^r y'
+\end{align*}
+となり，上の(i)(ii)より標準形に帰着する．
+\end{enumerate}
+\item[\underline{第2段}]
+次の作用によって$M$は$U_q$加群となる．
+\begin{align*}
+\begin{cases}
+{\ }X^-\xi_{lmn}=\xi_{l+1,mn} \\
+{\ }K^\pm\xi_{lmn}=q^{\mp 2l}\xi_{l,m\pm 1,n} \\
+\displaystyle {\ }X^+\xi_{lmn}=\frac{[l]}{q-q^{-1}}(q^{-l+1}\xi_{l-1,m+1,n}-q^{l-1}\xi_{l-1,m-1,n})+q^{-2m}\xi_{lm,n+1}
+\end{cases}
+\end{align*}
+一見複雑な定義に見えるが，$\xi_{lmn}$を$(X^-)^lK^m(X^+)^n$と思うと関係式からすぐに出てくる式である．まず上の定義により$M$は不定文字$X^+,X^-,K,K^{-1}$上の自由結合代数$\mathfrak{T}$上の加群になる．というよりむしろ，$\mathfrak{T}$の他の元による作用を$M$が$\mathfrak{T}$上の加群になるように決める．例えば
+\begin{align*}
+(X^+X^-)\xi_{lmn}:=X^+(X^-\xi_{lmn}),\quad 1\cdot \xi_{lmn}=\xi_{lmn}
+\end{align*}
+となどとすることで，$M$は$\mathfrak{T}$上の加群になる．$U_q$加群となっていることを見るには，この作用が関係式とconsistentであることが言えれば良い．例えば
+\begin{align*}
+X^+X^-\xi_{lmn}=\frac{[l+1]}{q-q^{-1}}(q^{-l}\xi_{l,m+1,n}-q^{l}\xi_{l,m-1,n})+q^{-2m}\xi_{l+1,m,n+1} \\
+X^-X^+\xi_{lmn}=\frac{[l]}{q-q^{-1}}(q^{-(l-1)}\xi_{l,m+1,n}-q^{l-1}\xi_{l,m-1,n})+q^{-2m}\xi_{l+1,m,n+1}
+\end{align*}
+より
+\begin{align*}
+[X^+,X^-]\xi_{lmn}
+&=\frac{1}{q-q^{-1}}\left\{\left([l+1]q^{-l}-[l]q^{-(l-1)}\right)\xi_{l,m+1,n}-\left([l+1]q^{l}-[l]q^{l-1}\right)\xi_{l,m-1,n}\right\} \\
+&{\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!}=\frac{1}{q-q^{-1}}\left\{\left(\frac{q^{l+1}-q^{-(l+1)}}{q-q^{-1}}q^{-l}-\frac{q^{l}-q^{-l}}{q-q^{-1}}q^{-(l-1)}\right)\xi_{l,m+1,n}-\left(\frac{q^{l+1}-q^{-(l+1)}}{q-q^{-1}}q^{l}-\frac{q^{l}-q^{-l}}{q-q^{-1}}q^{l-1}\right)\xi_{l,m-1,n}\right\} \\
+&=\frac{1}{q-q^{-1}}\left\{\frac{q^{-2l+1}-q^{-2l-1}}{q-q^{-1}}\xi_{l,m+1,n}-\frac{q^{2l+1}-q^{2l-1}}{q-q^{-1}}\xi_{l,m-1,n}\right\} \\
+&=\frac{K-K^{-1}}{q-q^{-1}}\xi_{lmn}
+\end{align*}
+となる．他の関係式についても同様である．
+\item[\underline{第3段}]
+$\rho$は単射である．実際，線形写像$\sigma$
+\begin{eqnarray*}
+\begin{array}{ccc}
+U_q & \stackrel{\sigma}{\longrightarrow} & M \\
+\rotatebox{90}{$\in$} & & \rotatebox{90}{$\in$} \\
+a & \longmapsto & a\xi_{000}
+\end{array}
+\end{eqnarray*}
+を定義すれば，第2段によって$\sigma(ab)=a(b\xi_{000}){\ }(a,b\in U_q)$となる．つまり，このように$\sigma$を作用を使って定義したとき，ちゃんと結合的になってくれる．よって
+\begin{align*}
+\sigma\circ\rho(\xi_{lmn})=\sigma((X^-)^lK^m(X^+)^n)=(X^-)^lK^m\xi_{00n}=(X^-)^l\xi_{0mn}=\xi_{lmn}
+\end{align*}
+となる．よって$\sigma\circ\rho=id_{M}$が言えたので，$\rho$は単射である．これは対偶を考えればイメージできるし，松坂に書いてある．\qed
+\end{description}
+なお，$\rho$はベクトル空間の同型であって代数として同型ではない．それは
+\begin{align*}
+\rho(\xi_{lmn})\rho(\xi_{l'm'n'})
+&=(X^-)^lK^m(X^+)^n\cdot (X^-)^{l'}K^{m'}(X^+)^{n'} \\
+&\neq (X^-)^{l+l'}K^{m+m'}(X^+)^{n+n'} \\
+&=\rho(\xi_{l+l',m+m',n+n'}) \\
+&=\rho(\xi_{lmn}\xi_{l'm'n'})
+\end{align*}
+よりわかる．コメントとして，単項式が$\widetilde{N}^\pm,{\ }\widetilde{T}$の多項式環の方で基底になっているので，この節の冒頭に述べられているように$(X^-)^lK^m(X^+)^n$は一次独立であることがわかるので，$(X^-)^lK^m(X^+)^n$は$U_q$の基底を与えていることがわかる．
+\end{proof}
+%
+%
+%
+%
+\section*{カシミール元}
+定理2.7の応用として$U_q$の中心$Z=\{a\in U_q\mid ax=xa,{\ } ^\forall x\in U_q\}$を決定しよう．次式で定義される元$C$を$U_q$のカシミール元という．
+\begin{align*}
+C=\frac{qK-2+q^{-1}K^{-1}}{(q-q^{-1})^2}+X^-X^+=\frac{q^{-1}K-2+qK^{-1}}{(q-q^{-1})^2}+X^+X^-
+\end{align*}
+等号は関係式からわかる．よって$\theta(C)=C$である．計算により次のことがわかる．
+\setcounter{prop}{8}
+\begin{prop}
+$C\in Z$
+\end{prop}
+\begin{proof}
+関係式より$X^+X^-,X^-X^+$は$K,K^{-1}$と交換するので$C$は$K$と交換する．$X^+$については
+\begin{align*}
+&CX^+=X^+C \\
+&\Longleftrightarrow \frac{q^{-1}K-2+qK^{-1}}{(q-q^{-1})^2}X^++X^+X^-X^+=X^+\frac{qK-2+q^{-1}K^{-1}}{(q-q^{-1})^2}+X^+X^-X^+
+\end{align*}
+であるが，関係式を用いるとこの式は成り立つことがわかるので，$C$は$X^+$と交換する．$X^-$についても同様である．\qed
+\end{proof}
+%
+%
+%
+\begin{attention}
+$K=q^H$とおくと
+\begin{align*}
+C
+&=\frac{q^{H+1}-2+q^{-(H+1)}}{(q-q^{-1})^2}+X^-X^+ \\
+&=\frac{e^{\log{q}(H+1)}-2+e^{-\log{q}(H+1)}}{(q-q^{-1})^2}+X^-X^+ \\
+&=\frac{\left(1+\log{(1+\epsilon)}(H+1)+\frac{1}{2}\left(\log{(1+\epsilon)}(H+1)\right)^2+O(\epsilon^3)\right)}{(2\epsilon+O(\epsilon^2))^2} \\
+&{\ }{\ }{\ }{\ }+\frac{-2+\left(1-\log{(1+\epsilon)}(H+1)+\frac{1}{2}\left(\log{(1+\epsilon)}(H+1)\right)^2+O(\epsilon^3)\right)}{(2\epsilon+O(\epsilon^2))^2}+X^-X^+ \quad (q:=1+\epsilon) \\
+&\overset{\epsilon\to 0}{\to} \left(\frac{H+1}{2}\right)^2+X^-X^+ \quad (\because \log{(1+\epsilon)}=\epsilon+O(\epsilon^2))
+\end{align*}
+となるので，$q\to 1$とすれば形式的には
+\begin{align*}
+C=\left(\frac{H+1}{2}\right)^2+FE=\frac{1}{4}H^2+\frac{1}{2}(EF+FE)+\frac{1}{4}
+\end{align*}
+となる．普通は$\frac{1}{2}H^2+(EF+FE)\in U(\mathfrak{sl}(2,\mathbb{C}))$を$\mathfrak{sl}(2,\mathbb{C})$のカシミール元という．なお，カシミール元を
+\begin{align*}
+C=\left[\frac{H+1}{2}\right]_q^2+X^-X^+
+\end{align*}
+と書いておけば上の極限は計算するまでもなくわかる．ただしここで
+\begin{align*}
+\left[\frac{H+\nu}{2}\right]_q:=\frac{q^{\frac{\nu}{2}}q^{\frac{H}{2}}-q^{-\frac{\nu}{2}}q^{-\frac{H}{2}}}{q-q^{-1}}
+\end{align*}
+とおいた．
+\end{attention}
+%
+%
+%
+定理2.11を示すにあたって，次の仮定をおく．
+\begin{align*}
+q^n\neq 1 \quad ( ^\forall n\in \mathbb{N})
+\end{align*}
+今後しばしばこの仮定を用いるが，この仮定が成り立つとき単に「$q$は1の冪根でない」ということにする．
+\setcounter{theorem}{10}
+\begin{theorem}
+$q$が1の冪根でなければ$Z=\mathbb{C}[C]$
+\end{theorem}
+\begin{proof}
+命題2.9より右辺$\subset$左辺は成り立つので，逆を示す．三角分解により，$U_q$の任意の元$z$は$z=\sum c_{mn}(K)(X^-)^m(X^+)^n{\ }c_{mn}(K)\in\mathbb{C}[K,K^{-1}]$の形にも一意的に表示できることがわかる．実際，三角分解に関係式を用いて$K^m$を先頭に持ってくることができる．このうち$K$と可換なものはどのように表示されるのかを調べる．関係式$X^+K=q^{-2}KX^+,{\ }X^-K=q^2KX^-$を用いて
+\begin{align*}
+zK=\sum c_{mn}(K)(X^-)^m(X^+)^nK=K\sum q^{2m}q^{-2n}c_{mn}(K)(X^-)^m(X^+)^n
+\end{align*}
+となることから
+\begin{align*}
+zK-Kz=K\sum (q^{2m}q^{-2n}-1)c_{mn}(K)(X^-)^m(X^+)^n
+\end{align*}
+となるので，今，$q$が1の冪根でないので，$K$と可換な$z$は$m=n$を満たす必要がある．よって，$K$と可換なものは
+\begin{equation*}
+z=\sum_{n=0}^Nc_n(K)(X^-)^n(X^+)^n \eqno(\ast)
+\end{equation*}
+と書ける．この式により，$Z$の各元に対して次数$N$が定義できたことになる．要するに次数というのは，$Z$の元を見る限り関係式を使って変形すれば必ず$(\ast)$の形に帰着できる，言い換えると，関係式を用いれば$X^+$と$X^-$は必ず$(X^-)^n(X^+)^n$の形のみで現れるようにすることができて，しかも三角分解からその形は一意に定まり，そして，変形できたら$(X^-)^n(X^+)^n$がいくつかある中で一番$n$が大きいものを読むとそれが次数だと言っている．さて，$z\in Z$であるとき$z$は$X^+$とも交換しなくてはならない．すなわち
+\begin{align*}
+0
+&=[X^+,z] \\
+&=\sum_{n=0}^NX^+c_n(K)(X^-)^n(X^+)^n-\sum_{n=0}^Nc_n(K)(X^-)^n(X^+)^{n+1} \\
+&=\sum_{n=0}^Nc_n(q^{-2}K)X^+(X^-)^n(X^+)^n-\sum_{n=0}^Nc_n(K)(X^-)^n(X^+)^{n+1} \quad (\because 関係式)\\
+&=\sum_{n=0}^Nc_n(q^{-2}K)((X^-)^nX^++[X^+,(X^-)^n])(X^+)^n-\sum_{n=0}^Nc_n(K)(X^-)^n(X^+)^{n+1} \\
+&=\sum_{n=0}^N(c_n(q^{-2}K)-c_n(K))(X^-)^n(X^+)^{n+1}+\sum_{n=0}^Nc_n(q^{-2}K)[X^+,(X^-)^n](X^+)^n \\
+&=\sum_{n=0}^N(c_n(q^{-2}K)-c_n(K))(X^-)^n(X^+)^{n+1}+\sum_{n=0}^Nc_n(q^{-2}K)[n][H\textcolor{blue}{-n+1}](X^+)^n \quad (\because 補題2.8)
+\end{align*}
+であるが
+\begin{align*}
+c_N(K):=e_aK^a+e_{a-1}K^{a-1}+\cdots+e_1K+e_0+e_{-1}K^{-1}+\cdots+e_{-b}K^{-b} \quad (e_i\in\mathbb{C},{\ }a,b\geq 0)
+\end{align*}
+とおいて
+\begin{align*}
+{\!\!\!\!\!\!\!\!\!\!\!\!}d_N(K)
+&:=c_N(q^{-2}K)-c_N(K) \\
+&=e_a(q^{-2a}-1)K^a+e_{a-1}(q^{-2(a-1)})K^{a-1}+\cdots+e_1(q^{-2}-1)K+e_{-1}(q^2-1)K^{-1}+\cdots+e_{-b}(q^{2b}-1)K^{-b}
+\end{align*}
+とおくと，上の式は結局
+\begin{align*}
+{\!\!\!\!\!}d_N(K)(X^-)^N(X^+)^{N+1}+\sum_{n=0}^{N-1}(c_n(q^{-2}K)-c_n(K))(X^-)^n(X^+)^{n+1}+\sum_{n=0}^Nc_n(q^{-2}K)[n][H-n+1](X^+)^n=0
+\end{align*}
+となる．この式の両辺は「標準形」であるので，次数がwell-definedであることから，左辺の$(X^-)^l(X^+)^n{\ }(l,n\geq 0)$の係数は全て0でなくてはならない．よって，今，$q$は1の冪根でないので，$^\forall e_i=0{\ }(i\neq 0)$が言える．したがって$c_N(K)$は$c_N(K)=e_0$となり，$K$に依存しない．ここで，$C^N$を考えると，$C$の具体形から
+\begin{align*}
+C^N=(X^-X^+)^N+\cdots=(X^-)^N(X^+)^N+\cdots
+\end{align*}
+と書け，命題2.9より$C^N\in Z$であるため$C^N$は次数を考えられ，この式は次数を読める形になっているので
+\begin{equation*}
+C^N=(X^-)^N(X^+)^N+ 低次の項 \eqno(2.14)
+\end{equation*}
+と書いて良い．よって
+\begin{align*}
+z-c_NC^N= (N-1) 次以下
+\end{align*}
+となる．よって，$N$についての帰納法から$z=\varphi(C)$となる多項式$\varphi\in\mathbb{C}[x]$の存在が言える．また，$(2.14)$より$C$が代数的独立であることは明らかであるので，$Z=\mathbb{C}[C]$である．これは次数がwell-definedだから，と言ってもいいし，具体的に，変形に用いることができる関係式を見ると，$C^N$に$N-1$次以下のものをどう足しても最高次の$(X^-)^N(X^+)^N$を$0$にすることができないことからもわかる．\qed
+\par
+なお，ここで言ってる代数的独立というのは，$\pi$は$\mathbb{C}[x]$の任意の元を$0$にしないので$\pi$は$C$上代数的である，というのと同じような意味で言っていると思われ，体論における代数的独立とは違うと思われる\footnote{この例は体の例だが…．}．つまり集合$\mathbb{C}[C]$が''一部潰れて小さくなっている''ようなことはないよ，$U_q$の中心は潰れてなくてちゃんとあるよ，ということを言っていると思われる．
+\end{proof}
+%
+%
+%
+%
+\section*{$\S 3${\ }$U_q(\mathfrak{sl}(2,\mathbb{C}))$の表現論(1)}
+\section*{最高ウェイト表現}
+\setcounter{section}{3}
+\setcounter{prop}{7}
+\begin{prop}
+$V$を最高ウェイト加群，$\kappa$を最高ウェイト，$v_\kappa$を最高ウェイトベクトルとする．
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $V$はウェイト空間の直和で
+\begin{align*}
+V=\bigoplus_{j\geq 0}V_{\kappa-2j}, \quad V_{\kappa-2j}:=\mathbb{C}(X^-)^jv_\kappa
+\end{align*}
+\item $V$はただ1つの極大真部分加群$W$をもつ．このとき$\overline{V}=V/W$は既約な最高ウェイト加群である．
+\end{enumerate}
+\end{prop}
+\begin{proof}
+既に$V=\sum \mathbb{C}(X^-)^j\cdot v_\kappa$はわかっており，$\{q^{\kappa-2j}_{j\geq 0}\}$は相異なるから，(i)は補題3.9によって明らかである．次に$W'$を$V$の真部分加群とする\footnote{ここで，非自明な真部分加群とは言っていないので，$W'=\{0\}$であっても良い．実際，$\kappa$が非整数のときは$W'$は$\{0\}$しか取れないことが示される．}．このとき(i)および補題3.9から
+\begin{align*}
+W'=\bigoplus_{j\geq 0}W'_{\kappa-2j}, \quad W'_{\kappa-2j}:=W'\cap V_{\kappa-2j}
+\end{align*}
+となる，
+\end{proof}
+%
+%
+%
+\section*{有限次元既約表現}
+%
+%
+%
+%
+\begin{thebibliography}{99}
+\bibitem{jimbo}
+神保道夫『量子群とヤン・バクスター方程式』(丸善出版，2012年)
+ \end{thebibliography}
+%
+%
+%
+%
+\end{document}

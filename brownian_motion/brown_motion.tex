@@ -1,0 +1,915 @@
+\documentclass[dvipdfmx]{jsarticle}
+%
+\usepackage{amsmath}
+\usepackage{emath}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{mediabb}%pdfを簡単に取り込み
+\usepackage{here}
+\usepackage{ascmac}%screenのため
+\usepackage{yhmath}%長いtildeのため
+\usepackage{color}
+\usepackage{ulem}%取り消し線のため
+\allowdisplaybreaks[4]%式変形中の改ページの許可
+\usepackage[dvipdfmx]{hyperref}%ハイパーリンクの埋め込み
+\usepackage{pxjahyper} %%hyperref読み込みの直後に読み込んでおくおまじない
+\usepackage[all]{xy}%xypic
+\usepackage{comment}
+\usepackage{braket}
+\usepackage[stable]{footmisc}%セクション名に脚注をつけてもエラーにならない
+%
+\pagestyle{plain}
+\title{\empty}
+\author{\empty}
+\date{\today}
+%
+\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+\newtheorem{instance}{例}[section]%定義から通し番号にする
+\newtheorem{theorem}{定理}[section]%section単位でカウントをリセット．こうしておくとsetcounterで番号をコントロールできる
+\newtheorem{prop}{命題}[section]
+\newtheorem{lemma}{補題}[section]
+\newtheorem{corollary}{系}[section]
+\newtheorem{example}{例題}[section]
+\makeatletter
+\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+\makeatother
+%
+%\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+%\newtheorem{instance}[definition]{例}%定義から通し番号にする
+%\newtheorem{theorem}[definition]{定理}
+%\newtheorem{prop}[definition]{命題}
+%\newtheorem{lemma}[definition]{補題}
+%\newtheorem{corollary}[definition]{系}
+%\makeatletter
+%\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+%\makeatother
+%
+\newtheorem{proof}{証明}
+\renewcommand{\theproof}{}%カウントしない
+\usepackage{latexsym}
+\def\qed{\hfill $\Box$}
+%
+\newtheorem{agree}{規約}
+\renewcommand{\theagree}{}%カウントしない
+\newtheorem{attention}{注意}
+\renewcommand{\theattention}{}%カウントしない
+%
+\newcommand{\st}{\mathrm{s.t.}\,}  %s.t.
+%
+%おまじない
+\setlength{\textwidth}{\fullwidth}
+\setlength{\textheight}{39\baselineskip}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.5in}
+\setlength{\headsep}{0.3in}
+\setlength{\abovedisplayskip}{3pt}%上部のマージン
+\setlength{\belowdisplayskip}{3pt}%下部のマージン
+%
+%一応引き継いで書いてあるが，今は機能していない
+\usepackage{stmaryrd}%\longmapsfrom
+\usepackage{bm}%数式中の太字
+\usepackage{graphicx}%写像の図式のため
+\usepackage[all]{xy}%xypic
+\renewcommand{\abstractname}{\empty}
+%
+\begin{document}
+%\maketitle
+%
+%
+%
+%
+ブラウン運動の構成については\cite{rekkyo}でReferenceといくつかの方法が紹介されている．
+%
+%
+%
+%
+\section{ブラウン運動の構成の準備}
+\subsection{Kolmogorovの拡張定理}
+\begin{itembox}[l]{Kolmogorovの拡張定理}
+$(X,d)$をPolish空間とする．$(X^\Lambda,\mathfrak{B}(X^\Lambda))$上の両立条件をみたす確率測度の族$\{\mu_\Lambda\}$が各有限集合$\Lambda$に対して与えられたとき，確率測度$\mu$が$(\Omega,\mathfrak{M}(\Omega))$に存在して$\mu(\pi_\Lambda^{-1}(E))=\mu_\Lambda(E){\ }(E\in\mathfrak{B}(X^\Lambda))$をみたす．このような$\mu$は一意的である．
+\end{itembox}
+\cite{kotani}定理4.22より一般のPolish空間に対するKolmogorovの拡張定理を引用する．可分完備距離空間をPolish空間という．$(X,d)$をPolish空間とする．$T$を任意の集合として$\Omega=X^T$とする．$\Lambda_1\subset \Lambda_2\subset T$のとき射影$\pi_{\Lambda_2,\Lambda_1}$を$\pi_{\Lambda_2,\Lambda_1}:X^{\Lambda_2}\to X^{\Lambda_1},{\ }\pi_{\Lambda_2,\Lambda_1}(\omega)=\omega |_{\Lambda_1}$で定義する．また$\Lambda\subset T$に対して$\pi_\Lambda=\pi_{\Lambda,T}$とする．$\Omega$上の有限加法族$\mathfrak{F}$を$\mathfrak{F}=\{\pi_\Lambda^{-1}(E)\mid \Lambda\subset Tは有限集合,{\ }E\in\mathfrak{B}(X^\Lambda)\}$と定義する．$\Omega$上の$\sigma$加法族$\mathfrak{M}(\Omega)$を$\mathfrak{M}(\Omega)=\sigma(\mathfrak{F})$で定義する．これは$X_t(\omega)=\omega(t){\ }(t\in T)$とするとき，すべての$X_t$を可測にする最小の$\sigma$加法族と一致する．さて各有限集合$\Lambda$に対して$(X^\Lambda,\mathfrak{B}(X^\Lambda))$上の確率測度$\mu_\Lambda$が与えられているとする．$\mu_{\Lambda_2}(\pi^{-1}_{\Lambda_1,\Lambda_2}(E))=\mu_{\Lambda_1}(E){\ }(E\in\mathfrak{B}(X^{\Lambda_1}))$を両立条件という．
+%
+%
+%
+%
+\subsection{Kolmogorovの連続性定理}
+\begin{itembox}[l]{Kolmogorovの連続性定理($(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$の元の一様連続性)}
+$X_t(\omega):=\omega(t){\ }(w\in(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]},{\ }t\in\mathbb{Q}_2\cap [0,1])$とする．$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上に測度$\mu$が与えられ，$^\forall t,s\in\mathbb{Q}\cap [0,1]$に対して$\mu$についての期待値が$\mathbb{E}[|X_t(w)-X_s(w)|^\alpha]\leq M|t-s|^{1+\beta}$を満たすとする．このとき，$\{X_t\}$は$\mathbb{Q}\cap [0,1]$上でa.s.に一様連続となる．言い換えれば，$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$の元はa.s.に一様連続となる．
+\end{itembox}
+\begin{itembox}[l]{Kolmogorovの連続性定理(連続拡張)}
+$\{X_t\}$を添字集合として$\mathbb{Q}_2\cap [0,1]$を取る$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の$\mathbb{R}^d$値確率過程として，$^\forall t,s\in\mathbb{Q}\cap [0,1]$に対して$\mathbb{E}[|X_t(w)-X_s(w)|^\alpha]\leq M|t-s|^{1+\beta}$が成り立つとする．このとき，添字集合が$\mathbb{Q}\cap [0,1]$上の値を取るときにa.s.に$\{X_t\}$に一致して，添字集合として$[0,1]$を取る$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の$\mathbb{R}^d$値連続確率過程$\{\widetilde{X}_t\}$が存在する．
+\end{itembox}
+\begin{itembox}[l]{Kolmogorovの連続性定理(連続修正)}
+$\{X_t\}$を添字集合として$[0,1]$を取る$(\mathbb{R}^d)^{[0,1]}$上の$\mathbb{R}^d$値確率過程として，$^\forall t,s\in\mathbb{Q}\cap [0,1]$に対して$\mathbb{E}[|X_t(w)-X_s(w)|^\alpha]\leq M|t-s|^{1+\beta}$が成り立つとする．このとき，a.s.に$\{X_t\}$に一致して，添字集合として$[0,1]$を取る$(\mathbb{R}^d)^{[0,1]}$上の$\mathbb{R}^d$値連続確率過程$\{\widetilde{X}_t\}$が存在する．
+\end{itembox}
+%
+\cite{kotani}{\ }\S 10.2の補題10.10，命題10.11を一般化してKolmogorovの連続性定理を導く\footnote{\cite{kotani}では$X_t(\omega):=\omega(t){\ }(w\in(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]},{\ }t\in\mathbb{Q}_2\cap [0,1])$とした$X_t$についてのみ示しているが，一般化するにおいて証明は全く同様である．また，$\mathcal{W}_{\mathbb{Q}_2}(m,\delta),{\ }\mathcal{L}_{\mathbb{Q}_2}(m,\delta)$が$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$における可測集合となるために$^\forall t\in \mathbb{Q}\cap [0,1]$に対して$X_t$は$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の可測関数であると仮定しなくてはならないが，\cite{kotani}ではこの仮定が抜けている．$\sigma$加法族はコルモゴロフの拡張定理を考えた$\sigma(\mathfrak{F})$が暗に仮定されていると考えられる．}．
+証明を述べる前に，$\mathbb{Q}\cap [0,1]$という集合を用いる理由について簡単に述べる．まず簡単なところから述べると，$\mathbb{Q}$でなく$\mathbb{Q}_2$を用いているのは単に記述を簡潔にするためである．また，$[0,1]$であることは本質的ではなく，$^\forall T\in [0,\infty)$に対して$[0,T]$について全く同様に示すことができる．問題は次の2つであろう．
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $\mathbb{Q}_2$ではなく$\mathbb{Q}\cap [0,1]$であるのは何故か？
+\item $\mathbb{R}$ではなく$\mathbb{Q}_2$であるのは何故か？
+\end{enumerate}
+実際，\cite{kotani}命題10.11の証明において，(i)が成り立たなければ$\mu(A_k(\{X_t\},a,\delta,i,j))$の評価が成り立たず，(ii)が成り立たなければ$\mu(B(\{X_t\},k,a,\delta))$の評価が成り立たなくなるが，このように「証明のここが上手くいかないから」という以前に，$[0,1]$上の$\mathbb{R}^d$値連続関数を含む集合は$(\mathbb{R}^d)^{[0,1]}$に指定されている$\sigma$加法族には入らないという広く知られた事実\footnote{\cite{kumagai}P.79，\cite{durrett}Exercise 8.1.1.などを参照．実はこの主張が成り立つことは容易に確かめることができる．$(\mathbb{R}^d)^{[0,1]}$に指定されている$\sigma$加法族は$[0,1]$上の有限個の点の上での値のみを定めた柱状集合(cylinder set)の高々可算個の合併集合を集めて作られる集合族であるので，その元は$[0,1]$上の高々可算個の点の上での値のみを定める集合である．一方，連続関数の集合は$[0,1]$上の非可算個の点の上での値を定めた元の集合であるので，確かに連続関数を含む集合は$\sigma$加法族に入らないことがわかる．}から，(ii)が必要なのである．
+\par
+%
+さて，証明を述べる．$\mathbb{Q}_2$を$[0,\infty)$上の2進有理数全体とする．つまり$\mathbb{Q}_2=\{i/2^k\mid i,k=0,1,2,\cdots\}$とする．$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$は適当な確率測度と$\sigma$加法族が与えられた確率空間とする．$\{X_t\}$を添字集合として$\mathbb{Q}_2\cap [0,1]$を取る$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の$\mathbb{R}^d$値確率過程とする\footnote{一般に「$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$」の$d$と「$\mathbb{R}^d$値確率過程」の$d$は異なっても良いが，後に$X_t(\omega):=\omega(t){\ }(w\in(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]},{\ }t\in\mathbb{Q}_2\cap [0,1])$とした$X_t$についてKolmogorovの連続性定理を適用するので$\mathbb{R}^d$値を考える．}．
+正整数$m$と実数$a>0$と$0<\delta<1$に対して
+\begin{align*}
+\mathcal{W}_{\mathbb{Q}_2}(\{X_t\},m,a,\delta)=\{&w:[0,1]\cap\mathbb{Q}_2\to\mathbb{R}^d \mid \\
+&^\forall k\geq m,{\ }|X_{j2^{-k}}(w)-X_{i2^{-k}}(w)|\leq ((j-i)2^{-k})^a {\ }(i,j\in\mathbb{Z},{\ }0<j-i\leq 2^{k\delta})\}
+\end{align*}
+\begin{align*}
+{\!\!\!\!\!\!\!\!\!\!\!}\mathcal{L}_{\mathbb{Q}_2}(\{X_t\},m,a,\delta)=\{&w:[0,1]\cap\mathbb{Q}_2\to\mathbb{R}^d \mid \\
+&|X_t(w)-X_s(w)|\leq (1+2(1-2^{-a})^{-1})2^{a(1-\delta)}|t-s|^a{\ }(t,s\in [0,1]\cap \mathbb{Q}_2,{\ }|t-s|\leq 2^{-(1-\delta)m})\}
+\end{align*}
+とおく．\cite{kotani}補題10.10より$\mathcal{W}_{\mathbb{Q}_2}(\{X_t\},m,a,\delta)\subset \mathcal{L}_{\mathbb{Q}_2}(\{X_t\},m,a,\delta)$が成り立つ．\cite{kotani}命題10.11より$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の確率測度$\mu$がある$\alpha,\beta,M>0$に対して
+\begin{align*}
+E_\mu|X_t(w)-X_s(w)|^\alpha\leq M|t-s|^{1+\beta}
+\end{align*}
+を$^\forall t,s\in\mathbb{Q}\cap [0,1]$に対してみたすとする．ただし$E_\mu$は$\mu$についての期待値である．このとき$a<\beta/\alpha,{\ }0<\delta<(\beta-a\alpha)(2+\beta-a\alpha)^{-1}$なら$^\forall m\geq 1$に対し
+\begin{align*}
+\mu(\mathcal{L}_{\mathbb{Q}_2}(\{X_t\},m,a,\delta))\geq 1-M(1-2^{-\eta})^{-1}2^{-m\eta}
+\end{align*}
+となる．ここで$\eta=(\beta-a\alpha)-(2+\beta-a\alpha)\delta>0$である．この結論は\cite{kotani}で系10.13を導くのに用いるが，今は用いない．
+証明中で示されている$\mu(B(\{X_t\},k,a,\delta))\leq M2^{-k\eta}$より，$\underset{k=1}{\overset{\infty}{\sum}}\mu(B(\{X_t\},k,a,\delta))<\infty$となり，Borel-Cantelliの第1補題(\cite{kotani}定理8.17)より
+\begin{align*}
+\mu\left(\bigcap_{m=1}^\infty\bigcup_{k=m}^\infty B(\{X_t\},k,a,\delta)\right)=0
+\end{align*}
+となる．ただし
+\begin{align*}
+B(\{X_t\},k,a,\delta)=\underset{o<j-i\leq 2^{k\delta}}{\underset{0\leq i,j\leq 2^k}{\bigcup}}\left\{w:[0,1]\cap\mathbb{Q}_2\to\mathbb{R}^d \mid |w(j2^{-k})-w(i2^{-k})|>((j-i)2^{-k})^a\right\}
+\end{align*}
+である．
+$\mathcal{W}_{\mathbb{Q}_2}(\{X_t\},m,a,\delta)=\left\{\underset{k=m}{\overset{\infty}{\bigcup}} B(\{X_t\},k,a,\delta)\right\}^c$であるので
+\begin{align*}
+\mu\left(\bigcup_{m=1}^\infty\mathcal{W}_{\mathbb{Q}_2}(\{X_t\},m,a,\delta)\right)=1
+\end{align*}
+が成り立つ．すなわち，\cite{kotani}命題10.11の条件の下で$\{X_t\}$は$\mathbb{Q}\cap [0,1]$上でa.s.に一様連続となる．\cite{kato}{\ }P.232{\ }Lemma29.4より，添字集合が$\mathbb{Q}\cap [0,1]$上の値を取るときにa.s.に$\{X_t\}$に一致して，添字集合として$[0,1]$を取る$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の$\mathbb{R}^d$値連続確率過程$\{\widetilde{X}_t\}$が存在する．\par
+最後に，$\{Y_t\}$を添字集合として$[0,1]$を取る$(\mathbb{R}^d)^{[0,1]}$上の$\mathbb{R}^d$値確率過程として，$^\forall t,s\in\mathbb{Q}\cap [0,1]$に対して$\mathbb{E}[|Y_t(w)-Y_s(w)|^\alpha]\leq M|t-s|^{1+\beta}$が成り立つとしたとき，$\{Y_t\}$が連続修正を持つことを示す\footnote{\cite{sugiura}を参考にした．}．$\{Y_t\}$の添字集合を$\mathbb{Q}\cap [0,1]$に制限すると，上と同様に\cite{kato}P.232Lemma29.4より，添字集合として$[0,1]$を取る$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の$\mathbb{R}^d$値連続確率過程$\{\widetilde{Y}_t\}$が$\{Y_t\}$の各時刻での概収束極限として存在する．一方，\cite{kotani}命題10.11の条件より$\{Y_t\}$の各時刻での$L^p$収束列として自分自身を取ることができるので，$\{Y_t\}$に概収束するような部分列を取ることができる．よって概収束極限の一意性から，$\{\widetilde{Y}_t\}$は$\{Y_t\}$の連続修正となっていることがわかる．
+%
+%
+%
+%
+\subsection{広義一様収束の位相}
+ここで議論する「広義一様収束の位相」は定義域が無限区間の場合など，一様収束の位相を距離付けしようとすると距離が無限大になり発散してしまうようなときに用いられる位相である．\par
+区間$I\subset \mathbb{R}$で定義された$\mathbb{R}^d$値関数列$\{f_n\}$が，任意の有界閉区間$J\subset I$上で$\mathbb{R}^d$値関数$f$に一様収束するとき，関数列$\{f_n\}$は$f$に区間$I$上で広義一様収束するという．この収束は距離付けすることができる．$I=[0,\infty)$として，$(\mathbb{R}^d)^{[0,\infty)}$に距離関数
+\begin{align*}
+d(f,g)=\sum_{k=1}^\infty \frac{1}{2^k}\left(\sup_{t\leq k}|f(t)-g(t)|\wedge 1\right) \quad (f,g\in (\mathbb{R}^d)^{[0,\infty)})
+\end{align*}
+を入れる．このとき，$(\mathbb{R}^d)^{[0,\infty)}$上の関数列$\{f_n\}$が$f\in (\mathbb{R}^d)^{[0,\infty)}$に$d$について収束することと広義一様収束することは同値である\footnote{\cite{kogiichiyo1}を参考にした．}．まず，$d$について収束するとする．$0< ^\forall \epsilon<1$に対して，$^\forall k\in\mathbb{N}$に対して，$n$を十分大きく取れば$d(f,f_n)<\frac{\epsilon}{2^k}$となるので
+\begin{align*}
+\sup_{t\leq k}|f(t)-f_n(t)|<2^k\cdot \frac{\epsilon}{2^k}=\epsilon
+\end{align*}
+となる．$\epsilon\geq 1$のときは自明に同様のことが成りたつ．任意の有界閉区間$[a,b]\subset [0,\infty)$に対して十分大きく$k\in\mathbb{N}$を取れば$[a,b]\subset [0,k]$となり，$\{f_n\}$が$[0,k]$上一様収束することから$\{f_n\}$は$[a,b]$上一様収束することがわかる．よって，$\{f_n\}$は$f$に広義一様収束する．
+逆に，広義一様収束するとする．$^\forall \epsilon>0$に対して，$\frac{m+1}{2^m}<\epsilon$となる$m\in\mathbb{N}$を取る．$\{f_n\}$が$f$に広義一様収束するので，$n$を十分大きく取れば
+\begin{align*}
+\sup_{t\leq m}|f(t)-f_n(t)|<\frac{\epsilon}{m+1}
+\end{align*}
+となり，$^\forall k\leq m{\ }(k\in\mathbb{N})$に対して
+\begin{align*}
+\sup_{t\leq k}|f(t)-f_n(t)|<\frac{\epsilon}{m+1}
+\end{align*}
+となるので
+\begin{align*}
+d(f,f_n)
+&<\frac{m}{m+1}\epsilon+\sum_{k=m+1}^\infty \frac{1}{2^k} \\
+&=\frac{m}{m+1}\epsilon+\frac{1}{2^m} \\
+&<\frac{m}{m+1}\epsilon+\frac{1}{m+1}\epsilon \\
+&=\epsilon
+\end{align*}
+となる．よって，$\{f_n\}$は$f$に$d$について収束する．$d$により入る位相を「広義一様収束の位相」と呼ぶことが多い．\par
+$[0,\infty)$上で定義された$\mathbb{R}^d$値連続関数の集合を$C[0,\infty)$とおき，$C[0,\infty)$に$d$を入れる．このとき，$C[0,\infty)$は完備可分距離空間となる．まず，完備性を示す．$\{f_n\}$を$d$についてのCauchy列とする．$d$についての収束は広義一様収束と同値であるので，$^\forall m\in\mathbb{N}$に対して，$\{f_n\}$は$[0,m]$上の一様収束についてのCauchy列となる．よって，各$t\in [0,m]$に対して$f(t):=\underset{n\to\infty}{\lim}f_n(t)$とおけば$[0,m]$上$\{f_n\}$は$f$に一様収束する．よって，広義一様収束の定義より$\{f_n\}$は$f$に広義一様収束する．連続関数列の広義一様収束先は連続関数となるので，$f\in C[0,\infty)$となる．広義一様収束は$d$についての収束と同値であるので，結局$C[0,\infty)$が完備であることが示された\footnote{\cite{kato}Lemma{\ }29.2，\cite{kogiichiyo2}を参考にした．\cite{kogiichiyo2}では$f$を定義してからもう少し証明が続いているが，そこでやっていることは$d$についての収束と広義一様収束が同値であることを示しているだけである．ここでは既にその証明は行ったので，これで十分である．}．次に，可分性を示す．これはWeierstrassの多項式近似定理より自明である\footnote{\cite{kato}Lemma{\ }29.2を参照．}．
+%
+%
+%
+%
+\subsection{$C[0,\infty)$に入る$\sigma$加法族}
+この節では\cite{kotani}に合わせて$C[0,\infty)$を$\mathcal{W}$と書くことにする．広義一様収束の位相から定まるBorel集合族を$\mathfrak{B}(\mathcal{W})$とする．また，$w\in\mathcal{W}$に対して$X_t(w)=w(t)$とする．このとき，$\mathfrak{B}(\mathcal{W})$は$^\forall t\in [0,\infty)$に対して$X_t$を可測にする最小の$\sigma$加法族に一致する．言い換えれば，$\mathfrak{B}(\mathcal{W})$はKolmogorovの拡張定理を考えた$\sigma(\mathfrak{F})$に一致する\footnote{\cite{kotani}補題10.14，\cite{kato}Lemma{\ }29.1を参照．証明の方法は$\sigma$加法族の最小性を用いることである．例えば，\cite{kato}の$\sigma(\mathfrak{F})\subset \mathfrak{B}(\mathcal{W})$の証明は$\mathfrak{F}\subset \mathfrak{B}(\mathcal{W})$を示している．すなわち，任意の柱状集合が$\mathfrak{B}(\mathcal{W})$に入ることを示している．}．
+%
+%
+%
+%
+\subsection{\cite{KS}{\ }Theorem{\ }4.15}
+\begin{screen}
+$\{X^{(n)}\}_{n=1}^\infty$をタイトな$\mathbb{R}^d$値連続確率過程の列とする．$X^{(n)}$の分布を$P_n$とおく．ただし，$P_n$は$(\mathbb{R}^d)^{[0,\infty)}$上の確率測度である．$X^{(n)}$の任意の有限次元分布が弱収束するとする．このとき，$\{P_n\}_{n=1}^\infty$は$(\mathbb{R}^d)^{[0,\infty)}$上の確率測度$P$に弱収束する．すなわち，$\{P_n\}_{n=1}^\infty$は一意な弱収束極限$P$を持つ．また，$W_t(\omega):=\omega(t){\ }(w\in(\mathbb{R}^d)^{[0,\infty)}$とおくと$X^{(n)}$の任意の有限次元分布は$P$の下での$W$の有限次元分布に弱収束する．
+\end{screen}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+$\{X^{(n)}\}_{n=1}^\infty$の任意の部分列$\{\widetilde{X}^{(n)}\}_{n=1}^\infty$を固定する．$\{\widetilde{X}^{(n)}\}_{n=1}^\infty$はタイトであるので，$\{\widetilde{X}^{(n)}\}_{n=1}^\infty$の部分列$\{X_P^{(n)}\}_{n=1}^\infty$を$\{X_P^{(n)}\}_{n=1}^\infty$の分布が弱収束するように取ることができる．記号の乱用であるが，$X_P^{(n)}$の分布を$P_n$，$P_n$の弱収束極限を$P$とおく．このとき，$\{\widetilde{X}^{(n)}\}_{n=1}^\infty$の収束部分列の取り方に依らずに分布の弱収束極限が一意であることを示す．$\{\widetilde{X}^{(n)}\}_{n=1}^\infty$の部分列$\{X_Q^{(n)}\}_{l=1}^\infty$の分布が弱収束するとして，$X_Q^n$の分布を$Q_n$，$Q_n$の弱収束極限を$Q$とおく．$P,Q$を像測度に持つ確率変数を$X_P,X_Q$とおけば，Donskerの不変原理の証明の第2段と同様にして$X_P$の分布と有限次元分布は両立条件を満たす．よって，$X^{(n)}$の任意の有限次元分布が弱収束することから，弱収束極限の一意性より
+\begin{align*}
+P\left(\left\{w\in C[0,\infty) \mid (w(t_1),\cdots,w(t_n))\in A\right\}\right)=Q\left(\left\{w\in C[0,\infty) \mid (w(t_1),\cdots,w(t_n))\in A\right\}\right) \quad (A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda))
+\end{align*}
+となるので，\cite{kotani}補題10.14(ii)より$P=Q$となる．よって，$\{\widetilde{X}^{(n)}\}_{n=1}^\infty$の収束部分列の取り方に依らずに分布の弱収束極限は一意となる．これは$\{\widetilde{X}^{(n)}\}_{n=1}^\infty$自体が弱収束することを示している\footnote{実数列のときと同様である．}．よって，$\{X^{(n)}\}_{n=1}^\infty$の任意の部分列は一意な弱収束極限を持つ．$\{X^{(n)}\}_{n=1}^\infty$の部分列として$\{X^{(n)}\}_{n=1}^\infty$自身を取れば，$\{X^{(n)}\}_{n=1}^\infty$が一意な弱収束極限を持つことがわかる．後半の主張についてはDonskerの不変原理の証明の第2段と同様である．
+\qed
+\end{proof}
+%
+%
+%
+%
+\subsection{\cite{KS}{\ }Problem{\ }4.16}
+$\{X_n\}_{n=1}^\infty,{\ }\{Y_n\}_{n=1}^\infty$を確率空間$(\Omega,\mathfrak{M},P)$で定義された，可分距離空間$(S,\rho)$に値を取る確率変数とする．また，$X$を確率空間$(\Omega',\mathfrak{M}',P')$で定義された，可分距離空間$(S,\rho)$に値を取る確率変数とする．$X_n\overset{d}{\to} X$かつ$d(X_n,Y_n)\to 0${\ }in{\ }probとなるとき，$Y_n\overset{d}{\to}Y$となることを示す\footnote{\cite{kotani}補題9.6の証明と同様である．}．$^\forall f\in C_b\cap C_u$に対して
+\begin{align*}
+|\mathbb{E}[f(Y_n)]-\mathbb{E}[f(X)]|
+&\leq \mathbb{E}[|f(Y_n)-f(X_n)|]+\mathbb{E}[|f(X_n)-f(X)|] \\
+&\leq \mathbb{E}[|f(Y_n)-f(X_n)|;d(Y_n,X_n)\leq\delta]+\mathbb{E}[|f(Y_n)-f(X_n)|;d(Y_n,X_n)>\delta]+\mathbb{E}[|f(X_n)-f(X)|]
+\end{align*}
+となる．第1項において，$f$は一様連続であるので，$^\forall \epsilon$に対して十分小さく$\delta$を取れば$|f(Y_n)-f(X_n)|<\frac{\epsilon}{3}$となる．また，第2項において，$f$は有界であるので，定数$M<\infty$が存在して$|f(Y_n)-f(X_n)|\leq M$となる．また，第3項において，$X_n$は$X$に分布収束するので，第3項は$\frac{\epsilon}{3}$で抑えることができる．よって
+\begin{align*}
+|\mathbb{E}[f(Y_n)]-\mathbb{E}[f(X)]|
+&<\mathbb{E}[\frac{\epsilon}{3};d(Y_n,X_n)\leq\delta]+\mathbb{E}[M;d(Y_n,X_n)>\delta]+\frac{\epsilon}{3} \\
+&\leq\frac{\epsilon}{3}+M\cdot P(\{d(Y_n,X_n)>\delta\})+\frac{\epsilon}{3}
+\end{align*}
+となる．第2項において，$d(X_n,Y_n)\to 0${\ }in{\ }probとなるので，第2項は$\frac{\epsilon}{3}$で抑えることができる．よって
+\begin{align*}
+|\mathbb{E}[f(Y_n)]-\mathbb{E}[f(X)]|<\epsilon
+\end{align*}
+となる．
+%
+%
+%
+%
+\subsection{ブラウン運動の像測度の下でcoordinate mapping processはブラウン運動となる\footnote{この節の記述は，\cite{kotani}{\ }P.231に書かれている，$\mu_\Sigma$の下でcoordinate mapping processがブラウン運動となることを一般に示すものである．}}
+確率空間$(\Omega,\mathfrak{M},\mu)$上で定義された$\mathbb{R}^d$値ブラウン運動$B_t(w){\ }(t\in[0,\infty),{\ }w\in\Omega)$の像測度を$\mu_{\Sigma}$とおく．
+$\mu_{\Sigma}$をWiener測度という\footnote{Wiener測度が定義された$C[0,\infty)$のことをWiener空間という．}．$w\in C[0,\infty)$に対して$X_t(w)=w(t)$とおく．$X_t(w)$をcoodinate mapping processという．$\mu_{\Sigma}$の下で$X_t$がブラウン運動となることを示す．ここでは\cite{kotani}の行間を埋める意味も兼ねてブラウン運動を表す記号として$\phi(w)(t)$を用いる\footnote{\cite{kotani}{\ }P.231の$\phi$は連続拡張と見ても良いが，確率空間$(\mathbb{R}^d)^{\mathbb{Q}\cap [0,1]}$上で定義された時刻として$[0,1]$を取るブラウン運動になっている．$[0,1]$と$[0,\infty)$の違いがあるが，適当に処理すれば良い．}．
+\begin{align*}
+\mu_{\Sigma}(E)=\mu(\phi^{-1}(E)) \quad ( ^\forall E\subset C[0,\infty))
+\end{align*}
+であるので，$A:=A_1\times\cdots\times A_n{\ }( ^\forall A_1,\cdots,A_n\in\mathfrak{B}(\mathbb{R}^d))$として\footnote{この形の集合だけ考えれば十分であるのはHopfの拡張定理の一意性による．}
+\begin{align*}
+&\mu_{\Sigma}\left(\left\{w\in C[0,\infty) \mid (X_{t_1}(w),\cdots,X_{t_n}(w))\in A\right\}\right) \\
+&=\mu_{\Sigma}\left(\left\{w\in C[0,\infty) \mid (w(t_1),\cdots,w(t_n))\in A\right\}\right) \\
+&=\mu_{\Sigma}\left(\pi_{\Lambda}^{-1}(A)\right) \\
+&=\mu\left(\phi^{-1}\left(\pi_{\Lambda}^{-1}(A)\right)\right) \\
+&=\mu_{\Sigma}\left(\left\{w\in \mathbb{Q}\cap [0,1] \mid \pi_{\Lambda}\left(\phi(w)\right)\in A\right\}\right) \\
+&=\mu_{\Sigma}\left(\left\{w\in \mathbb{Q}\cap [0,1] \mid
+\left(\phi(w)(t_1),\cdots,\phi(w)(t_n)\right)
+\in A\right\}\right) \\
+&=\int_{A_1}\mathrm{d}x_1\cdots\int_{A_n}\mathrm{d}x_n \prod_{i=1}^n p_d(t_i-t_{i-1},x_i-x_{i-1})
+\end{align*}
+となる．よって，$X_t$はGauss系となる．$X_t$がブラウン運動となるための他の性質は\cite{taniguchi}命題3.5よりわかる．実際，連続性は定義から自明であり，時刻0で原点に存在することはKolmogorovの拡張定理を用いる方法の第2段と全く同様に示すことができるので，\cite{taniguchi}命題3.5より$X_t$はブラウン運動となる．
+%
+%
+%
+%
+\subsection{\cite{kotani}{\ }P.234「従って$X_t-X_s$の$\mu$の下での分布も$N(0,(t-s)\Sigma)$になる」}
+この節で示すことはDonskerの不変原理の証明中に示される多次元に拡張された中心極限定理の特別な場合であるが，1次元の場合は簡単に示すことができること，また，このような方法が可能であることを明記するために証明を行う．\par
+$\{Y_n\}$が定義されている確率空間を$(\Omega,\mathfrak{M},P)$とおく．$w\in\mathcal{W}$に対して$X_t(w)=w(t)$とおく．$X_t-X_s\sim N(0,(t-s)\Sigma)$となることを示す．$Y_n$の弱収束極限を$Y_{\infty}$とおく\footnote{$Y_{\infty}$は$\Omega$上で定義されている必要はない．}．すなわち，$\mu$は$Y_{\infty}$の像測度である．よって
+\begin{eqnarray*}
+\begin{array}{ccc}
+Y_n & \stackrel{d}{\longrightarrow} & Y_{\infty} \\
+\rotatebox{90}{$\sim$} & & \rotatebox{90}{$\sim$} \\
+\mu_n & \longrightarrow & \mu
+\end{array}
+\end{eqnarray*}
+となる．ここで，$f$を
+\begin{eqnarray*}
+\begin{array}{ccc}
+\mathbb{R}^d\times\mathbb{R}^d & \stackrel{f}{\longrightarrow} & \mathbb{R}^d \\
+\rotatebox{90}{$\in$} & & \rotatebox{90}{$\in$} \\
+(x,y) & \longrightarrow & y-x
+\end{array}
+\end{eqnarray*}
+と定義する．$f$は明らかに連続写像である．また，射影は連続写像であるので，$Y_n$が$Y_{\infty}$に法則収束することから，連続写像定理より\footnote{\cite{kato}{\ }P.267{\ }Theorem{\ }33.7で最も一般的な場合が証明されている．}$f(\pi_{\{s,t\}}(Y_n))$は$f(\pi_{\{s,t\}}(Y))$に法則収束する．よって
+\begin{eqnarray*}
+\begin{array}{ccc}
+f(\pi_{\{s,t\}}(Y_n)) & \stackrel{d}{\longrightarrow} & f(\pi_{\{s,t\}}(Y_{\infty})) \\
+\rotatebox{90}{$\sim$} & & \rotatebox{90}{$\sim$} \\
+\mu_n^{s,t} & \longrightarrow & \mu^{s,t}
+\end{array}
+\end{eqnarray*}
+となる．ただし，$f(\pi_{\{s,t\}}(Y_n))$の分布を$\mu_n^{s,t}$，$f(\pi_{\{s,t\}}(Y_\infty))$の分布を$\mu^{s,t}$とする．$\mu_n(\cdot):=P(Y_n^{-1}(\cdot))$であるので，$^\forall A\in\mathfrak{B}(\mathbb{R}^d)$に対して
+\begin{align*}
+\mu_n^{s,t}(A)
+&:=P(Y_n^{-1}(\pi_{\{s,t\}}^{-1}(f^{-1}(A)))) \\
+&=\mu_n(\pi_{\{s,t\}}^{-1}(f^{-1}(A))) \\
+&=\mu_n\left(\{w\mid (w(s),w(t))\in f^{-1}(A)\}\right) \\
+&=\mu_n\left(\{w\mid (X_s(w),X_t(w))\in f^{-1}(A)\}\right) \\
+&=\mu_n\left(\{w\mid X_t(w)-X_s(w)\in A\}\right)
+\end{align*}
+となるので，$\mu_n^{s,t}(A){\ }(1\leq n\leq \infty)$は$X_t-X_s$の分布にもなっている．中心極限定理より$f(\pi_{\{s,t\}}(Y_n))=Y_n(t)-Y_n(s)$の分布は$N(0,(t-s)\Sigma)$に弱収束するので，$f(\pi_{\{s,t\}}(Y_{\infty}))=Y_{\infty}(t)-Y_{\infty}(s)\sim N(0,(t-s)\Sigma)$となる．よって，$X_t-X_s\sim N(0,(t-s)\Sigma)$となる．
+%
+%
+%
+%
+\section{Kolmogorovの拡張定理を用いる方法\footnote{\cite{sugiura}が参考になる．\cite{hattori}の付録Dは''気持ち''を知るのに良い．\cite{kato}は読みにくいが他の文献で証明が省略されている箇所が丁寧に書かれていたりして，たまに役に立つ．後で引用する．}}
+Kolmogorovの拡張定理を用いた段階で，ブラウン運動の定義で満たされていない性質は連続性のみとなる．よって，連続性をどのように示すかが鍵となる．その連続性を示すために用いるのがKolmogorovの連続性定理なのであるが，どのように用いるかで本質的には同じであるが微妙に異なる証明のバリエーションが複数存在する．\par
+まず，最も簡潔なのはKolmogorovの拡張定理で構成する確率空間として$(\mathbb{R}^d)^{[0,1]}$を選ぶ方法である\footnote{\cite{kumagai}にこの方法に基づく証明の簡単なスケッチが載っている．}．$(\mathbb{R}^d)^{[0,1]}$上に構成されるGauss系にKolmogorovの連続性定理を用いて連続修正することで$(\mathbb{R}^d)^{[0,1]}$上に添字集合として$[0,1]$を取るブラウン運動が構成される．この方法では$\mathbb{Q}_2$という人工的な集合が現れないので，その意味で簡潔である．\par
+一方で，全く同様にして$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上にブラウン運動を構成することもできる．そのためにはKolmogorovの拡張定理で構成する確率空間として$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$を選び，$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上に構成されるGauss系にKolmogorovの連続性定理を用いて連続拡張することで$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上に添字集合として$[0,1]$を取るブラウン運動が構成される．以下の証明ではこの方法で示している．\par
+また，Kolmogorovの拡張定理で$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上にGauss系を構成するところまでは同じだが，$[0,1]$上の$\mathbb{R}^d$値連続関数全体の集合を$C[0,1]$として\footnote{$C[0,1]$には一様収束の位相が入っているとして，$\sigma$加法族としてボレル集合族を指定する．広義一様収束の位相を入れても同様に言えると思われるが，連続拡張の可測性が非自明となる．}，連続拡張を$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}\to C[0,1]$を与える写像と考えると連続拡張の可測性が示せるので\footnote{\cite{hattori}付録D.4を参照．}，$C[0,1]$上に連続拡張による像測度(Wiener測度)を誘導し，$C[0,1]$上に添字集合として$[0,1]$を取るブラウン運動を構成することができる．\par
+他には，Gauss系の存在定理に帰着する方法\footnote{\cite{kotani}{\ }\S 10.2を参照．}があるが，Gauss系の存在定理はKolmogorovの拡張定理を用いて証明されるのでこれは上で述べた種々の証明と本質的に異なる方法ではなく，またブラウン運動が定義される確率空間も変化しない．
+\begin{description}
+\item[\underline{第1段}]
+$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上に添字集合として$\mathbb{Q}_2\cap [0,1]$を取る独立増分性を満たすGauss系を構成する\footnote{独立増分性を満たしていることは証明できるがここでは用いないので証明は行わない．証明は\cite{taniguchi}命題3.5の十分性の証明と同様にすれば良い．次の段でKolmogorovの連続性定理を用いて連続拡張する前に独立増分性を満たしていることは重要である．a.s.に時刻0で原点に存在することも連続拡張する前に示すことができるので，Kolmogorovの拡張定理を用いた段階で，ブラウン運動の定義で満たされていない性質は連続性のみである．}．$x\in\mathbb{R}^d$として$p_d(t,x):=(2\pi t)^{-\frac{d}{2}}e^{-\frac{x^2}{2t}}$とおく．$\mathbb{Q}\cap [0,1]$の任意の有限部分集合を$\Lambda:=\{t_1,\cdots,t_n\}$とおく．ただし$t_1<\cdots<t_n$とする．$(\mathbb{R}^d)^\Lambda$上の確率測度$\mu_\Lambda$を
+\begin{align*}
+\mu_{\Lambda}(A_1\times\cdots\times A_n)=\int_{A_1}\mathrm{d}x_1\cdots\int_{A_n}\mathrm{d}x_n \prod_{i=1}^n p_d(t_i-t_{i-1},x_i-x_{i-1}) \quad ( ^\forall A_1,\cdots,A_n\in\mathfrak{B}(\mathbb{R}^d))
+\end{align*}
+で定義する．ただし$t_0=0,{\ }x_0=0$とする．また，$t_1=0$のとき$p_d(0,x_1)\mathrm{d}x_1=\delta_0(\mathrm{d}x_1)$とする\footnote{$x_0=0$としたことが$t_1=0$のとき$p(0,x_1)\mathrm{d}x_1=\delta_0(\mathrm{d}x_1)$とすることを決めている．}．ただし$\delta_0$は原点で値を取る$d$次元のディラックの$\delta$測度である．$p_d(t,x)$の定義からChapman-Kolmogorovの等式
+\begin{align*}
+\int_{\mathbb{R}} p_d(t_2-t_1,x_2-x_1)p_d(t_3-t_2,x_3-x_2)\mathrm{d}y_2=p_d(t_3-t_1,x_3-x_1)
+\end{align*}
+が成り立つことが確かめられる．よって$\{\mu_\Lambda\}$は両立条件を満たすので，Kolmogorovの拡張定理より$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上に確率測度$\mu$が一意に存在して$\mu(\pi_\Lambda^{-1}(A))=\mu_\Lambda(A){\ }(A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda))$をみたす．ここで，$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$は$\mathbb{R}^d$の直積集合であると同時に$\mathbb{Q}_2\cap [0,1]$上の$\mathbb{R}^d$値の写像であるので，射影$\pi_\Lambda$は具体的に書けて\footnote{地味だがここが証明の肝であると思う．初め\cite{sugiura}を読んでいるときこれが出てこなくて混乱した．明示的に書いてある文献として\cite{Brady}が参考になった．}，$\mu(\pi_\Lambda^{-1}(A))=\mu_\Lambda(A){\ }(A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda))$は
+\begin{align*}
+\mu\left(\left\{w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]} \mid (w(t_1),\cdots,w(t_n))\in A\right\}\right)=\mu_\Lambda(A) \quad (A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda))
+\end{align*}
+と書ける．$X_t(\omega):=\omega(t){\ }(w\in(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]},{\ }t\in\mathbb{Q}_2\cap [0,1])$とおけば，Kolmogorovの拡張定理の段で述べたように$^\forall t\in\mathbb{Q}_2\cap [0,1]$に対して$X_t$は可測関数となるので，$\{X_t\}$は添字集合として$\mathbb{Q}_2\cap [0,1]$を取る$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の$\mathbb{R}^d$値確率過程である．$\{X_t\}$を用いて上の式を書き直せば
+\begin{align*}
+\mu\left(\left\{w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]} \mid (X_{t_1}(w),\cdots,X_{t_n}(w))\in A\right\}\right)=\mu_\Lambda(A) \quad (A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda))
+\end{align*}
+となる．よって，任意の$\Lambda$に対して$(X_{t_1},\cdots,X_{t_n})$の分布が求まっている．また，$(X_{t_1},\cdots,X_{t_n})$の確率密度関数は$\underset{i=1}{\overset{n}{\prod}} p_d(t_i-t_{i-1},x_i-x_{i-1})\mathrm{d}x_1\cdots\mathrm{d}x_n$となる．
+\item[\underline{第2段}]
+前の段で構成したGauss系を連続拡張して添字集合として$[0,1]$を取るブラウン運動を構成する．$s,t\in\mathbb{Q}\cap [0,1]{\ }(s<t)$とする．
+\begin{align*}
+\mathbb{E}[|X_t-X_s|^4]&=\int_{\mathbb{R}^d}\mathrm{d}x_1\int_{\mathbb{R}^d}\mathrm{d}x_2 |x_2-x_1|^4 p_d(s,x_1)p_d(t-s,x_2-x_1) \\
+&=\int_{\mathbb{R}^d}\mathrm{d}y_1\int_{\mathbb{R}^d}\mathrm{d}y_2 |y_2|^4 p_d(s,y_1)p_d(t-s,y_2) \\
+&=\int_{\mathbb{R}^d}|y|^4p_d(t-s,y)\mathrm{d}y \\
+&=\int_{\mathbb{R}^d}\left(\sum_{i=1}^d\sum_{j=1}^d y_i^2y_j^2\right)p_d(t-s,y)\mathrm{d}y \\
+&=\sum_{i=1}^d\int_{\mathbb{R}}y_i^4 p_1(t-s,y_i)\mathrm{d}y_i+\sum_{i\neq j}\int_{\mathbb{R}}y_i^2p_1(t-s,y_i)\mathrm{d}y_i\int_{\mathbb{R}}y_j^2p_1(t-s,y_j)\mathrm{d}y_j \\
+&=3d(t-s)^2+2 _dC_2(t-s)^2
+\end{align*}
+となるので，Kolmogorovの連続性定理より，添字集合が$\mathbb{Q}\cap [0,1]$上の値を取るときにa.s.に$\{X_t\}$に一致して，添字集合として$[0,1]$を取る$(\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$上の$\mathbb{R}^d$値連続確率過程$\{\widetilde{X}_t\}$が存在する．$\{\widetilde{X}_t\}$が求めるブラウン運動であることを示す．まず$^\forall w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$に対して$\widetilde{X}_0(w)=0$となることを示す．
+\begin{align*}
+\mu\left(\left\{w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]} \mid X_0(w)\in A\right\}\right)=\delta_0(A) \quad (A\in\mathfrak{B}(\mathbb{R}^d)
+\end{align*}
+であるので$^\forall n=1,2,\cdots$に対して$\mathbb{E}[X_0^n;A]=0{\ }( ^\forall A\in\mathfrak{B}(\mathbb{R}^d))$となる．特に$\mathbb{E}[X_0^2]=0$が成り立つので，$X_0=0$がa.s.に成り立つ\footnote{上の段で$x_0=0$としたことが$X_0=0$となることに反映されていることがわかる．すなわち，$a\in\mathbb{R}$に対して$X_0=a$としたければ$x_0=a$とすれば良い．}．よって，$^\forall w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$に対して$\widetilde{X}_0(w)=0$であると考えて良い．\footnote{これは同一視の意味ではない．Kolmogorovの連続性定理の証明に戻ると，$X_t(w)$が一様連続にならない$w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$に対しては恒等的に0と定義している．よって，その上で一様連続にならない零集合に$X_0(w)=0$とならない零集合を加えておけば，Kolmogorovの連続性定理で作られる$\{\widetilde{X}_t\}$は$^\forall w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$に対して$\widetilde{X}_t(w)=0$となる．}あとは独立増分性と$s<t$として$\widetilde{X}_t-\widetilde{X}_s$の分布を調べれば良いが，\cite{taniguchi}{\ }P.65右上の議論より成り立つ．すなわち，ブラウン運動を特徴付ける\cite{taniguchi}命題3.5が$^\forall \Lambda$に対して成り立つので，$\{\widetilde{X}_t\}$と熱核$p(t,x)$の連続性より自明である．以上より，$\{\widetilde{X}_t\}$が添字集合として$[0,1]$を取る$d$次元ブラウン運動であることが示された．
+\item[\underline{第3段}]
+添字集合を$[0,\infty)$に拡張する．そのためには$B_t:=(1+t)\widetilde{X}_{\frac{t}{1+t}}-t\widetilde{X}_1$とすれば良い．実際，$^\forall w\in (\mathbb{R}^d)^{\mathbb{Q}_2\cap [0,1]}$に対して$B_0(w)=0$となることと連続性は自明である．$s<t{\ }(s,t\in [0,\infty))$に対して
+\begin{align*}
+B_t-B_s
+&=(1+t)\widetilde{X}_{\frac{t}{1+t}}-(1+s)\widetilde{X}_{\frac{s}{1+s}}-(t-s)\widetilde{X}_1 \\
+&=(1+s)(\widetilde{X}_{\frac{t}{1+t}}-\widetilde{X}_{\frac{s}{1+s}})-(t-s)(\widetilde{X}_1-\widetilde{X}_{\frac{t}{1+t}}) \\
+&\sim N\left(0,(1+s)^2\left(\frac{t}{1+t}-\frac{s}{1+s}\right)+(t-s)^2\left(1-\frac{t}{1-t}\right)\right) \\
+&=N(0,t-s)
+\end{align*}
+となる．ただし，2つ目の等号では右辺が独立な確率変数の和となるように整理した．3つ目の$\sim$は\cite{taniguchi}命題3.2(2)を用いて計算した．あとは独立増分性を示せば良いが，\cite{taniguchi}定理1.18(2)を用いる方針で計算が煩雑になる\footnote{原理的にはできないはずがないのだが，その方針では計算をすることができなかった．}ので，ここではGauss系の独立性について簡単な必要十分条件を与える\cite{kotani}命題10.7を用いて示す．まず，$i=1,2,\cdots,n-1$として$\{B_{t_{i+1}}-B_{t_i},B_{t_i}-B_{t_{i-1}}\}$は\cite{taniguchi}命題3.2(3)よりGauss系である．また
+\begin{align*}
+&\mathbb{E}[(B_{t_{i+1}}-B_{t_i})(B_{t_i}-B_{t_{i-1}})] \\
+&=\mathbb{E}[
+\{(1+t_i)(\widetilde{X}_{\frac{t_{i+1}}{1+t_{i+1}}}-\widetilde{X}_{\frac{t_i}{1+t_i}})-(t_{i+1}-t_i)(\widetilde{X}_1-\widetilde{X}_{\frac{t_{i+1}}{1+t_{i+1}}})\} \\
+&{\ }{\ }{\ }{\ }{\ }{\ }{\ }{\ }\cdot\{(1+t_{i-1})(\widetilde{X}_{\frac{t_i}{1+t_i}}-\widetilde{X}_{\frac{t_{i-1}}{1+t_{i-1}}})-(t_i-t_{i-1})(\widetilde{X}_1-\widetilde{X}_{\frac{t_i}{1+t_i}})\}
+] \\
+&=\mathbb{E}[(t_{i+1}-t_i)(t_i-t_{i-1})(\widetilde{X}_1-\widetilde{X}_{\frac{t_{i+1}}{1+t_{i+1}}})(\widetilde{X}_1-\widetilde{X}_{\frac{t_i}{1+t_i}}) \\
+&{\ }{\ }{\ }{\ }{\ }{\ }{\ }-(1+t_i)(t_i-t_{i-1})(\widetilde{X}_{\frac{t_{i+1}}{1+t_{i+1}}}-\widetilde{X}_{\frac{t_i}{1+t_i}})(\widetilde{X}_1-\widetilde{X}_{\frac{t_i}{1+t_i}})] \\
+&=\mathbb{E}[(t_{i+1}-t_i)(t_i-t_{i-1})(\widetilde{X}_1-\widetilde{X}_{\frac{t_{i+1}}{1+t_{i+1}}})^2-(1+t_i)(t_i-t_{i-1})(\widetilde{X}_{\frac{t_{i+1}}{1+t_{i+1}}}-\widetilde{X}_{\frac{t_i}{1+t_i}})^2] \\
+&=(t_{i+1}-t_i)(t_i-t_{i-1})d\left(1-\frac{t_{i+1}}{1+t_{i+1}}\right)-(1+t_i)(t_i-t_{i-1})d\left(\frac{t_{i+1}}{1+t_{i+1}}-\frac{t_i}{1+t_i}\right) \\
+&=0
+\end{align*}
+となるので，\cite{kotani}命題10.7より$\{B_{t_{i+1}}-B_{t_i},B_{t_i}-B_{t_{i-1}}\}$は独立となる．ただし，2つ目の等号や3つ目の等号では\cite{taniguchi}定理1.18(1)を用いて独立な確率変数の積を消去した．4つ目の等号では\cite{taniguchi}命題3.6(2)を用いて計算した．以上より$\{B_t\}$が$d$次元ブラウン運動であることが示された．
+\end{description}
+%
+%
+%
+%
+\section{Donskerの不変原理}
+$\xi_1,\xi_2,\cdots,\xi_n,\cdots$を$\mathbb{R}^d$値独立同分布の確率変数列とする．$S_n=\xi_1+\xi_2+\cdots+\xi_n,{\ }S_0=0$とおき，$\{S_n\}$を乱歩という．$\{S_0,S_1,\cdots,S_n,\cdots\}$を線分で順につないだ連続関数を$Y(t)$とする．つまり
+\begin{align*}
+Y(t)=(S_n-S_{n-1})(t-n+1)+S_{n-1} \quad (n-1\leq t\leq n)
+\end{align*}
+とする．この$Y$は$\mathcal{W}$値確率変数になる．
+\begin{align*}
+Y_n(t)=\frac{1}{\sqrt{n}}Y(nt)
+\end{align*}
+とおき$\mathcal{W}$値確率変数$Y_n$の分布を$\mu_n$とする．$\mu_n$は$\mathcal{W}$上の確率測度である．
+\begin{itembox}[l]{Donskerの不変原理}
+$\mathbb{E}[\xi_1]=0$，$\mathbb{E}[|\xi_1^4|]<\infty$とする．$\Sigma$を$\xi_1$の共分散行列とすると，$\mu_n$は共分散行列$\Sigma$のWiener測度に弱収束する．
+\end{itembox}
+証明には以下の\cite{KS}{\ }Theorem{\ }4.15を用いれば良い．
+\begin{itembox}[l]{\cite{KS}{\ }Theorem{\ }4.15}
+$\{X^{(n)}\}_{n=1}^\infty$をタイトな$\mathbb{R}^d$値連続確率過程の列とする．$X^{(n)}$の分布を$P_n$とおく．ただし，$P_n$は$(\mathbb{R}^d)^{[0,\infty)}$上の確率測度である．$X^{(n)}$の任意の有限次元分布が弱収束するとする．このとき，$\{P_n\}_{n=1}^\infty$は$(\mathbb{R}^d)^{[0,\infty)}$上の確率測度$P$に弱収束する．すなわち，$\{P_n\}_{n=1}^\infty$は一意な弱収束極限$P$を持つ．また，$W_t(\omega):=\omega(t){\ }(w\in(\mathbb{R}^d)^{[0,\infty)}$とおくと$X^{(n)}$の任意の有限次元分布は$P$の下での$W$の有限次元分布に弱収束する．
+\end{itembox}
+\cite{KS}{\ }Theorem{\ }4.15より
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $\{\mu_n\}$がタイトとなること．
+\item $Y_n$の任意の有限次元分布がブラウン運動の有限次元分布に弱収束すること．すなわち，中心極限定理の多次元への拡張である．
+\end{enumerate}
+を示せれば，$\{\mu_n\}$が一意な弱収束極限$\mu$を持つこと，また，$\mu$の下でのcoordinate mapping processの任意の有限次元分布がブラウン運動に一致することがわかる．\par
+あとは$\mu=\mu_\Sigma$であることを示せば良いが，これはほとんど明らかである．\cite{kotani}{\ }P.231に書かれているように，$\mu_{\Sigma}$の下でのcoordinate mapping processはブラウン運動となるので，\cite{taniguchi}命題3.6(1)より，$\mu_\Sigma$の下でのcoordinate mapping processの任意の有限次元分布は，$\mu$の下でのcoordinate mapping processの任意の有限次元分布と一致する\footnote{\cite{kotani}P.232で「ある確率空間上で定義された$\mathbb{R}^d$値確率変数族$\{X_t\}_{t\geq 0}$が性質(10.3)-(10.5)をもつとき$(X_{t_1},\cdots,X_{t_n})$の分布は一意に決まる」と書かれているのはこの意味である．すなわち，$X_t$がブラウン運動のとき$(X_{t_1},\cdots,X_{t_n})$の分布は一意に決まる．}．よって，\cite{kotani}補題10.14(ii)より，$\mu=\mu_{\Sigma}$となる．
+\footnote{Donskerの不変原理の証明は以上で尽きているが，$\mu=\mu_\Sigma$を示す前に，$\mu$の下でcoordinate mapping processがブラウン運動となることが\cite{taniguchi}命題3.5よりわかる．実際，連続性は定義から自明であり，時刻0で原点に存在することはKolmogorovの拡張定理を用いる方法の第2段と全く同様に示すことができる．\cite{taniguchi}命題3.5とその証明を見ればわかるように，ブラウン運動の定義に入っている2時刻の差の分布の情報に対して，n時刻の差の分布はブラウン運動であることを特徴づけるだけの情報を含んでいることがわかる．}
+\begin{description}
+\item[\underline{第1段}]
+まず$\{\mu_n\}$がタイトであることを示す．$Z_1,Z_2,\cdots,Z_n$を平均0の独立同分布の確率変数で$\mathbb{E}[Z_1^4]<\infty$とすると，$\mathbb{E}[Z_1^2]<\infty$となるので
+\begin{align*}
+\mathbb{E}[(Z_1+Z_2+\cdots+Z_n)^4]=
+&\sum_{i=1}^n\mathbb{E}[Z_i^4]+\sum_{i\neq j}\mathbb{E}[Z_i^2Z_j^2]+\sum_{i\neq j}\mathbb{E}[Z_i^3Z_j] \\
+&+\sum_{相異なる\{i_1,i_2,i_3\}}\mathbb{E}[Z_{i_1}^2Z_{i_2}Z_{i_3}]+\sum_{相異なる\{i_1,i_2,i_3,i_4\}}\mathbb{E}[Z_{i_1}Z_{i_2}Z_{i_3}Z_{i_4}] \\
+=&n\mathbb{E}[Z_1^4]+2 _nC_2\left(\mathbb{E}[Z_1^2]\right)^2 \\
+=&n\mathbb{E}[Z_1^4]+n(n-1)\left(\mathbb{E}[Z_1^2]\right)^2 \\
+\leq&n\mathbb{E}[Z_1^4]+n(n+1)\left(\mathbb{E}[Z_1^2]\right)^2 \\
+=&n^2\left(\mathbb{E}[Z_1^2]\right)^2+n\left(\mathbb{E}[Z_1^4]+\left(\mathbb{E}[Z_1^2]\right)^2\right) \\
+\leq&n^2\left(\mathbb{E}[Z_1^2]\right)^2+n^2\left(\mathbb{E}[Z_1^4]+\left(\mathbb{E}[Z_1^2]\right)^2\right) \\
+=&n^2\left(\mathbb{E}[Z_1^4]+2\left(\mathbb{E}[Z_1^2]\right)^2\right) \\
+=&{\!}:{\!}cn^2
+\end{align*}
+となる．これを$S_n-S_m$の各成分に適用すれば
+\begin{align*}
+\mathbb{E}[|S_n-S_m|^4]\leq c(n-m)^2 \quad (n\geq m)
+\end{align*}
+を得る．$0\leq s\leq t$なる$^\forall s,t\in [0,\infty)$に対して，$m-1\leq s<m$，$n-1\leq t<n$とすると
+\begin{align*}
+Y(t)-Y(s)&=\xi_{n}(t-n+1)-\xi_{m}(s-m+1)+(S_{n-1}-S_{m-1}) \\
+&=\xi_{n}(t-n+1)-\xi_{m}(s-m)+(S_{n-1}-S_{m})
+\end{align*}
+となる．$m=n$のとき
+\begin{align*}
+Y(t)-Y(s)=\xi_m(t-s)
+\end{align*}
+となり
+\begin{align*}
+\mathbb{E}[(Y(t)-Y(s))^4]
+&=\mathbb{E}[\xi_m^4](t-s)^4 \\
+&<\mathbb{E}[\xi_m^4](t-s)^2
+\end{align*}
+となる．$m<n$のとき
+\begin{align*}
+&\mathbb{E}[(Y(t)-Y(s))^4] \\
+&=\mathbb{E}[(\xi_{n}(t-n+1)-\xi_{m}(s-m)+(S_{n-1}-S_{m}))^4] \\
+&=(t-n+1)^4\mathbb{E}[\xi_n^4]+(s-m)^4\mathbb{E}[\xi_m^4]+\mathbb{E}[(S_{n-1}-S_{m})^4] \\
+&{\ }{\ }{\ }+6(t-n+1)^2(s-m)^2\mathbb{E}[\xi_n^2]\mathbb{E}[\xi_m^2]+6(t-n+1)^2\mathbb{E}[\xi_n^2]\mathbb{E}[(S_{n-1}-S_{m})^2]+6(s-m)^2\mathbb{E}[\xi_m^2]\mathbb{E}[(S_{n-1}-S_{m})^2] \\
+&=\mathbb{E}[\xi_n^4]+\mathbb{E}[\xi_m^4]+\mathbb{E}[(S_{n-1}-S_{m})^4]+6\mathbb{E}[\xi_n^2]\mathbb{E}[\xi_m^2]+6\mathbb{E}[\xi_n^2]\mathbb{E}[(S_{n-1}-S_{m})^2]+6\mathbb{E}[\xi_m^2]\mathbb{E}[(S_{n-1}-S_{m})^2] \\
+&=\mathbb{E}[(S_{n}-S_{m-1})^4] \\
+&\leq c(n-m+1)^2 \\
+&=c(n-m)^2+2c(n-m)+c \\
+&\leq c(n-m)^2+2c(n-m)^2+c(n-m)^2 \\
+&=4c(n-m)^2 \\
+&\leq 4c(t-s)^2
+\end{align*}
+となるので，結局$0\leq s\leq t$なる$^\forall s,t\in [0,\infty)$に対して
+\begin{align*}
+\mathbb{E}[|Y(t)-Y(s)|^4]\leq c|t-s|^2
+\end{align*}
+従って
+\begin{align*}
+\mathbb{E}[|Y_n(t)-Y_n(s)|^4]\leq c|t-s|^2
+\end{align*}
+となる．ここで
+\begin{align*}
+\mathbb{E}[|Y_n(t)-Y_n(s)|^4]=\mathbb{E}[|\pi_{\{t\}}(Y_n)-\pi_{\{s\}}(Y_n)|^4]=\mathbb{E}_{\mu_n}[|\pi_{\{t\}}(w)-\pi_{\{s\}}(w)|^4]=\mathbb{E}_{\mu_n}[|w(t)-w(s)|^4]
+\end{align*}
+となるので，これを像測度$\mu_n$で表現すると
+\begin{align*}
+\mathbb{E}_{\mu_n}[|w(t)-w(s)|^4]\leq c|t-s|^2
+\end{align*}
+となる．また，$\mu_n(\{w \mid w(0)=0\})=1$であるので
+\begin{align*}
+\mathbb{E}_{\mu_n}[w(0)^4]=0
+\end{align*}
+となる．よって，系10.13より$\{\mu_n\}$はタイトになる．\qed
+\item[\underline{第2段}]
+\cite{KS}{\ }Theorem{\ }4.17を示す．記号の簡略化のため$d=2$のときを示す．すなわち
+\begin{align*}
+(Y_n(s),Y_n(t))\overset{d}{\to}(B_s,B_t)
+\end{align*}
+となることを示す．
+\begin{align*}
+\left|Y_n(t)-\frac{1}{\sqrt{n}}Y([nt])\right|=\frac{1}{\sqrt{n}}|Y(nt)-Y([nt])|\leq \frac{1}{\sqrt{n}}|\xi_{[nt]+1}|
+\end{align*}
+となるので
+\begin{align*}
+\mathbb{E}\left[\left|Y_n(t)-\frac{1}{\sqrt{n}}Y([nt])\right|\right]\leq \frac{1}{\sqrt{n}}\mathbb{E}[|\xi_{[nt]+1}|]
+\end{align*}
+となる．仮定より$\mathbb{E}[|\xi_1|]<\infty$となるので，$Y_n(t)-\frac{1}{\sqrt{n}}Y([nt])$は$0$に$L^1$収束する．よって，$Y_n(t)-\frac{1}{\sqrt{n}}Y([nt])$は$0$に確率収束する．すなわち，$\left|Y_n(t)-\frac{1}{\sqrt{n}}Y([nt])\right|\to 0${\ }in{\ }probとなる．一般に$a,b\geq 0$のとき$\sqrt{a+b}\leq \sqrt{a}+\sqrt{b}$となることから，同様に
+\begin{align*}
+\left|(Y_n(s),Y_n(t))-\frac{1}{\sqrt{n}}(Y([ns]),Y([nt]))\right|\to 0 {\ }\mathrm{in{\ }prob}
+\end{align*}
+となる．よって\cite{KS}{\ }Problem{\ }4.16より
+\begin{align*}
+\frac{1}{\sqrt{n}}(Y([ns]),Y([nt]))\sim N\left(0,
+\begin{pmatrix}
+s\Sigma & 0 \\
+0 & (t-s)\Sigma
+\end{pmatrix}
+\right)
+\end{align*}
+を示せば十分である．また，連続写像定理より
+\begin{align*}
+\frac{1}{\sqrt{n}}(Y([ns]),Y([nt]-Y([ns])))
+=\frac{1}{\sqrt{n}}\left(\sum_{i=1}^{[ns]}\xi_i,\sum_{i=[ns]+1}^{[nt]}\xi_i\right)
+\overset{d}{\to}(B_s,B_t-B_s)
+\end{align*}
+を示せば十分である．さらに
+\begin{align*}
+\frac{1}{\sqrt{n}}\left(\sum_{i=1}^{[ns]}\xi_i,\sum_{i=[ns]+1}^{[nt]}\xi_i\right)
+-\left(\frac{\sqrt{s}}{\sqrt{[ns]}}\sum_{i=1}^{[ns]}\xi_i,\frac{\sqrt{t-s}}{\sqrt{[nt]-[ns]}}\sum_{i=[ns]+1}^{[nt]}\xi_i\right)
+\end{align*}
+を考えると
+\begin{align*}
+ns-1<[ns]\leq ns
+\end{align*}
+\begin{align*}
+\frac{1}{\sqrt{n}}\leq \frac{\sqrt{s}}{\sqrt{[ns]}}<\frac{1}{\sqrt{n-\frac{1}{s}}}
+\end{align*}
+であるので
+\begin{align*}
+\mathbb{E}\left[\left|\left(\frac{1}{\sqrt{n}}-\frac{\sqrt{s}}{\sqrt{[ns]}}\right)\sum_{i=1}^{[ns]}\xi_i\right|^2\right]
+&\leq \left(\frac{\sqrt{s}}{\sqrt{[ns]}}-\frac{1}{\sqrt{n}}\right)^2[ns]\mathbb{E}[\xi_1^2] \\
+&<\left(\frac{1}{\sqrt{n-\frac{1}{s}}}-\frac{1}{\sqrt{n}}\right)^2[ns]\mathbb{E}[\xi_1^2] \\
+&=\left(\frac{\sqrt{n}-\sqrt{n-\frac{1}{s}}}{\sqrt{n-\frac{1}{s}}\sqrt{n}}\right)^2[ns]\mathbb{E}[\xi_1^2] \\
+&\leq \left(\frac{\sqrt{\frac{1}{s}}}{\sqrt{n-\frac{1}{s}}\sqrt{n}}\right)^2[ns]\mathbb{E}[\xi_1^2] \\
+&=\frac{[ns]}{ns\left(n-\frac{1}{c}\right)}\mathbb{E}[\xi_1^2] \\
+&\to 0 \quad (n\to\infty)
+\end{align*}
+となる．よって，$0$に$L^2$収束するので\footnote{不思議なことに$L^1$収束を言うことは難しい．ギリギリの評価で成り立つのだろう．}，結局
+\begin{align*}
+\left(\frac{\sqrt{s}}{\sqrt{[ns]}}\sum_{i=1}^{[ns]}\xi_i,\frac{\sqrt{t-s}}{\sqrt{[nt]-[ns]}}\sum_{i=[ns]+1}^{[nt]}\xi_i\right)
+\overset{d}{\to}(B_s,B_t-B_s)
+\end{align*}
+を示せば十分である．特性関数の収束を用いて示す．$(u,v)\in\mathbb{R}^d\times\mathbb{R}^d$として
+\begin{align*}
+&\mathbb{E}\left[
+\exp\left(
+i\frac{\sqrt{s}}{\sqrt{[ns]}}\sum_{i=1}^{[ns]}\langle u,\xi_i\rangle+i\frac{\sqrt{t-s}}{\sqrt{[nt]-[ns]}}\sum_{i=[ns]+1}^{[nt]}\langle v,\xi_i\rangle
+\right)
+\right] \\
+&=\mathbb{E}\left[
+\exp\left(
+i\frac{\sqrt{s}}{\sqrt{[ns]}}\sum_{i=1}^{[ns]}\langle u,\xi_i\rangle
+\right)
+\right]
+\cdot\mathbb{E}\left[
+\exp\left(
+i\frac{\sqrt{t-s}}{\sqrt{[nt]-[ns]}}\sum_{i=[ns]+1}^{[nt]}\langle v,\xi_i\rangle
+\right)
+\right] \\
+&\to \exp{\left(-\frac{s}{2}\langle u,\Sigma u\rangle\right)}
+\cdot\exp{\left(-\frac{t-s}{2}\langle v,\Sigma v\rangle\right)} {\ } (各点収束) \\
+&=\exp{\left(
+-\frac{1}{2}\left\langle
+\begin{pmatrix}
+u \\
+v
+\end{pmatrix}
+,
+\begin{pmatrix}
+s\Sigma & 0 \\
+0 & (t-s)\Sigma
+\end{pmatrix}
+\begin{pmatrix}
+u \\
+v
+\end{pmatrix}
+\right\rangle
+\right)}
+\end{align*}
+となるので示された．
+\end{description}
+%
+%
+%
+%
+\section{マルコフ過程}
+\subsection{マルコフ連鎖：時間・状態空間がともに離散的な場合}
+$S$を高々可算集合とし，$S$には冪集合を$\sigma$加法族として入れて考える．可測空間$(\Omega,\mathfrak{F})$上の$S$値確率変数の列$\{X_n\}_{n=0}^\infty$に対して$\mathfrak{F}$の部分$\sigma$加法族$\mathfrak{F}_n$を$\mathfrak{F}_n=\sigma(X_k;0\leq k\leq n)$で定義する．$x,y\in S$に対して$0\leq p(x,y)\leq 1$が対応していて$\underset{y\in S}{\Sigma}p(x,y)=1{\ }(x\in S)$を満たすとき遷移確率という．
+確率測度の族$\{P_x\}_{x\in S}$が$P_x(X_0=x)=1$と
+\begin{equation*}
+E_x(f(X_{n+1})|\mathfrak{F}_n)=\sum_{y\in S}p(X_n,y)f(y) \quad \mathrm{a.s.}{\ }P_x \eqno(11.2)
+\end{equation*}
+を$S$上の任意の有界関数に対して満たすとき$(\{X_n\}_{n=0}^\infty,\{P_x\}_{x\in S})$を遷移確率$p$を持つMarkov連鎖という．(11.2)をMarkov性という．この2つの性質より
+\begin{equation*}
+P_x(X_0=x,X_1=x_1,\cdots,X_n=x_n)=p(x,x_1)\cdots p(x_{n-1},x_n) \eqno(11.3)
+\end{equation*}
+となる．従って$P_x$は遷移確率により一意的に決まっている．すなわち，$(\{X_n\}_{n=0}^\infty,\{P_x\}_{x\in S})$と$S$上に遷移確率$p$が定義されたとき(11.2)が成り立っていればMarkov連鎖というが，そのとき$\{P_x\}_{x\in S}$は遷移確率によって一意に決まる従属的なものである．Markov性の拡張が以下の\cite{kotani}補題11.5である．
+\begin{itembox}[l]{\cite{kotani}補題11.5}
+時間移動$\theta_n$を持つMarkov連鎖$\{X_n\}_{n=0}^\infty$に対して$\sigma$加法族を$\mathfrak{F}_\infty=\sigma(X_n;n=0,1,2,\cdots)$とおくと，$\mathfrak{F}_\infty$可測な$\Omega$上の有界関数$f$に対して
+\begin{align*}
+E_x(f(\theta_n w)|\mathfrak{F}_n)=E_{X_n}(f) \quad \mathrm{a.s.}{\ }P_x
+\end{align*}
+が成立する．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $\mathfrak{F}_\infty$可測な$\Omega$上の有界関数を単関数で近似すれば，$f=1_A,{\ }A\in\mathfrak{F}_\infty$に対して示せば十分である．
+\item $\mathfrak{F}_{\infty}=\sigma\left(\underset{k=1}{\overset{\infty}{\bigcup}}\mathfrak{F}_k\right)$であるので，$f=1_A,{\ }A\in\underset{k=1}{\overset{\infty}{\bigcup}}\mathfrak{F}_k$に対して示せば十分である．実際，$^\forall A\in\mathfrak{F}_{\infty}$に対して$A$は$\underset{k=1}{\overset{\infty}{\bigcup}}\mathfrak{F}_k$の元の可算個の集合$\{A_n\}_{n=0}^\infty$の合併集合で書けるので，$B_n=\underset{k=0}{\overset{n}{\bigcup}}A_k{\ }(n=0,1,2,\cdots)$とおけば$\{B_n\}_{n=0}^\infty$は単調増加で$\underset{n\to\infty}{\lim}B_n=A$となることから，単調収束定理より従う．
+\item $A\in\underset{k=1}{\overset{\infty}{\bigcup}}\mathfrak{F}_k$とすると，$^\exists k\geq 1$に対して$A\in \mathfrak{F}_k$となる．よって，$f=1_A,{\ }A\in\mathfrak{F}_k$に対して示せば十分である．
+\item $\mathfrak{F}_k$の元は$\{X_0=x_0,X_1=x_1,\cdots,X_k=x_k\}$の形の元の可算和であるので，$f=1_A,{\ }A=\{X_0=x_0,X_1=x_1,\cdots,X_k=x_k\}$に対して示せば十分である．
+\end{enumerate}
+以上より
+\begin{align*}
+P_x(X_n=x_0,\cdots,X_{n+k}=x_k|\mathfrak{F}_n)=P_{X_n}(X_0=x_0,\cdots,X_k=x_k)
+\end{align*}
+を示せば十分である．ただし，左辺の条件付き確率は\cite{kotani}P.162で定義される条件付き期待値の略記である．すなわち
+\begin{align*}
+E_x(1_{\{X_n=x_0,\cdots,X_{n+k}=x_k\}}|\mathfrak{F}_n)=P_x(X_n=x_0,\cdots,X_{n+k}=x_k|\mathfrak{F}_n)
+\end{align*}
+である．また，右辺の$P_{X_n}$は$X_n$から出発する確率測度である．よって
+\begin{align*}
+&E_x(1_{\{X_n=x_0,\cdots,X_{n+k}=x_k\}}|\mathfrak{F}_n) \\
+&=E_x(1_{\{X_n=x_0,\cdots,X_{n+k-1}=x_{k-1}\}}1_{\{X_{n+k}=x_k\}}|\mathfrak{F}_n) \\
+&=E_x(E_x(1_{\{X_n=x_0,\cdots,X_{n+k-1}=x_{k-1}\}}1_{\{X_{n+k}=x_k\}}|\mathfrak{F}_{n+k-1})|\mathfrak{F}_n) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_n=x_0,\cdots,X_{n+k-1}=x_{k-1}\}}E_x(1_{\{X_{n+k}=x_k\}}|\mathfrak{F}_{n+k-1})|\mathfrak{F}_n) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_n=x_0,\cdots,X_{n+k-1}=x_{k-1}\}}p(X_{n+k-1},x_k)|\mathfrak{F}_n) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_n=x_0,\cdots,X_{n+k-2}=x_{k-2}\}}1_{\{X_{n+k-1}=x_{k-1}\}}p(X_{n+k-1},x_k)|\mathfrak{F}_n) \\
+&=E_x(E_x(1_{\{X_n=x_0,\cdots,X_{n+k-2}=x_{k-2}\}}1_{\{X_{n+k-1}=x_{k-1}\}}p(X_{n+k-1},x_k)|\mathfrak{F}_{n+k-2})|\mathfrak{F}_n) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_n=x_0,\cdots,X_{n+k-2}=x_{k-2}\}}E_x(1_{\{X_{n+k-1}=x_{k-1}\}}p(X_{n+k-1},x_k)|\mathfrak{F}_{n+k-2})|\mathfrak{F}_n) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_n=x_0,\cdots,X_{n+k-2}=x_{k-2}\}}p(X_{n+k-2},x_{k-1})p(x_{k-1},x_k)|\mathfrak{F}_n) \quad \mathrm{a.s.}{\ }P_x \\
+&=p(x_{k-1},x_k)E_x(1_{\{X_n=x_0,\cdots,X_{n+k-2}=x_{k-2}\}}p(X_{n+k-2},x_{k-1})|\mathfrak{F}_n) \\
+&=\cdots \\
+&=p(x_{k-1},x_k)\cdots p(x_1,x_2)E_x(1_{\{X_n=x_0\}}p(X_n,x_1)|\mathfrak{F}_n) \quad \mathrm{a.s.}{\ }P_x \\
+&=p(x_{k-1},x_k)\cdots p(x_1,x_2)1_{\{X_n=x_0\}}p(X_n,x_1) \quad \mathrm{a.s.}{\ }P_x \\
+&=p(x_{k-1},x_k)\cdots p(x_1,x_2)1_{\{X_n=x_0\}}p(x_0,x_1) \\
+&=P_{X_n}(X_0=x_0,\cdots,X_k=x_k)
+\end{align*}
+となる．ただし，2つ目の等号では\cite{funaki}{\ }P.91{\ }命題3.29(4)を用いた．また，3つ目の等号では\cite{funaki}{\ }P.91{\ }命題3.29(3)を用いた．また，4つ目の等号では\cite{kotani}{\ }P.250{\ }(11.2)を用いた．
+\qed
+\end{proof}
+%
+%
+%
+%
+\subsection{時間・状態空間がともに連続的な場合}
+$(S,\mathfrak{M})$を可測空間とし，各$x\in S$に対し可測空間$(\Omega,\mathfrak{F})$上の確率測度$P_x$が対応しているとする．$S$値確率変数族$\{X_t\}_{t\geq 0}$に対して$\mathfrak{F}_t=\sigma(X_s;s\leq t)$とおく．時間・状態空間がともに連続的な場合のマルコフ過程はマルコフ連鎖と同様にして定義されるが，マルコフ性の定義は$S$上の任意の有界$\mathfrak{M}$-可測関数$f$と$s\geq 0$に対して
+\begin{equation*}
+E_x(f(X_{t+s})|\mathfrak{F}_t)=E_{X_t}(f(X_s)) \quad \mathrm{a.s.}{\ }P_x \eqno(\mathrm{M.2})
+\end{equation*}
+となることとする．このとき$\{X_t\}_{t\geq 0}$をMarkov過程という．マルコフ連鎖と同様にして，マルコフ性の拡張が以下の\cite{kotani}補題12.7である．
+\begin{itembox}[l]{\cite{kotani}補題12.7}
+$\mathfrak{F}_\infty$可測な$\Omega$上の有界関数$f$に対して
+\begin{align*}
+E_x(f(\theta_t w)|\mathfrak{F}_t)=E_{X_t}(f) \quad \mathrm{a.s.}{\ }P_x
+\end{align*}
+が成立する．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $\mathfrak{F}_\infty$可測な$\Omega$上の有界関数を単関数で近似すれば，$f=1_A,{\ }A\in\mathfrak{F}_\infty$に対して示せば十分である．
+\item $\mathfrak{F}_{\infty}=\sigma\left(\underset{t\in [0,\infty)}{\bigcup}\mathfrak{F}_t\right)$であるので，$f=1_A,{\ }A\in\underset{t\in [0,\infty)}{\bigcup}\mathfrak{F}_t$に対して示せば十分である．
+\item $A\in\underset{t\in [0,\infty]}{\bigcup}\mathfrak{F}_t$とすると，$^\exists t\geq 0$に対して$A\in \mathfrak{F}_t$となる．よって，$f=1_A,{\ }A\in\mathfrak{F}_t$に対して示せば十分である．
+\item $0<t_0<t_1<\cdots<t_k$とする．$\mathfrak{F}_t$の元は$\{X_{t_0}\in A_0,X_{t_1}\in A_1,\cdots,X_{t_k}\in A_k\}$の形の元の可算和であるので，$f=1_A,{\ }A=\{X_{t_0}\in A_0,X_{t_1}\in A_1,\cdots,X_{t_k}\in A_k\}$に対して示せば十分である．
+\end{enumerate}
+以上より
+\begin{align*}
+E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_k}\in A_k\}}|\mathfrak{F}_t)=P_{X_t}(X_{t_0}\in A_0,\cdots,X_{t_k}\in A_k)
+\end{align*}
+を示せば十分である．よって
+\begin{align*}
+&E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_k}\in A_k\}}|\mathfrak{F}_t) \\
+&=E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-1}}\in A_{k-1}\}}1_{\{X_{t+t_k}\in A_k\}}|\mathfrak{F}_t) \\
+&=E_x(E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-1}}\in A_{k-1}\}}1_{\{X_{t+t_k}\in A_k\}}|\mathfrak{F}_{t+t_{k-1}})|\mathfrak{F}_t) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-1}}\in A_{k-1}\}}E_x(1_{\{X_{t+t_k}\in A_k\}}|\mathfrak{F}_{t+t_{k-1}})|\mathfrak{F}_t) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-1}}\in A_{k-1}\}}E_{X_{t+t_{k-1}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})|\mathfrak{F}_t) \quad \mathrm{a.s.}{\ }P_x \\
+%
+&=E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-2}}\in A_{k-2}\}}1_{\{X_{t+t_{k-1}}\in A_{k-1}\}}E_{X_{t+t_{k-1}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})|\mathfrak{F}_t) \\
+&=E_x(E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-2}}\in A_{k-2}\}}1_{\{X_{t+t_{k-1}}\in A_{k-1}\}}E_{X_{t+t_{k-1}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})|\mathfrak{F}_{t+t_{k-2}})|\mathfrak{F}_t) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-2}}\in A_{k-2}\}}E_x(1_{\{X_{t+t_{k-1}}\in A_{k-1}\}}E_{X_{t+t_{k-1}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})|\mathfrak{F}_{t+t_{k-2}})|\mathfrak{F}_t) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-2}}\in A_{k-2}\}}E_{X_{t+t_{k-2}}}(1_{\{X_{t_{k-1}-t_{k-2}}\in A_{k-1}\}}E_{X_{t_{k-1}-t_{k-2}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}}))|\mathfrak{F}_t) \quad \mathrm{a.s.}{\ }P_x \\
+%
+&=E_{X_{t_{k-1}-t_{k-2}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})\cdot E_x(1_{\{X_{t+t_0}\in A_0,\cdots,X_{t+t_{k-2}}\in A_{k-2}\}}E_{X_{t+t_{k-2}}}(1_{\{X_{t_{k-1}-t_{k-2}}\in A_{k-1}\}})|\mathfrak{F}_t) \\
+&=\cdots \\
+&=E_{X_{t_{k-1}-t_{k-2}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})\cdots E_{X_{t_{1}-t_{0}}}(1_{\{X_{t_2-t_{1}}\in A_2\}})\cdot E_x(1_{\{X_{t+t_0}\in A_0\}}E_{X_{t+t_{0}}}(1_{\{X_{t_1-t_{0}}\in A_1\}})|\mathfrak{F}_t) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_{X_{t_{k-1}-t_{k-2}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})\cdots E_{X_{t_{1}-t_{0}}}(1_{\{X_{t_2-t_{1}}\in A_2\}})\cdot E_{X_t}(1_{\{X_{t_0}\in A_0\}}E_{X_{t_{0}}}(1_{\{X_{t_1-t_{0}}\in A_1\}})) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_{X_{t_{k-1}-t_{k-2}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})\cdots E_{X_{t_{1}-t_{0}}}(1_{\{X_{t_2-t_{1}}\in A_2\}})E_{X_{t_{0}}}(1_{\{X_{t_1-t_{0}}\in A_1\}})E_{X_t}(1_{\{X_{t_0}\in A_0\}}) \\
+&=P_{X_t}(X_{t_0}\in A_0,\cdots,X_{t_k}\in A_k)
+\end{align*}
+となる．ただし，2つ目の等号では\cite{funaki}{\ }P.91{\ }命題3.29(4)を用いた．また，3つ目の等号では\cite{funaki}{\ }P.91{\ }命題3.29(3)を用いた．また，4つ目の等号では\cite{kotani}{\ }P.291{\ }(M.2)を用いた．ここで，4つ目の等号の右辺の$E_{X_{t+t_{k-1}}}(1_{\{X_{t_k-t_{k-1}}\in A_k\}})$は，$X_{t_k-t_{k-1}}$については積分されているので$X_{t_k-t_{k-1}}$には依存せず，全体として$X_{t+t_{k-1}}$の関数となっていることに注意する．最後の等号は右辺を計算すると左辺に一致することによる\footnote{これは非自明だがマルコフ連鎖のとき(11.2)から(11.3)を導いたのと同様にすれば良い．}．
+\qed
+\end{proof}
+%
+%
+%
+%
+\subsection{Markov過程としてのブラウン運動}
+$\{B_t\}_{t\geq 0}$を$x\in\mathbb{R}^d$から出発する$(\Omega,\mathfrak{F},P_x)$上の$d$次元ブラウン運動とする．$\mathfrak{F}_t=\sigma(B_s;s\leq t)$とおけば，\cite{kotani}{\ }P.88と同様にして$\mathfrak{F}_t=\sigma(\{(B_{t_1},\cdots,B_{t_n})\in E\mid E\in\mathfrak{B}((\mathbb{R}^d)^\Lambda)\})$となる．ただし$[0,\infty)$の任意の有限部分集合を$\Lambda:=\{t_1,\cdots,t_n\}$とおく．ただし$t_1<\cdots<t_n$とする．
+\begin{itembox}[l]{\cite{kotani}命題12.6}
+ブラウン運動はMarkov過程である．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+Markov性を示せば良い．$^\forall F\in \mathfrak{F}_t$に対して
+\begin{equation*}
+E_x(f(X_{t+s})1_F)=E_x(E_{X_t}(f(X_s))1_F) \eqno(\ast)
+\end{equation*}
+となることを示せば十分である．$(\ast)$が成り立つ$F\in\mathfrak{F}$の集合を$\mathfrak{T}$とおく．すなわち，$\mathfrak{F}_t\subset \mathfrak{T}$であることを示せば十分である．単調収束定理より，$\mathfrak{T}$が単調族であることは明らかである．よって，$\mathfrak{F}_t=\sigma(\{(B_{t_1},\cdots,B_{t_n})\in A\mid A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda)\})$であり，また$\{(B_{t_1},\cdots,B_{t_n})\in A\mid A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda)\}$が有限加法族であることにより，あとは$\{(B_{t_1},\cdots,B_{t_n})\in A\mid A\in\mathfrak{B}((\mathbb{R}^d)^\Lambda)\}\subset \mathfrak{T}$を示せば十分である．$0\leq t_1<\cdots<t_n=t$とすると
+\begin{align*}
+&E_x(f(X_{t+s})1_A(X_{t_1},\cdots,X_{t_n})) \\
+&=\int_{(\mathbb{R}^d)^{n+1}}1_A(y_1,\cdots,y_n)f(y_{n+1}) \\
+&{\ }{\ }{\ }{\ }\cdot p(t_1,y_1-x)p(t_2-t_1,y_2-y_1)\cdots p(t_n-t_{n-1},y_n-y_{n-1})p((t+s)-t,y_{n+1}-y_n)\mathrm{d}y_1\cdots\mathrm{d}y_n\mathrm{d}y_{n+1} \\
+&=\int_{(\mathbb{R}^d)^{n}}1_A(y_1,\cdots,y_n)p(t_1,y_1-x)p(t_2-t_1,y_2-y_1)\cdots p(t_n-t_{n-1},y_n-y_{n-1})\mathrm{d}y_1\cdots \mathrm{d}y_{n} \\
+&{\ }{\ }{\ }{\ }\cdot\int_{\mathbb{R}^d}f(y_{n+1})p(s,y_{n+1}-y_n)\mathrm{d}y_{n+1} \\
+&=\int_{(\mathbb{R}^d)^{n}}1_A(y_1,\cdots,y_n)p(t_1,y_1-x)p(t_2-t_1,y_2-y_1)\cdots p(t_n-t_{n-1},y_n-y_{n-1})\mathrm{d}y_1\cdots \mathrm{d}y_{n} \\
+&{\ }{\ }{\ }{\ }\cdot E_{y_n}(f(X_s)) \\
+&=E_x(E_{X_n}(f(X_s))1_{A}(X_{t_1},\cdots,X_{t_n}))
+\end{align*}
+となるので示された．
+\qed
+\end{proof}
+%
+%
+%
+%
+\begin{align*}
+\mathfrak{F}_{t+}=\bigcap_{\epsilon>0}\mathfrak{F}_{t+\epsilon}, \quad \mathfrak{F}_t=\sigma(B_s;s\leq t)
+\end{align*}
+とおくと，以下のように$\mathfrak{F}_{t+}$についてのMarkov性が成り立つ．
+\begin{itembox}[l]{\cite{kotani}命題12.8}
+$f$を有界$\mathfrak{F}_{\infty}$可測関数とする．このとき$t\geq 0$に対し次の等式が成立する．
+\begin{align*}
+E_x(f(\theta_t w)|\mathfrak{F}_{t+})=E_{B_t}(f) \quad \mathrm{a.s.}{\ }P_x
+\end{align*}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\cite{kotani}補題12.7の証明の初めと全く同様にして，$f=1_A,{\ }A=\{B_{t_1}\in A_1,\cdots,B_{t_k}\in A_k\}{\ }(A_1,\cdots,A_k\in\mathfrak{B}(\mathbb{R}^d))$に対して示せば十分であることがわかる．よって，$\varphi:(\mathbb{R}^d)^\Lambda\to \mathbb{R}^d$を有界Baire関数として$f(w)=\varphi(B_{t_1}(w),\cdots,B_{t_k}(w))$に対して示せば十分である．実際，$\varphi=1_{A_1\times \cdots\times A_k}$とおけば良い．さらに，$\varphi$は有界連続関数として示せば十分である．実際，任意の有界Baire関数$\varphi$に対して$\varphi$に$L^p$収束するような有界連続関数の列$\{\varphi_n\}_{n=1}^\infty$を取ることができる．具体的にはたたみこみなどを用いて構成すれば良い\footnote{たたみこみを用いて構成した連続関数の列は元の関数で上から抑えられている．\cite{taniguchi}注意1.27にあるように優収束定理は確率収束すれば成り立つので，結局，$\varphi$は有界連続関数として示せば十分であることがわかる．}．\par
+$0<\epsilon\leq t_1$のとき，\cite{kotani}補題12.7の証明の最後の部分を一般化すれば
+\begin{align*}
+&E_x(1_{\{B_{t+t_1}\in A_1,\cdots,B_{t+t_k}\in A_k\}}|\mathfrak{F}_{t+\epsilon}) \\
+&=E_{B_{t_{k-1}-t_{k-2}}}(1_{\{B_{t_k-t_{k-1}}\in A_k\}})\cdots E_{B_{t_{2}-t_{1}}}(1_{\{B_{t_3-t_{2}}\in A_3\}})\cdot E_x(1_{\{B_{t+t_1}\in A_1\}}E_{B_{t+t_{1}}}(1_{\{B_{t_2-t_{1}}\in A_2\}})|\mathfrak{F}_{t+\epsilon}) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_{B_{t_{k-1}-t_{k-2}}}(1_{\{B_{t_k-t_{k-1}}\in A_k\}})\cdots E_{B_{t_{2}-t_{1}}}(1_{\{B_{t_3-t_{2}}\in A_3\}})\cdot E_{B_{t+\epsilon}}(1_{\{B_{t_1-\epsilon}\in A_1\}}E_{B_{t_{1}-\epsilon}}(1_{\{B_{t_2-t_{1}}\in A_2\}})) \quad \mathrm{a.s.}{\ }P_x \\
+&=E_{B_{t_{k-1}-t_{k-2}}}(1_{\{B_{t_k-t_{k-1}}\in A_k\}})\cdots E_{B_{t_{2}-t_{1}}}(1_{\{B_{t_3-t_{2}}\in A_3\}})E_{B_{t_{1}-\epsilon}}(1_{\{B_{t_2-t_{1}}\in A_2\}})E_{B_{t+\epsilon}}(1_{\{B_{t_1-\epsilon}\in A_1\}}) \quad \mathrm{a.s.}{\ }P_x \\
+&=P_{B_{t+\epsilon}}(B_{t_1-\epsilon}\in A_1,\cdots,B_{t_k-\epsilon}\in A_k)
+\end{align*}
+が成り立つので，同様にして
+\begin{align*}
+E_x(f(\theta_t w)|\mathfrak{F}_{t+\epsilon})
+&=E_x(\varphi(B_{t_1+t(w),\cdots,B_{t_k+t}(w)})|\mathfrak{F}_{t+\epsilon}) \\
+&=E_{B_{t+\epsilon}}(\varphi(B_{t_1-\epsilon}(w),\cdots,B_{t_k-\epsilon}(w)))
+\end{align*}
+となる．右辺を$(\mathbb{R}^d)^\Lambda$上の積分に直して$\epsilon\to 0$とすることによって右辺は$E_{B_t}(f)$に収束する．従って
+\begin{align*}
+E_x(f(\theta_t w)|\mathfrak{F}_{t+})
+&=E_x(E_x(f(\theta_t w)|\mathfrak{F}_{t+\epsilon})|\mathfrak{F}_{t+}) \\
+&\to E_x(E_{B_t}(f)|\mathfrak{F}_{t+}) \\
+&=E_{B_t}(f)
+\end{align*}
+となり，題意が示された．
+\qed
+\end{proof}
+%
+%
+%
+%
+\newpage
+\section{ブラウン運動と半群}
+\subsection{Feynman-Kacの公式}
+$f\in C_b(\mathbb{R}^d)$に対して$T_t f(x)=E_x f(B_t)$とおく．Chapman-Kolmogorovの等式より$T_{t+s}f(x)=T_t(T_s f)(x)$となるので，$\{T_t\}_{t>0}$は半群となる．以下は熱半群$\{T_t\}_{t>0}$の基本的な性質である\footnote{(1)の証明は\cite{Schilling}{\ }P.82を参照．(2)の証明は\cite{Schilling}{\ }P.86を参照．(2)の証明は\cite{Schilling}{\ }P.87を参照．}．
+\begin{itembox}[l]{熱半群の基本的な性質}
+以下が成り立つ．
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $t\to 0$のとき$T_t f(x)$は$f(x)$に広義一様収束する．
+\item $f\in C^2_b(\mathbb{R}^d)$のとき$t\to 0$のとき$\displaystyle \frac{T_t f(x)-f(x)}{t}$は$\displaystyle Lf(x):=\frac{1}{2}\Delta f(x)$に広義一様収束する．
+\item $f\in C^2_b(\mathbb{R}^d)$のとき$\displaystyle \frac{\partial}{\partial t}T_t f=LT_t f=T_tL f$となる．
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $\mathbb{R}^d$上の任意のコンパクト集合を$A$として固定すると，$f$は$A$上で一様連続となるので
+\begin{align*}
+&\sup_{x\in A}\left|T_tf(x)-f(x)\right| \\
+&=\sup_{x\in A}\left|E_xf(B_t)-f(x)\right| \\
+&\leq\sup_{x\in A}\left(\int_{\Omega}\left|f(B_t(w))-f(x)\right|P_x(\mathrm{d}w)\right) \\
+&=\sup_{x\in A}\left(\int_{\Omega}\left|f(B_t(w))-f(x)\right|1_{|B_t(w)-x|<\delta}P_x(\mathrm{d}w)\right)+\sup_{x\in A}\left(\int_{\Omega}\left|f(B_t(w))-f(x)\right|1_{|B_t(w)-x|\geq\delta}P_x(\mathrm{d}w)\right) \\
+&<\sup_{x\in A}\left(\int_{\Omega}\frac{\epsilon}{2}1_{|B_t(w)-x|<\delta}P_x(\mathrm{d}w)\right)+\sup_{x\in A}\left(\int_{\Omega}2M1_{|B_t(w)-x|\geq\delta}P_x(\mathrm{d}w)\right) \\
+&\leq\frac{\epsilon}{2}+2M\sup_{x\in A}P_x(|B_t(w)-x|\geq\delta)
+\end{align*}
+となる．第2項はChebyshevの不等式より
+\begin{align*}
+\sup_{x\in A}P_x(|B_t(w)-x|\geq\delta)=\sup_{x\in A}P_0(|B_t(w)|\geq\delta)=P_0(|B_t(w)|\geq\delta)\geq \frac{E_0|B_t|^2}{\delta}=\frac{td}{\delta^2}
+\end{align*}
+となる\footnote{平行移動不変性は\cite{Schilling}{\ }P.60{\ }(6.1)による．}ので$t\to 0$のとき$0$に収束する．よって示された．\qed
+\item $g\in C^2(\mathbb{R}^d)$とすると，原点におけるテイラーの定理より
+\begin{align*}
+g(y)=g(0)+\sum_{i=1}^d \partial_ig(0)y_i+\sum_{i,j=1}^dR_{i,j}(y)y_iy_j
+\end{align*}
+が成り立つ．ただし
+\begin{align*}
+R_{i,j}(y)=\frac{1}{2}\partial_i\partial_j g(\xi(y))
+\end{align*}
+はLagrangeの剰余項である\footnote{\href{https://ja.wikipedia.org/wiki/\%E3\%83\%86\%E3\%82\%A4\%E3\%83\%A9\%E3\%83\%BC\%E3\%81\%AE\%E5\%AE\%9A\%E7\%90\%86\#.E5.89.B0.E4.BD.99.E9.A0.85.E3.81.AE.E6.98.8E.E7.A4.BA.E5.85.AC.E5.BC.8F}{Wikipedia}を参照．ただし$\xi(y)$は$0<|\xi(y)|<|y|$を満たす関数である．}．$^\exists x\in\mathbb{R}^d$を固定して$g(y):=f(y+x)$とすると
+\begin{align*}
+f(y+x)=f(x)+\sum_{i=1}^d \partial_if(x)y_i+\frac{1}{2}\sum_{i,j=1}^d\partial_i\partial_j f(\xi(x,y))y_iy_j
+\end{align*}
+となる．$y=B_t(w)$として
+\begin{align*}
+f(B_t(w)+x)=f(x)+\sum_{i=1}^d \partial_if(x)B_t^i(w)+\frac{1}{2}\sum_{i,j=1}^d\partial_i\partial_j f(\xi(x,t,w))B_t^i(w)B_t^j(w)
+\end{align*}
+を得る．よって
+\begin{align*}
+&\sup_{x\in A}\left|\frac{T_t f(x)-f(x)}{t}-\frac{1}{2}\Delta f(x)\right| \\
+&=\sup_{x\in A}\left|E_0\left[\frac{f(B_t(w)+x)-f(x)}{t}-\frac{1}{2}\sum_{i=1}^d\partial_i^2 f(x)\right]\right| \\
+&=\sup_{x\in A}\left|E_0\left[\frac{1}{t}\sum_{i=1}^d \partial_if(x)B_t^i(w)+\frac{1}{2t}\sum_{i,j=1}^d\partial_i\partial_j f(\xi(x,t,w))B_t^i(w)B_t^j(w)-\frac{1}{2}\sum_{i=1}^d\partial_i^2 f(x)\right]\right| \\
+&=\frac{1}{2}\sup_{x\in A}\left|E_0\left[\sum_{i,j=1}^d\left(\partial_i\partial_j f(\xi(x,t,w))-\partial_i\partial_jf(x)\right)\frac{B_t^iB_t^j}{t}\right]\right| \\
+&\leq\frac{1}{2}\sup_{x\in A}E_0\left[\left(\sum_{i,j=1}^d\left|\partial_i\partial_j f(\xi(x,t,w))-\partial_i\partial_jf(x)\right|^2\right)^{\frac{1}{2}}\left(\sum_{i,j=1}^d\frac{(B_t^iB_t^j)^2}{t^2}\right)^{\frac{1}{2}}\right] \\
+&=\frac{1}{2}\left(\sum_{i,j=1}^d E_0\left|\partial_i\partial_j f(\xi(x,t,w))-\partial_i\partial_jf(x)\right|^2\right)^{\frac{1}{2}}\left(\frac{E_0|B_t|^4}{t^2}\right)^{\frac{1}{2}}
+\end{align*}
+となる．\textcolor{red}{この後前半を最大値ノルムで抑えて後半を4乗のモーメントが$t^2$に比例することを用いたら定数項になってしまってあれれという状況．うーん．さっぱりわからない．(1)の証明みたいに分ける方法を考えてみたけどさっきみたいに確率収束が言えるわけでもないと思う．}
+
+
+ただし，$w\to\partial_i\partial_j\xi(x,t,w)$の可測性はLagrangeの剰余項を変形して得られるBernoulliの剰余項
+\footnote{
+\href{https://ja.wikipedia.org/wiki/\%E3\%83\%86\%E3\%82\%A4\%E3\%83\%A9\%E3\%83\%BC\%E3\%81\%AE\%E5\%AE\%9A\%E7\%90\%86\#.E5.A4.9A.E5.A4.89.E6.95.B0.E9.96.A2.E6.95.B0.E3.81.AB.E5.AF.BE.E3.81.99.E3.82.8B.E3.83.86.E3.82.A4.E3.83.A9.E3.83.BC.E3.81.AE.E5.AE.9A.E7.90.86}{Wikipedia}を参照．Lagrangeの剰余項を変形するとBernoulliの剰余項
+\begin{align*}
+R_{i,j}(y)=\int_0^1 \partial_i\partial_jg(ry)(1-r)\mathrm{d}r
+\end{align*}
+を得る．ただし$r\in\mathbb{R}$である．$^\exists x\in\mathbb{R}^d$を固定して$g(y):=f(y+x)$とすると
+\begin{align*}
+\int_0^1 \partial_i\partial_jf(ry+x)(1-r)\mathrm{d}r
+\end{align*}
+となる．$y=B_t(w)$として
+\begin{align*}
+\int_0^1 \partial_i\partial_jf(rB_t+x)(1-r)\mathrm{d}r
+\end{align*}
+を得る．
+}
+\begin{align*}
+\frac{1}{2}\partial_i\partial_j f(\xi(x,t,w))=\int_0^1 \partial_i\partial_jf(rB_t+x)(1-r)\mathrm{d}r
+\end{align*}
+による\textcolor{red}{うーんだから何なんだろう？パラメータについての積分で可測性は保たれる？}．また，3つ目の等号では第1項と第3項で$E_0B_t^i=0,{\ }E_0B_t^iB_t^j=\delta_{ij}t$を用いた．また，4つ目の等号では有限次元のコーシーシュワルツの不等式を用いた．また，5つ目の等号では
+\begin{align*}
+\sum_{i,j=1}^d\frac{(B_t^iB_t^j)^2}{t^2}=\frac{|B_t|^4}{t^2}
+\end{align*}
+であることと，関数空間におけるコーシーシュワルツの不等式を用いた．
+
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+
+
+%
+%
+新しい半群を定義する．$V\in C_b(\mathbb{R}^d)$に対して
+\begin{align*}
+T_t^V f(x)=E_x\{A_t f(B_t)\},\quad A_t(w)=\exp{\left(-\int_0^t V(B_s(w))\mathrm{d}s\right)}
+\end{align*}
+とおくと，$A_{t+s}(w)=A_t(w)A_s(\theta_t w)$が成り立つ．$\{A_t\}_{t\geq 0}$を乗法的汎関数という．
+\begin{screen}
+以下が成り立つ．
+\begin{enumerate}
+\vspace{-0.7zh}%間隔調整
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $\{T^V_t\}_{t\geq 0}$は半群となる．
+\item $t\to 0$のとき$T_t^V f(x)$は$f(x)$に広義一様収束する．
+\item $f\in C^2_b(\mathbb{R}^d)$のとき$t\to 0$のとき$\displaystyle \frac{T_t^V f(x)-f(x)}{t}$は$\displaystyle L^Vf(x):=\frac{1}{2}\Delta f(x)-V(x)f(x)$に広義一様収束する．
+\end{enumerate}
+\end{screen}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item 
+\end{enumerate}
+\end{proof}
+%
+%
+%
+%
+\newpage
+\begin{thebibliography}{99}
+\bibitem{kotani}
+  小谷眞一『測度と確率』(岩波書店，2015年)
+\bibitem{Schilling}
+  Ren\'e, L. Schilling. and Lothar, Partzsch. (2014). Brownian Motion. De Gruyter.
+\bibitem{taniguchi}
+  谷口説男『共立講座 数学の輝き7 確率微分方程式』(共立出版，2016年)
+\bibitem{funaki}
+  舟木直久『講座 数学の考え方20 確率論』(朝倉書店，2004年)
+\bibitem{kumagai}
+  熊谷隆『新しい解析学の流れ 確率論』(共立出版，2003年)
+\bibitem{durrett}
+  \href{https://services.math.duke.edu/~rtd/PTE/PTE4_1.pdf}{R. Durrett, Probability: Theory and examples, 4th ed., Cambridge U. Press, 2010.}（\today アクセス）
+\bibitem{KS}
+  Karatzas, I. and Shreve, S.E. (1997). Browninan Motion and Stochastic Calculus.Springer.
+\bibitem{sugiura}
+  \href{http://www.math.u-ryukyu.ac.jp/~sugiura/2010/sde10.pdf}{確率解析入門 講義ノート}（\today アクセス）
+\bibitem{kato}
+  \href{https://954a5131-a-62cb3a1a-s-sites.googlegroups.com/site/kkatostat/home/teaching/probability_theory_v6.pdf?attachauth=ANoY7cpFagKWGTBge201LdFnVmON4UdNf0rr05TCIYpVDBP5QXEJFxqD88Agb7rkp29fSc_CiFiXDdMnlmkwxKeHAhxsHuz3pr5YDDTs3q0z8TePZyYUH9pnvEtYSUllDWe3G9-ccviofi1wRQncwqLdm7G3lFA7OuQrOsb8QwjEnGEei-aM5AJuRzeaOnQhlAWYToiDc0wXmrkPP4tFI-g35zCBrzvjktndngW1CSBrACkyEkOn1foD3rD6zjyMesnMTIYddr9_&attredirects=0}{測度論的確率論 講義ノート 2016年版}（\today アクセス）
+\bibitem{hattori}
+  \href{http://web.econ.keio.ac.jp/staff/hattori/probab.pdf}{確率論 講義ノート}（\today アクセス）
+\bibitem{Brady}
+  \href{http://math.hawaii.edu/home/talks/brady_talk.pdf}{Construction and Properties of Brownian
+Motion}（\today アクセス）
+\bibitem{kogiichiyo1}
+  \href{https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1048588135}{位相に関する質問です。}（\today アクセス）
+\bibitem{kogiichiyo2}
+  \href{https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q14128915279}{広義一様収束の位相（連続関数の集合上の）の完備性の証明について質問です}（\today アクセス）
+\bibitem{kakuritsuhensu}
+  \href{http://www.math.nagoya-u.ac.jp/~nakamako/Resources/Probability.pdf}{2016.9.27版 - Graduate School of Mathematics, Nagoya University}（\today アクセス）
+\bibitem{rekkyo}
+  \href{https://math.stackexchange.com/questions/936168/reference-for-the-construction-of-brownian-motion}{Reference for the Construction of Brownian Motion}（\today アクセス）
+\end{thebibliography}
+%
+%
+%
+%
+\end{document}

@@ -1,0 +1,367 @@
+\documentclass[dvipdfmx]{jsarticle}
+%
+\usepackage{amsmath}
+\usepackage{emath}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{here}
+\usepackage{ascmac}%screenのため
+\usepackage{yhmath}%長いtildeのため
+\usepackage{color}
+\usepackage{ulem}%取り消し線のため
+\allowdisplaybreaks[4]%式変形中の改ページの許可
+\usepackage[dvipdfmx]{hyperref}%ハイパーリンクの埋め込み
+\usepackage{pxjahyper} %%hyperref読み込みの直後に読み込んでおくおまじない
+\usepackage[all]{xy}%xypic
+\usepackage{comment}
+\usepackage{braket}
+\usepackage[stable]{footmisc}%セクション名に脚注をつけてもエラーにならない
+\usepackage{mathrsfs}
+%
+\pagestyle{plain}
+\title{\empty}
+\author{\empty}
+\date{\today}
+%
+\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+\newtheorem{instance}{例}[section]%定義から通し番号にする
+\newtheorem{theorem}{定理}[section]%section単位でカウントをリセット．こうしておくとsetcounterで番号をコントロールできる
+\newtheorem{prop}{命題}[section]
+\newtheorem{lemma}{補題}[section]
+\newtheorem{corollary}{系}[section]
+\newtheorem{example}{例題}[section]
+\makeatletter
+\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+\makeatother
+%
+%\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+%\newtheorem{instance}[definition]{例}%定義から通し番号にする
+%\newtheorem{theorem}[definition]{定理}
+%\newtheorem{prop}[definition]{命題}
+%\newtheorem{lemma}[definition]{補題}
+%\newtheorem{corollary}[definition]{系}
+%\makeatletter
+%\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+%\makeatother
+%
+\newtheorem{proof}{証明}
+\renewcommand{\theproof}{}%カウントしない
+\usepackage{latexsym}
+\def\qed{\hfill $\Box$}
+%
+\newtheorem{agree}{規約}
+\renewcommand{\theagree}{}%カウントしない
+\newtheorem{attention}{注意}
+\renewcommand{\theattention}{}%カウントしない
+%
+\newcommand{\st}{\mathrm{s.t.}\,}  %s.t.
+%
+%おまじない
+\setlength{\textwidth}{\fullwidth}
+\setlength{\textheight}{39\baselineskip}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.5in}
+\setlength{\headsep}{0.3in}
+\setlength{\abovedisplayskip}{3pt}%上部のマージン
+\setlength{\belowdisplayskip}{3pt}%下部のマージン
+%
+%一応引き継いで書いてあるが，今は機能していない
+\usepackage{stmaryrd}%\longmapsfrom
+\usepackage{bm}%数式中の太字
+\usepackage{graphicx}%写像の図式のため
+\usepackage[all]{xy}%xypic
+\renewcommand{\abstractname}{\empty}
+%
+\begin{document}
+%\maketitle
+%
+%
+%
+%
+\section*{\S 8で用いる数学的事実}
+\begin{lemma}[\cite{sekai}命題5.2.5]
+$V$を有限次元線形空間とし，部分空間$W$に対し$W^\perp=\{x\in V\mid ^\forall y\in W,{\ }b(x,y)=0\}$とする．$b$を対称双線形形式とする．$W$を$V$の部分空間とし，$r_b:V\to V^\star$を$r_b(y)(x)=b(x,y)$で定める．このとき，$b$が非退化とすると，$\dim{V}=\dim{W}+\dim{W^\perp}$である．
+\end{lemma}
+\begin{definition}[\cite{URL1}]
+$R$を環とする．$R$上の左加群$M$がある一次独立な部分集合$B$によって生成されるとき，$M$を$R$上の自由加群と呼び，$B$を$M$の基底と呼ぶ．$R$が可換環のとき基底の濃度は一定となる．可換環$R$上の自由加群$M$について，その基底の濃度を$M$の階数(rank)と呼び，$\mathrm{rank}_R M$で表す．
+\end{definition}
+\begin{lemma}[\cite{URL2}]
+$R$を単項イデアル整域とする．$M$を有限生成自由$R$加群$(\mathrm{rank}_{R}M=m<\infty)$，$N$を$M$の部分$R$加群とすると，$N$は有限生成自由$R$加群で$\mathrm{rank}_{R}N\leq m$となる．
+\begin{lemma}[\cite{kobayashi}補題5.25]
+$\mathrm{GL}(n,\mathbb{C})$の部分Lie群の任意の単位元の近傍$W$に対して
+\begin{align*}
+\mathfrak{g}_W:=\{X\in\mathrm{M}(n,\mathbb{C})\mid e^{tX}\in W{\ }(0< ^\forall t<<1)\}
+\end{align*}
+は$G$のLie環に一致する．
+\end{lemma}
+\end{lemma}
+\begin{lemma}[\cite{kobayashi}補題5.30]
+Lie群$G$の単位元成分を$G_0$とする．$N$を$G$の単位元の連結な近傍とすると，$G_0$の任意の元は$N$の元の有限個の積で表せる．
+\end{lemma}
+%
+%
+%
+%
+\section*{\S 8 Schurの相互律}
+\setcounter{section}{8}
+\subsection*{半単純代数}
+%
+%
+%
+%
+\setcounter{definition}{0}
+\begin{definition}
+\cite{okada}{\ }P.180より交換団(commutant){\ }$\mathscr{A}'$は再び$\mathrm{End}_C(V)$の部分代数となる．
+\end{definition}
+%
+%
+%
+%
+\setcounter{instance}{1}
+\begin{instance}
+\begin{align*}
+\mathscr{A}=\{I_2\otimes a\mid a\in \mathrm{Mat}(n,\mathbb{C})\} \subset \mathrm{Mat}(2n,\mathbb{C})
+\end{align*}
+のcommutantは明らかに
+\begin{align*}
+\mathscr{A}'=\{c\otimes I_n\mid c\in \mathrm{Mat}(2,\mathbb{C})\}
+\end{align*}
+である．また明らかに$\mathscr{A}''=\mathscr{A}$である．
+\end{instance}
+%
+%
+%
+%
+以下，半単純代数について用語と事実をまとめるが，後の証明で必要となるのは例8.4，例8.5，命題8.6を組み合わせて得られる
+\begin{align*}
+&\sigma(\mathbb{C}\mathfrak{S}_N)''=\sigma(\mathbb{C}\mathfrak{S}_N) \\
+&\sigma(H_N(q))''=\sigma(H_N(q)) \quad (q\in\mathbb{C}^\times,{\ }[N]!_q\neq 0)
+\end{align*}
+という事実のみである．
+\setcounter{prop}{2}
+\begin{prop}
+\cite{okada}では(i)(iii)が述べられていないので\cite{iwahori}を参照．\cite{iwahori}定理1.5を見ると，$(i)\Longrightarrow (ii)$の証明は長い．$(ii)\Longrightarrow (i)$の証明については\cite{iwahori}定理1.5の$(ii)\Longrightarrow (iii)\Longrightarrow (iv)\Longrightarrow (i)$の証明を組み合わせれば比較的簡単である．(iii)の主張については，\cite{iwahori}においてもこの主張自体が少なくとも陽には述べられていない．(i)または(ii)から(iii)については半単純代数が単純代数に直和分解されることと，\cite{iwahori}定理1.17のWedderburnの構造定理から従うと考えられるが，逆は不明である．\par
+(iii)のイメージとしては，半単純代数はリー代数と同様に単純代数の直和に分解するが，実は全行列環は単純である．
+\end{prop}
+%
+%
+%
+%
+\setcounter{instance}{3}
+\begin{instance}
+\cite{okada}{\ }P.184を参照．マシュケの定理から示されている．
+\end{instance}
+%
+%
+%
+%
+\setcounter{prop}{5}
+\begin{prop}
+主張を分けて考える．前半は半単純代数$\mathscr{A}$とその表現$\rho$が与えられたときに$\rho(\mathscr{A})$が再び半単純となることである．後半は半単純代数$\mathscr{A}$に対して$\mathscr{A}''=\mathscr{A}$が成り立つことである．後半は再交換団定理(Double Centralizer Theorem)と呼ばれる．\par
+前半は\cite{okada}命題5.8(3)で$A'=\rho(\mathscr{A})$とおけば$\rho$が全射となることから従う．再交換団定理の証明については\cite{iwahori},\cite{okada}ともに難しい．比較的短く読めそうな証明が\cite{URL3}のAppendixに載っている．\par
+証明としては成立しないが，前半は命題8.3(ii)から，後半は命題8.3(iii)と例8.2からイメージすることができる．後半については計算したノートがあるのでそちらを参照．
+\end{prop}
+%
+%
+%
+%
+\subsection*{Schurの相互律}
+$V=\mathbb{C}^n$の$N$個のテンソル積を$V^{\otimes N}$とする．$N$文字の対称群を$\mathfrak{S}_N$，$\mathrm{GL}(n,\mathbb{C})=\{g\in \mathrm{Mat}(n,\mathbb{C})\mid \det{g}\neq 0\}$とする．$\sigma$を(8.1)で与えられる$V^{\otimes N}$上の群の表現，$\rho$を(8.2)で与えられる$V^{\otimes N}$上の群の表現とする．$\sigma(\mathfrak{S}_N),{\ }\rho(\mathrm{GL}(n,\mathbb{C}))$が生成する$\mathrm{End}_C(V^{\otimes N})$の部分代数をそれぞれ$\mathscr{S},\mathscr{G}$とする．例8.4より群環$\mathbb{C}\mathfrak{S}$は半単純であり，群の表現$\sigma$を群環の表現と同一視すると，命題8.6より$\sigma(\mathbb{C}\mathfrak{S})=\mathscr{S}$は半単純であり$\mathscr{S}''=\mathscr{S}$．
+%
+%
+%
+%
+\setcounter{section}{8}
+\setcounter{lemma}{7}
+\begin{lemma}
+$X,Y\in\mathrm{End}_C(V^{\otimes N})$に対し$(X,Y)=\tr{(XY)}$とおく．このとき双一次形式$({\ },{\ })$は$\mathscr{S}'$上非退化である．すなわち，$X\in\mathscr{S}',{\ }X\perp\mathscr{S}'\Longrightarrow X=0$．ただし，$X\perp \mathscr{S}'$は$(X,Y)=0{\ }( ^\forall Y\in\mathscr{S}')$を表す．
+\end{lemma}
+%
+%
+%
+%
+\setcounter{theorem}{6}
+\begin{theorem}
+$\mathscr{S}'=\mathscr{G},{\ }\mathscr{G}'=\mathscr{S}$．すなわち標語的に言えば，対称群と$GL(n,\mathbb{C})$は可換であるが，さらに対称群と可換であれば$GL(n,\mathbb{C})$である．
+\end{theorem}
+\begin{proof}
+$\sigma,\rho$は可換なので$\mathscr{S},\mathscr{G}$の元は可換である．よって特に$\mathscr{G}\subset \mathscr{S}'$が成り立っている．定理の証明には$\mathscr{G}^\perp=\{0\}$，すなわち
+\begin{equation*}
+X\in\mathscr{S}',{\ }X\perp\mathscr{G}\Longrightarrow X=0 \eqno(8.3)
+\end{equation*}
+が言えれば十分である．実際，補題0.1で$V=\mathscr{S}',{\ }W=\mathscr{G}$とすれば，$\dim{\mathscr{S}'}=\dim{\mathscr{G}}+\dim{\mathscr{G}^\perp}$がわかるので$\dim{\mathscr{S}'}=\dim{\mathscr{G}}$となり，$\mathscr{G}=\mathscr{S}'$が従う．定理の後半は$\mathscr{G}'=\mathscr{S}''=\mathscr{S}$より従う．\par
+さて，$V$の基底$\{v_j\}_{j=1,2,\cdots,n}$を取って
+\begin{align*}
+\begin{cases}
+\displaystyle
+Xv_{j_1}\otimes\cdots\otimes v_{j_N}=\sum_{i_1,\cdots,i_N}v_{i_1}\otimes\cdots\otimes v_{i_N}X_{i_1\cdots i_N,j_1\cdots j_N} \\
+gv_j=\sum_iv_ig_{ij} \quad (g\in\mathrm{GL}(n,\mathbb{C}))
+\end{cases}
+\end{align*}
+と行列表示する．$j_1,\cdots,j_N$に重複があっても良いことに注意．これによって$(8.3)$の仮定の前半を書き下すと(8.4)式
+\begin{align*}
+&X\in\mathscr{S}' \\
+&\Longleftrightarrow X\sigma(\tau)=\sigma(\tau)X \quad ( ^\forall \tau\in\mathfrak{S}_N) \\
+&\Longleftrightarrow X\sigma(\tau)v_{j_1}\otimes\cdots\otimes v_{j_N}=\sigma(\tau)Xv_{j_1}\otimes\cdots\otimes v_{j_N} \\
+&\Longleftrightarrow \sum_{i_1,\cdots,i_N}v_{i_1}\otimes\cdots\otimes v_{i_N}X_{i_1\cdots i_N,j_{\tau^{-1}(1)}\cdots j_{\tau^{-1}(N)}}=\sum_{i_1,\cdots,i_N}v_{i_{\tau^{-1}(1)}}\otimes\cdots\otimes v_{i_{\tau^{-1}(N)}}X_{i_1\cdots i_N,j_1\cdots j_N} \\
+&\Longleftrightarrow \sum_{i_1,\cdots,i_N}v_{i_{\tau^{-1}(1)}}\otimes\cdots\otimes v_{i_{\tau^{-1}(N)}}X_{i_{\tau^{-1}(1)}\cdots i_{\tau^{-1}(N)},j_{\tau^{-1}(1)}\cdots j_{\tau^{-1}(N)}}=\sum_{i_1,\cdots,i_N}v_{i_{\tau^{-1}(1)}}\otimes\cdots\otimes v_{i_{\tau^{-1}(N)}}X_{i_1\cdots i_N,j_1\cdots j_N} \\
+&\Longleftrightarrow X_{i_{\tau^{-1}(1)}\cdots i_{\tau^{-1}(N)},j_{\tau^{-1}(1)}\cdots j_{\tau^{-1}(N)}}=X_{i_1\cdots i_N,j_1\cdots j_N} \quad ( ^\forall \tau\in\mathfrak{S}_N) \\
+&\Longleftrightarrow X_{i_{\tau(1)}\cdots i_{\tau(N)},j_{\tau(1)}\cdots j_{\tau(N)}}=X_{i_1\cdots i_N,j_1\cdots j_N} \quad ( ^\forall \tau\in\mathfrak{S}_N)
+\end{align*}
+が得られる．また，$(8.3)$の仮定の後半を書き下すと
+\begin{align*}
+&X\perp\mathscr{G} \\
+&\Longleftrightarrow \tr(XY)=0 \quad ( ^\forall Y\in\mathscr{G}) \\
+&\Longleftrightarrow \tr(Xg\otimes\cdots\otimes g)=0 \quad ( ^\forall g\in\mathrm{GL}(n,\mathbb{C}))
+\end{align*}
+となる．ここで，$X,{\ }g\otimes\cdots\otimes g$を行と列が$(i_1\cdots i_N,j_1\cdots j_N)$で指定される$(n^N,n^N)$行列と見る．行列のクロネッカー積を思い出すと，$g\otimes\cdots\otimes g$の行列要素は
+\begin{align*}
+(g\otimes\cdots\otimes g)_{i_1\cdots i_N,j_1\cdots j_N}=g_{i_1j_1}\cdots g_{i_Nj_N}
+\end{align*}
+となることがわかる．$Xg\otimes\cdots\otimes g$の行列要素は，$k_1,\cdots ,k_N$について和を取れば$k_1\cdots k_N$が$1$から$n^N$の値を重複なく取ることから
+\begin{align*}
+(Xg\otimes\cdots\otimes)_{i_1\cdots i_N,j_1\cdots j_N}=\sum_{k_1,\cdots ,k_N}X_{i_1\cdots i_N,k_1\cdots k_N}g_{k_1j_1}\cdots g_{k_Nj_N}
+\end{align*}
+最後に$\tr$を取って文字を置き換えれば，確かに$(8.5)$式の$g$の添字を入れ換えた
+\begin{align*}
+X\perp\mathscr{G}\Longleftrightarrow \sum_{i_1,\cdots,i_N,j_1,\cdots,j_N}X_{i_1\cdots i_N,j_1\cdots j_N}g_{j_1i_1}\cdots g_{j_Ni_N}=0 \quad ( ^\forall g\in\mathrm{GL}(n,\mathbb{C}))
+\end{align*}
+が得られる．$(8.5)$式は誤植である．$(8.5)$を成立させる方法はいくつかあるが，例えば$(X,Y)$の定義を$\tr(XY^t)$とするか，他の部分を修正しない解釈として，転置によって集合$\mathrm{GL}(n,\mathbb{C})$が保たれることから
+\begin{align*}
+X\perp\mathscr{G}\Longleftrightarrow \sum_{i_1,\cdots,i_N,j_1,\cdots,j_N}X_{i_1\cdots i_N,j_1\cdots j_N}g_{i_1j_1}\cdots g_{i_Nj_N}=0 \quad ( ^\forall g^t\in\mathrm{GL}(n,\mathbb{C}))
+\end{align*}
+と考えれば良い．
+\par
+ここで，$n^2$個の変数$(x_{ij})$の多項式$f=\sum X_{i_1\cdots i_N,j_1\cdots j_N}x_{i_1j_1}\cdots x_{i_Nj_N}$を考える．(8.5)は$\mathbb{C}^{n^2}$から代数的集合$\det(x_{ij})=0$を除いた開集合上$f=0$となることを示している．よって$f\equiv 0$である．なぜなら，この開集合上に$\mathbb{C}^{n^2}$の点は無限個あり，$f=0$という$n^2$個の変数の$N$次方程式が無限本成立することになるが，これを満たすのは$0$のみである．\par
+一方で，一般に係数の組$(a_{\alpha_1\cdots\alpha_N}){\ }(1\leq\alpha_1,\cdots,\alpha_N\leq m)$が与えられ，$m$変数$x_1,\cdots,x_m$の多項式として$\sum a_{\alpha_1\cdots\alpha_N}x_{\alpha_1}\cdots x_{\alpha_N}\equiv 0$であるとし，さらに$a_{\alpha_{\tau(1)}\cdots\alpha_{\tau(N)}}=a_{\alpha_1\cdots\alpha_N}{\ }( ^\forall \tau\in\mathfrak{S}_N)$であるならば，明らかに全ての係数は0である．例えば，$N=2,m=2$のとき
+\begin{align*}
+&\sum a_{\alpha_1\alpha_2}x_{\alpha_1}x_{\alpha_2} \\
+&=a_{11}x_1^2+a_{12}x_1x_2+a_{21}x_2x_1+a_{22}x_2^2 \\
+&=a_{11}x_1^2+(a_{12}+a_{21})x_1x_2+a_{22}x_2^2
+\end{align*}
+であるので，この式が任意の$x_1,x_2$に対して成立するための条件を考えれば，$a_{12}=a_{21}$のとき，係数が全て$0$であることがわかる．今，$f\equiv 0$であり，$(8.4)$式はこの議論の仮定の$m=n^2$のときなので，$X_{i_1\cdots i_N,j_1\cdots j_N}x_{i_1j_1}=0$，すなわち$X=0$がわかった．\qed
+\end{proof}
+%
+%
+%
+%
+%
+相互律をリー環ないし包絡環の言葉で述べ直す．\cite{kobayashi}定義5.50より，$\rho$の単位元での微分を$d\rho$と書けば，$d\rho$は$V^{\otimes N}$上の$\mathfrak{gl}(n,\mathbb{C})$の表現を引き起こし，$Y\in\mathfrak{gl}(n,\mathbb{C})$に対して$\rho(e^{Y})=e^{d\rho(Y)}$となる．この$d\rho$はP.80の左下の式の，P.18で与えられているリー環の普通のテンソル積表現であり，確かに$Y\in\mathfrak{gl}(n,\mathbb{C})$に対して$\rho(e^{Y})=e^{d\rho(Y)}$を満たしている．さて，$X\in\mathrm{GL}(n,\mathbb{C})$に対して
+\begin{align*}
+&X\rho(g)=\rho(g)X \quad ( ^\forall g\in \mathrm{GL}(n,\mathbb{C})) \\
+&\Longrightarrow Xe^{d\rho(Y)}=e^{d\rho(Y)}X \quad ( ^\forall Y\in \mathfrak{gl}(n,\mathbb{C})) \\
+&\Longleftrightarrow e^{Xd\rho(Y)X^{-1}}=e^{d\rho(Y)} \quad ( ^\forall Y\in \mathfrak{gl}(n,\mathbb{C})) \\
+&\Longrightarrow Xd\rho(Y)X^{-1}=d\rho(Y) \quad ( ^\forall Y\in \mathfrak{gl}(n,\mathbb{C}))
+\end{align*}
+が成り立つ．ただし，1つ目の変形で任意の$\mathfrak{gl}(n,\mathbb{C})$に対して成り立つのは\cite{kobayashi}補題5.25より単位元近傍の元があるリー環の元の指数関数で書けることによる．また，最後の等号はパラメータ$t$を入れて指数関数を展開し，両辺を微分して$t=0$とすれば得られる．次に逆を示したいが，実は指数写像$\mathfrak{gl}(n,\mathbb{C})\to \mathrm{GL}(n,\mathbb{C})$は全射なので，これはすぐにわかる．もう少し一般的に言うには，\cite{kobayashi}補題5.30より，$G$の単位元に連結な成分は単位元近傍の元の有限個の積で書けて，今，$G=\mathrm{GL}(n,\mathbb{C})$は連結なので，結局，$\mathrm{GL}(n,\mathbb{C})$の任意の元が単位元近傍の元の有限個の積で書けることがわかる．また，\cite{kobayashi}補題5.25より単位元近傍の元はあるリー環の元の指数関数で書けるので，結局$^\forall g\in\mathrm{GL}(n,\mathbb{C})$は$g=e^{X_1}\cdots e^{X_m}$と書けることがわかる．よって，$Xd\rho(Y)X^{-1}=d\rho(Y){\ }( ^\forall Y\in \mathfrak{gl}(n,\mathbb{C}))$が成り立っているとすると
+\begin{align*}
+X\rho(g)=Xe^{d\rho(X_1)}\cdots e^{d\rho(X_m)}=e^{d\rho(X_1)}\cdots e^{d\rho(X_m)}X=\rho(g)X \quad ( ^\forall g\in\mathrm{GL}(n,\mathbb{C}))
+\end{align*}
+となり，逆が言えた．逆を示す際，$^\forall g\in\mathrm{GL}(n,\mathbb{C})$に対して成立することを示すためにこのような議論をしていることが重要である．\par
+また，リー環として$\mathfrak{gl}(n,\mathbb{C})=\mathbb{C}I\oplus \mathfrak{sl}(n,\mathbb{C})$であり，テキストP.80の左下の具体形から，$I$の作用は$N\cdot 1\in U(\mathfrak{sl}(n,\mathbb{C}))$の作用と一致することより，作用を考える限りでは$\mathfrak{gl}(n,\mathbb{C})$は$\mathfrak{sl}(n,\mathbb{C})$で置き換えても良い．すなわち
+\begin{align*}
+&Xd\rho(Y)=d\rho(Y)X \quad ( ^\forall Y\in \mathfrak{gl}(n,\mathbb{C})) \\
+&\Longleftrightarrow Xd\rho(Y)=d\rho(Y)X \quad ( ^\forall Y\in U(\mathfrak{sl}(n,\mathbb{C})))
+\end{align*}
+であることがわかる．
+%
+%
+%
+%
+\setcounter{corollary}{8}
+\begin{corollary}
+$\rho(U(\mathfrak{sl}(n,\mathbb{C})))$と$\mathbb{C}\sigma(\mathfrak{S}_N)$は$V^{\otimes N}$において互いにcommutant．
+\end{corollary}
+\begin{proof}
+$\rho(U(\mathfrak{sl}(n,\mathbb{C})))$のcommutantは$\rho(U(\mathfrak{sl}(n,\mathbb{C})))$の全ての元と交換する$\mathrm{End}_C(V^{\otimes N})$の元の全体であるが，これは上で導いたことから$GL(n,\mathbb{C})$の全ての元と交換する$\mathrm{End}_C(V^{\otimes N})$の元全体と等しく，定理8.7より，これは$\mathbb{C}\sigma(\mathfrak{S}_N)$に等しい．逆も同様である．\qed
+\end{proof}
+%
+%
+%
+%
+\subsection*{相互律の$q$アナログ}
+ヘッケ環の$V^{\otimes N}$上の表現(8.6)はP.72(7.2)をまとめて書いたもの，$U_q(\mathfrak{sl}(n,\mathbb{C}))$の$V^{\otimes N}$上の表現はP.70で与えられている$U_q(\mathfrak{sl}(n,\mathbb{C}))$の$V$上の表現をP.62(6.5)でテンソルしたものである．(8.7)で$q^{H_i}\otimes\cdots\otimes q^{H_i}$の間も全て$q^{H_i}$であることに注意．命題7.4より$U_q(\mathfrak{g})$に関して一般に課される条件を除いて，$^\forall q$に対してこれらの表現は可換であった．$A$型はカルタン行列が自明に対称化可能であったので，この条件は$q^2\neq 1$である．さらに，これらがgenericな$q$の値に対して，すなわちある有限集合$E\subset\mathbb{C}$が存在して$q\notin E$のとき，これらが互いにcommutantとなることを示す．\par
+$t$を不定文字としてローラン多項式環$A=\mathbb{C}[t,t^{-1}]$をおく．$A$は明らかに零因子を持たないので単項イデアル整域である．さらに，$\sigma(H_N(t)),\rho(U_t(\mathfrak{sl}(n,\mathbb{C})))$が生成する$\mathrm{End}_A((A^n)^{\otimes N})\simeq \mathrm{Mat}(n^N,A)$の$A$部分代数をそれぞれ$\widetilde{\mathscr{S}},\widetilde{\mathscr{G}}$とする．補題0.2より$\widetilde{\mathscr{S}},\widetilde{\mathscr{G}}$は$A$自由加群$\mathrm{Mat}(n^N,A)$の部分加群として再び自由加群となる．$q\in\mathbb{C}^\times$に対して$\varphi_q:\mathrm{Mat}(n^N,A)\to \mathrm{Mat}(n,\mathbb{C})$を$\varphi_q(f)=f|_{t=q}$で定め，$\mathbb{C}$代数$\mathscr{S}_q:=\varphi_q(\widetilde{\mathscr{S}}),\mathscr{G}_q:=\varphi_q(\widetilde{\mathscr{G}})$を考える．定義の仕方から明らかに
+\begin{align*}
+\mathscr{S}_q=\sigma(H_N(q)),{\ }\mathscr{G}_q=\rho(U_q(\mathfrak{sl}(n,\mathbb{C})))
+\end{align*}
+である．例8.5より$[N]!_q\neq 0$のとき$H_N(q)$は半単純であり，命題8.6より$\mathscr{S}_q''=\mathscr{S}_q$が成り立つ．$\rho(U_q(\mathfrak{sl}(n,\mathbb{C})))$は$q^2\neq 1$でしか定義されていないが，$\widetilde{\mathscr{G}}$の生成元，すなわち(8.7)の形から明らかに$\mathscr{G}_1=\rho(U(\mathfrak{sl}(n,\mathbb{C})))$が成り立つ．よって$q\neq -1$に対して$\mathscr{S}_q=\sigma(H_N(q)),{\ }\mathscr{G}_q=\rho(U_q(\mathfrak{sl}(n,\mathbb{C})))$が成り立つ．
+%
+%
+%
+%
+\setcounter{theorem}{9}
+\begin{theorem}
+$q$の値がgenericならば，$\mathrm{Mat}(n^N,\mathbb{C})$において$\mathscr{S}_q'=\mathscr{G}_q,{\ }\mathscr{G}_q'=\mathscr{S}_q$．
+\end{theorem}
+\begin{proof}
+定理8.7の証明と同様だが，今，$\mathscr{S}_q''=\mathscr{S}_q$が成り立っているので$\mathscr{S}_q'=\mathscr{G}_q$だけ示せば十分である．さて，$\widetilde{\mathscr{S}}'$は$A$自由加群$\mathrm{Mat}(n^N,A)$の部分加群であるので，補題0.2より$A$自由加群である．また，定理7.4の証明を不定文字$t$に関して繰り返せば
+\begin{align*}
+\widetilde{\mathscr{G}}\subset\widetilde{\mathscr{S}}'
+\end{align*}
+が成り立つので，定義0.1より
+\begin{equation*}
+\mathrm{rank}{\widetilde{\mathscr{G}}}\leq \mathrm{rank}{\widetilde{\mathscr{S}}}' \eqno(8.8)
+\end{equation*}
+が成り立つ．\par
+ここで，任意の$q\in\mathbb{C}^\times$に対して
+\begin{equation*}
+\mathrm{dim}_C\mathscr{G}_q\leq \mathrm{rank}\widetilde{\mathscr{G}} \eqno(8.9)
+\end{equation*}
+が成り立つ．実際，$\widetilde{\mathscr{G}}$の$A$基底$\{X_j(t)\}_{1\leq j\leq r}$を取ると$\mathscr{G}_q=\sum\mathbb{C}X_j(q)$と書ける．$\{X_j(q)\}_{1\leq j\leq r}$が一次独立でなくなる$q$の値は，例えば$X_1(q)$と$X_2(q)$が一次従属になる条件を考えると，$X_i(q){\ }(i=1,2)$の行列要素は$q$のローラン多項式であるので，$^\exists a\in\mathbb{C}$を用いて$X_1(q)=aX_2(q)$となるとき，これは各行列要素で$q$のローラン多項式が0となることを言っている．よって，全ての行列要素が共通の根$q$を持ったとすると，$X_1(q),X_2(q)$は一次独立でなくなる．他の$\{X_j(q)\}_{1\leq j\leq r}$の組についても同様であるので，結局，$\{X_j(q)\}_{1\leq j\leq r}$が一次独立でなくなる$q$の値は，ある$0$でない多項式の零点として表されることになる．よって，(8.9)はgenericな$q$に対しては等号が成り立つ．\par
+同様に，$X\in\widetilde{\mathscr{S}}'$という条件は，$X=(x_{ij})$とおけば，$\widetilde{\mathscr{S}}'=\{X\in\mathrm{Mat}(n^N,A)\mid XY-YX=0 ^\forall Y\in\widetilde{\mathscr{S}}\}$より，$n^{2N}$個の変数$\{x_{ij}\}$に関する$n^{2N}$個の$A$係数の1次方程式であることがわかる．$t=q$とすると一般にこの方程式系の中で$0$に退化するものがあるので条件が緩くなる．今，明らかに$\varphi_q(\widetilde{\mathscr{S}}')=(\mathscr{S}_q)'$であるので
+\begin{equation*}
+\mathrm{rank}\widetilde{\mathscr{S}}'\leq\mathrm{dim}_C(\mathscr{S}_q)' \eqno(8.10)
+\end{equation*}
+が成り立ち，genericな$q$に対しては等号が成り立つ．(8.10)は，(8.9)と全く同様にして
+\begin{equation*}
+\mathrm{dim}_C\mathscr{S}_q\leq \mathrm{rank}\widetilde{\mathscr{S}}
+\end{equation*}
+を導出し，commutantを取ると不等号が逆になることから言っても良い．\par
+(8.8)$\sim$(8.10)より
+\begin{equation*}
+\mathrm{dim}_C\mathscr{G}_q\leq \mathrm{rank}\widetilde{\mathscr{G}}\leq \mathrm{rank}{\widetilde{\mathscr{S}}}'\leq\mathrm{dim}_C(\mathscr{S}_q)' \eqno(\ast)
+\end{equation*}
+が成り立つ．今，Schurの相互律より
+\begin{align*}
+\mathrm{dim}_C\mathscr{G}_1=\mathrm{dim}_C(\mathscr{S}_1)'
+\end{align*}
+が成り立っているので，$(\ast)$の真ん中の不等号で等号が成立して
+\begin{align*}
+\mathrm{rank}\widetilde{\mathscr{G}}=\mathrm{rank}{\widetilde{\mathscr{S}}}'
+\end{align*}
+が成り立つ．$(\ast)$の左と右の不等式はgenericな$q$に対しては等号が成り立つので，結局genericな$q$に対して
+\begin{align*}
+\mathrm{dim}_C\mathscr{G}_q=\mathrm{dim}_C(\mathscr{S}_q)'
+\end{align*}
+が成り立つことがわかり，定理が示された．\qed
+\end{proof}
+%
+%
+%
+%
+\begin{thebibliography}{99}
+\bibitem{jimbo}
+神保道夫『量子群とヤン・バクスター方程式』(丸善出版，2012年)
+\bibitem{sekai}
+斎藤毅『線形代数の世界』(東京大学出版会，2007年)
+\bibitem{iwahori}
+岩堀長慶『対称群と一般線型群の表現論』(岩波書店，1978年)
+\bibitem{okada}
+岡田聡一『古典群の表現論と組合せ論 上』(培風館，2006年)
+\bibitem{kobayashi}
+小林俊行、大島利雄『リー群と表現論』(岩波書店，2005年)
+\bibitem{URL1}
+\href{http://mathematics-pdf.com/pdf/module.pdf}{MATHEMATICS.PDF 環上の加群}（\today アクセス） \\
+$\mathrm{http://mathematics}$-$\mathrm{pdf.com/pdf/module.pdf}$
+\bibitem{URL2}
+\href{http://yokoemon.web.fc2.com/TA/2009Fir/20090519.pdf}{代数学B・演習 おぼえ書き その3}（\today アクセス） \\
+$\mathrm{http://yokoemon.web.fc2.com/TA/2009Fir/20090519.pdf}$
+\bibitem{URL3}
+\href{http://math.uchicago.edu/~may/REU2016/REUPapers/Stevens.pdf}{SCHUR-WEYL DUALITY}（\today アクセス） \\
+$\mathrm{http://math.uchicago.edu/}$~$\mathrm{may/REU2016/REUPapers/Stevens.pdf}$
+ \end{thebibliography}
+%
+%
+%
+%
+\end{document}

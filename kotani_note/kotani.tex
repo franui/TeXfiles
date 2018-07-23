@@ -1,0 +1,1504 @@
+\documentclass[a4paper,11pt]{jsarticle}
+%
+\usepackage{amsmath}
+\usepackage{emath}
+\usepackage{ascmac}%screenのため
+\usepackage{yhmath}%長いtildeのため
+\usepackage{color}
+\usepackage{ulem}%取り消し線のため
+\allowdisplaybreaks[4]%式変形中の改ページの許可
+\usepackage[dvipdfmx]{hyperref}%ハイパーリンクの埋め込み
+\usepackage{pxjahyper} %%hyperref読み込みの直後に読み込んでおくおまじない
+\usepackage[all]{xy}%xypic
+\usepackage{comment}
+%
+\pagestyle{empty}
+\title{測度と確率}
+\author{\empty}
+\date{\today}
+%
+\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+\newtheorem{instance}[definition]{例}%定義から通し番号にする
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{prop}[definition]{命題}
+\newtheorem{lemma}[definition]{補題}
+\newtheorem{corollary}[definition]{系}
+\makeatletter
+\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+\makeatother
+%
+\newtheorem{proof}{証明}
+\renewcommand{\theproof}{}%カウントしない
+\usepackage{latexsym}
+\def\qed{\hfill $\Box$}
+%
+\newtheorem{agree}{規約}
+\renewcommand{\theagree}{}%カウントしない
+\newtheorem{attention}{注意}
+\renewcommand{\theattention}{}%カウントしない
+%
+\newcommand{\st}{\mathrm{s.t.}\,}  %s.t.
+%
+%おまじない
+\setlength{\textwidth}{\fullwidth}
+\setlength{\textheight}{39\baselineskip}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.5in}
+\setlength{\headsep}{0.3in}
+\setlength{\abovedisplayskip}{3pt}%上部のマージン
+\setlength{\belowdisplayskip}{3pt}%下部のマージン
+%
+%一応引き継いで書いてあるが，今は機能していない
+\usepackage{stmaryrd}%\longmapsfrom
+\usepackage{bm}%数式中の太字
+\usepackage{graphicx}%写像の図式のため
+\parindent=0pt%一字字下げしない
+\usepackage[all]{xy}%xypic
+%
+\begin{document}
+%\maketitle
+%
+\section{距離空間}
+%
+%
+%
+%
+\section{測度と積分}
+\subsection{積分の定義}
+\setcounter{definition}{13}
+\begin{prop}
+$f,g$は$X$上可積分な関数とする．このとき定数$a,b$に対して
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $af+bg$も$X$上可積分で
+\begin{equation*}
+\int_X(af(x)+bg(x))\mu(dx)=a\int_Xf(x)\mu(dx)+b\int_Xg(x)\mu(dx)
+\end{equation*}
+\item $E,F\in\mathfrak{M}$で$E\cap F=\phi$なら
+\begin{equation*}
+\int_{E\cup F}f(x)\mu(dx)=\int_Ef(x)\mu(dx)+\int_Ff(x)\mu(dx)
+\end{equation*}
+\end{enumerate}
+\end{prop}
+\begin{attention}
+この定理から，Lebesgue積分論における慣習を見ることができる．\footnote{ここで述べることは自分の勝手な妄想ではなく，例えば\cite{ubutun1}で紹介されている教科書の訂正にも同様のことが述べられている．また，\cite{ito}を現代化した教科書と言われる\cite{yoshida}P.50では，「可測修正」が定義され，「フビニの定理に関連して自然に登場する…」と書かれている．ただし，\cite{yoshida}は記号が独特なのでその意味で読みづらい．}(i){\ }で$a=1,b=-1$とすると
+\begin{equation*}
+\int_X(f(x)-g(x))\mu(dx)=\int_Xf(x)\mu(dx)-\int_Xg(x)\mu(dx)
+\end{equation*}
+となる．$f,g$は$X$上可積分であるので
+\begin{eqnarray*}
+E_1:=\{x\in X \mid f(x)=\infty\} \\
+E_2:=\{x\in X \mid g(x)=\infty\}
+\end{eqnarray*}
+とおけば，$\mu(E_1)=0,{\ }\mu(E_2)=0$となる．$E_1\cap E_2$上では$f(x)-g(x)=\infty-\infty$となり，左辺の非積分関数は$X$上well-definedではないことがわかる．これはどのように解釈すれば良いのだろうか？結論から言えば，これは積分の定義が不十分であるために起こる不合理であり，これを厳密に扱うためには積分の定義を変更する必要がある．$(X,\mathfrak{M},\mu)$を測度空間とする．零集合の上で値が定義されていない''関数''を{\bf ほとんど至るところ定義された関数}と呼ぶことにして，ほとんど至るところ定義された関数全体の集合を$S$とする．空集合は零集合であるので，通常の$X$上well-definedな関数は全て$S$に含まれる．$S$上に以下のように同値関係を定義する．$f,g\in S$のとき，$f(x)=g(x){\ }{\rm a.e.}x\in X$であれば$f\sim g$とする．このとき，たとえば$f$が$\mu(E)=0$であるような$E\neq\phi$で値が定義されていないとして，一方$g$は$X$上well-definedとすると，$E$上で$f$の値は定義されていないので，$E$上では$f$と$g$が等しいかどうかは通常の意味では判定しようがないが，$x\in X-E$で$f(x)=g(x)$であれば$f(x)=g(x){\ }{\rm a.e.}x\in X$であるものとする．そして，$f\in S$の積分は$f$と同値で$\mathfrak{M}$可測で積分が定義できるような関数の積分として定義するのである．もちろん，$^\forall f\in S$に対してそのような同値な関数が存在するとは限らない．このような扱いを暗黙の内に行うのが，Lebesgue積分論における慣習である．今後このような問題にしばしば直面するが，命題2.14(i){\ }はこのような繊細な問題が発生する典型的な状況である．命題2.14(i){\ }の話に戻ろう．
+\begin{eqnarray*}
+\widetilde{f}(x):=\begin{cases}
+\displaystyle
+{\ }f(x) & (x\in X-E_1) \\
+{\ }0 & (x\in E_1)
+\end{cases} \\
+\widetilde{g}(x):=\begin{cases}
+\displaystyle
+{\ }g(x) & (x\in X-E_2) \\
+{\ }0 & (x\in E_2)
+\end{cases}
+\end{eqnarray*}
+と定義する．$\widetilde{f},\widetilde{g}$は至るところ有限で可積分な可測関数となるので，$\widetilde{f}-\widetilde{g}$は$X$上well-definedである．$\widetilde{f},\widetilde{g}$に対して命題2.14(i){\ }の証明を辿れば
+\begin{equation*}
+\int_X(\widetilde{f}(x)-\widetilde{g}(x))\mu(dx)=\int_X\widetilde{f}(x)\mu(dx)-\int_X\widetilde{g}(x)\mu(dx)
+\end{equation*}
+を示すことができる．右辺は$\int_Xf(x)\mu(dx)-\int_Xg(x)\mu(dx)$に等しい．また，$f(x)-g(x)=\widetilde{f}(x)-\widetilde{g}(x){\ }(x\in X-(E_1\cup E_2))$であり，$\mu(E_1\cup E_2)=0$であるので，$f-g\sim \widetilde{f}-\widetilde{g}$となる．よって，$\int_X(f(x)-g(x))\mu(dx)$はwell-definedであり，$\int_X(f(x)-g(x))\mu(dx)=\int_X(\widetilde{f}(x)-\widetilde{g}(x))\mu(dx)$となる．このようにして，曖昧な点が解決された．同様の問題が発生する状況としてFubiniの定理がある．厳密に証明を行うならばFubiniの定理の証明もここで行ったように扱うべきであるが，実際は与えられた関数の値を適当な集合上で定義し直す作業はかなり面倒である．よって以下，被積分関数が零集合上でwell-definedでないとしても何の問題もないように積分を行うことにする．結局，積分を考える上では様々な性質はほとんど至るところで成り立っていれば十分なのである．何か曖昧さが生じた場合はここで述べたように丁寧に扱えば問題はない．
+\end{attention}
+%
+%
+%
+%
+\section{測度の構成}
+\subsection{直積測度}
+{\bf (b){\ }Fubiniの定理}
+\setcounter{definition}{33}
+\begin{lemma}
+$(X,\mathfrak{M}_X,\mu ),(Y,\mathfrak{M}_Y,\nu )$を$\sigma$-有限な測度空間とする．$G\in \mathfrak{M}_X\times\mathfrak{M}_Y,y\in Y$に対して$G_y=\{x\in X\mid (x,y)\in G\}$とおくと，$G_y\in\mathfrak{M}_X$で$\mu(G_y)$は$y$の関数として$\mathfrak{M}_Y$可測となり$(\mu\times\nu)(G)=\int_Y\mu(G_y)\nu(dy)$
+\end{lemma}
+\begin{proof}
+$^\forall E\subset X\times Y$に対して，$^\forall y\in Y$について$E_y=\{x\in X\mid (x,y)\in E\}$とおく．
+\begin{equation*}
+\mathfrak{T}=\left\{E\in \mathfrak{M}_X\times\mathfrak{M}_Y{\ }\middle|{\ } E_y\in \mathfrak{M}_X,{\ }\mu(E_y) は y の関数として \mathfrak{M}_Y 可測 ,{\ }(\mu\times\nu)(E)=\int_Y\mu(E_y)\nu(dy)\right\}
+\end{equation*}
+$\mathfrak{M}_X\times\mathfrak{M}_Y\subset\mathfrak{T}$を示せれば$^\forall G\in\mathfrak{M}_X\times\mathfrak{M}_Y$について$G\in \mathfrak{T}$となるので題意が成り立つ．$\mathfrak{M}_X\times\mathfrak{M}_Y=\sigma(\mathfrak{F})=\tau(\mathfrak{F})$であるので，補題3.33と同様にして$\mathfrak{F}\subset\mathfrak{T}$と$\mathfrak{T}$が単調族であることを示せばよい．\\
+{\ }{\ }まず$\mathfrak{F}\subset\mathfrak{T}$を示す．$^\forall G\in\mathfrak{F}$について$f(x,y)=1_G(x,y)\in \mathcal{E}_{\mathfrak{F}}$であるので，補題3.29より$y\in Y$を固定すれば$f(x,y)=1_G(x,y)=1_{G_y}(x)$は$x$について$\mathfrak{M}_X$可測であるので，$G_y\in \mathfrak{M}_X$となる．また補題3.29より$g(y)=l_\mu(f(\cdot,y))=l_\mu(1_{G_y}(x))=\mu(G_y)$は$\mathfrak{M}_Y$可測である．また補題3.29より$l(f)=l_\nu(g(y))=l_\nu(\mu(G_y))=\int_Y\mu(G_y)\nu(dy)$であり，$l(f)=l(1_G(x,y))=(\mu\times\nu )(G)$であるので，$(\mu\times\nu )(G)=\int_Y\mu(G_y)\nu(dy)$となる．よって$^\forall G\in \mathfrak{F}$について$G\in \mathfrak{T}$となるので，$\mathfrak{F}\subset \mathfrak{T}$が示された．\\
+{\ }{\ }次に$\mathfrak{T}$が単調族であることを示す．つまり，
+\begin{eqnarray*}
+A_n\in \mathfrak{T}{\ }(n=1,2,\cdots){\ },\quad A_1\subset A_2\subset \cdots\subset A_n \subset\cdots \\
+B_n\in \mathfrak{T}{\ }(n=1,2,\cdots){\ },\quad B_1\supset B_2\supset \cdots\supset B_n \supset\cdots
+\end{eqnarray*}
+について$A=\overset{\infty}{\underset{n=1}{\bigcup}}A_n\in\mathfrak{T},B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\mathfrak{T}$であることを示す．まず$A=\overset{\infty}{\underset{n=1}{\bigcup}}A_n\in\mathfrak{T}$を示す．$A_n\in\mathfrak{T}{\ }(n=1,2,\cdots)$であるので，$(A_n)_y\in \mathfrak{M}_X{\ }(n=1,2,\cdots)$であり，$(A_1)_y\subset (A_2)_y\subset \cdots\subset (A_n)_y\subset \cdots$となる．よって$A_y=\left(\overset{\infty}{\underset{n=1}{\bigcup}}A_n\right)_y=\overset{\infty}{\underset{n=1}{\bigcup}}(A_n)_y\in\mathfrak{M}_X$となる．また，$A_n\in\mathfrak{T}{\ }(n=1,2,\cdots)$であるので，$\mu((A_n)_y){\ }(n=1,2,\cdots)$は$y$の関数として$\mathfrak{M}_Y$可測となる．$(A_1)_y\subset (A_2)_y\subset \cdots\subset (A_n)_y\subset \cdots$であるので，命題2.3(iii)より$\mu(A_y)=\mu(\overset{\infty}{\underset{n=1}{\bigcup}}(A_n)_y)=\underset{n\to \infty}{lim}\mu((A_n)_y)$となり，$\mu(A_y)$は$\mathfrak{M}_Y$可測関数の極限となるので，命題2.7の後の文章から$\mu(A_y)$は$\mathfrak{M}_Y$可測となる．また，$A_n\in\mathfrak{T}{\ }(n=1,2,\cdots)$であるので，$(\mu\times\nu)(A_n)=\int_Y\mu((A_n)_y)\nu(dy)$となるが，命題2.3(iii)より$\underset{n\to \infty}{lim}(\mu\times\nu)(A_n)=(\mu\times\nu)(\overset{\infty}{\underset{n=1}{\bigcup}}A_n)=(\mu\times\nu)(A)$であり，定理2.20より$\underset{n\to \infty}{lim}\int_Y\mu((A_n)_y)\nu(dy)=\int_Y\underset{n\to \infty}{lim}\mu((A_n)_y)\nu(dy)=\int_Y\mu(A_y)\nu(dy)$となる．以上より$A=\overset{\infty}{\underset{n=1}{\bigcup}}A_n\in\mathfrak{T}$が示された．\\
+{\ }{\ }次に$B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\mathfrak{T}$を示す．増大列のときと同様に示せれば良いのだが，減少列については，命題2.3(iv)と定理2.20の条件によって，増大列のときと全く同じ証明をするためには$\mu((B_1)_y)<\infty,{\ }(\mu\times\nu)(B_1)<\infty$と$\mu((B_1)_y)$可積分という条件が必要になってしまう．素朴に考えるとこのように行き詰まるので，ここで$(X,\mathfrak{M}_X,\mu ),(Y,\mathfrak{M}_Y,\nu )$が$\sigma$-有限であることを思い出して，$B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\mathfrak{T}$を以下のように示す．$\sigma$-有限の定義より$X=\overset{\infty}{\underset{k=1}{\bigcup}}X_k,Y=\overset{\infty}{\underset{k=1}{\bigcup}}Y_k$と書け，$X_k\in\mathfrak{M}_X,Y_k\in\mathfrak{M}_Y$は増大列で$\mu(X_k)<\infty,\nu(Y_k)<\infty$となる．$Z_k=X_k\times Y_k \in \mathfrak{F}$とおく．$B_n\in\mathfrak{T}{\ }(n=1,2,\cdots)$であるので，$(B_n)_y\in \mathfrak{M}_X{\ }(n=1,2,\cdots)$であり，$(B_1)_y\supset (B_2)_y\supset \cdots\supset (B_n)_y\supset \cdots$となる．よって$B_y=\left(\overset{\infty}{\underset{n=1}{\bigcap}}B_n\right)_y=\overset{\infty}{\underset{n=1}{\bigcap}}(B_n)_y\in\mathfrak{M}_X$となる．また，$B_n\in\mathfrak{T}{\ }(n=1,2,\cdots)$であるので，$\mu((B_n)_y){\ }(n=1,2,\cdots)$は$y$の関数として$\mathfrak{M}_Y$可測となる．$^\forall k$に対して$(Z_k\cap B_1)_y\supset (Z_k\cap B_2)_y\supset \cdots\supset (Z_k\cap B_n)_y\supset \cdots$であるので，命題2.3(iv)より$\mu((Z_k\cap B)_y)=\mu(\overset{\infty}{\underset{n=1}{\bigcap}}(Z_k\cap B_n)_y)=\underset{n\to \infty}{lim}\mu((Z_k\cap B_n)_y)$となり，$\mu((Z_k\cap B_n)_y)$が$y$の関数として$\mathfrak{M}_Y$可測であれば$\mu((Z_k\cap B)_y)$は$y$の関数として$\mathfrak{M}_Y$可測となる．よって命題2.3(iii)より$\mu(B_y)=\underset{n\to \infty}{lim}\mu((Z_k\cap B)_y)$であるので$\mu(B_y)$は$y$の関数として$\mathfrak{M}_Y$可測となる．このように$\mu((Z_k\cap B_n)_y)$が$y$の関数として$\mathfrak{M}_Y$可測であることを仮定することで$\mu(B_y)$が$y$の関数として$\mathfrak{M}_Y$可測であることを示すことができたが，$\mu((Z_k\cap B_n)_y)$が$y$の関数として$\mathfrak{M}_Y$可測であることをどう示すかは以前分からず，また，最後に示すべき$(\mu\times\nu)(B)=\int_Y\mu(B_y)\nu(dy)$を言うためには$(\mu\times\nu)(Z_k\cap B_n)=\int_Y\mu((Z_k\cap B_n)_y)\nu(dy)$であれば十分であるが，この式が成り立つためには$Z_k\cap B_n\in \mathfrak{T}$が必要である．$Z_k\cap B_n\in \mathfrak{T}$であれば先ほど仮定した$\mu((Z_k\cap B_n)_y)$が$y$の関数として$\mathfrak{M}_Y$可測であることも成り立つので，ここで，この証明の流れで$B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\mathfrak{T}$が示せるのならば以下のような予想を立てることができる．つまり．
+\begin{equation*}
+^\forall G\in \mathfrak{F}, ^\forall E\in \mathfrak{T},{\ }G\cap E\in \mathfrak{T}
+\end{equation*}
+この式が成り立つならば，$Z_k\in \mathfrak{F},B_n\in \mathfrak{T}$であるので$Z_k\cap B_n\in \mathfrak{T}$となり，上で示したように$B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\mathfrak{T}$が成り立ち．題意が成り立つ．しかしこの式をどのように示すのか，またそもそも成り立つのかも不明なので，$\mathfrak{T}$を用いない以下のような$\mathfrak{T}_k$を考えることによる完全な証明を与える．
+\begin{equation*}
+\mathfrak{T}_k=\left\{E\in \mathfrak{M}_X\times\mathfrak{M}_Y{\ }\middle|{\ } E_y\in \mathfrak{M}_X,{\ }\mu((Z_k\cap E)_y) は \mathfrak{M}_Y 可測 ,{\ }(\mu\times\nu)(Z_k\cap E)=\int_Y\mu((Z_k\cap E)_y)\nu(dy)\right\}
+\end{equation*}
+{\ }{\ }{\ }$\mathfrak{F}\subset \mathfrak{T}$であったので，$^\forall G\in \mathfrak{F}$について$G_y\in \mathfrak{M}_X$であり$\mu(G_y)$は$\mathfrak{M}_Y$可測であり$(\mu\times\nu)(G)=\int_Y\mu(G_y)\nu(dy)$である．$Z_k\cap G\in \mathfrak{F}$より，特に$\mu((Z_k\cap G)_y)$は$\mathfrak{M}_Y$可測であり$(\mu\times\nu)(Z_k\cap G)=\int_Y\mu((Z_k\cap G)_y)\nu(dy)$が成り立つ．よって合わせて，$^\forall G\in \mathfrak{F}$に対して$G_y\in \mathfrak{M}_X$であり$\mu((Z_k\cap G)_y)$は$\mathfrak{M}_Y$可測であり$(\mu\times\nu)(Z_k\cap G)=\int_Y\mu((Z_k\cap G)_y)\nu(dy)$であるので，$\mathfrak{F}\subset \mathfrak{T}_k$となる．$^\forall k$について成り立つので$\mathfrak{F}\subset \overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k$となる．次に$\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k$が単調族であることを示す．上の$\mathfrak{T}$が単調族であることを示そうとした際の議論と全く同じであるが，念のため証明を与える．
+\begin{eqnarray*}
+A_n\in \mathfrak{T}{\ }(n=1,2,\cdots){\ },\quad A_1\subset A_2\subset \cdots\subset A_n \subset\cdots \\
+B_n\in \mathfrak{T}{\ }(n=1,2,\cdots){\ },\quad B_1\supset B_2\supset \cdots\supset B_n \supset\cdots
+\end{eqnarray*}
+について$A=\overset{\infty}{\underset{n=1}{\bigcup}}A_n\in\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k,B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k$であることを示す．減少列について示せれば増大列については全く同じ証明ができるので，$B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k$のみを示す．$B_n\in\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k{\ }(n=1,2,\cdots)$であるので，$(B_n)_y\in \mathfrak{M}_X{\ }(n=1,2,\cdots)$であり，$(B_1)_y\supset (B_2)_y\supset \cdots\supset (B_n)_y\supset \cdots$となる．よって$B_y=\left(\overset{\infty}{\underset{n=1}{\bigcap}}B_n\right)_y=\overset{\infty}{\underset{n=1}{\bigcap}}(B_n)_y\in\mathfrak{M}_X$となる．また，$B_n\in\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k{\ }(n=1,2,\cdots)$であるので，$\mu((Z_k\cap B_n)_y){\ }(n=1,2,\cdots)$は$y$の関数として$\mathfrak{M}_Y$可測関数となる．$(Z_k\cap B_1)_y\supset (Z_k\cap B_2)_y\supset \cdots\supset (Z_k\cap B_n)_y\supset \cdots$であり，$\mu((Z_k\cap B_1)_y)<\infty$であるので，命題2.3(iv)より$\mu((Z_k\cap B_n)_y)=\mu(\overset{\infty}{\underset{n=1}{\bigcap}}(Z_k\cap B_n)_y)=\underset{n\to \infty}{lim}\mu((Z_k\cap B_n)_y)$となり，$\mu(Z_k\cap B_y)$は$\mathfrak{M}_Y$可測関数の極限となるので，命題2.7の後の文章から$\mu((Z_k\cap B)_y)$は$\mathfrak{M}_Y$可測となる．また，$B_n\in\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k{\ }(n=1,2,\cdots)$であるので，$(\mu\times\nu)(Z_k\cap B_n)=\int_Y\mu((Z_k\cap B_n)_y)\nu(dy)$となるが，$(\mu\times\nu)(Z_k\cap B_1)<\infty$であるので命題2.3(iv)より$\underset{n\to \infty}{lim}(\mu\times\nu)(Z_k\cap B_n)=(\mu\times\nu)(\overset{\infty}{\underset{n=1}{\bigcap}}(Z_k\cap B_n))=(\mu\times\nu)(Z_k\cap B)$であり，$\int_Y\mu((Z_k\cap B_1)_y)\nu(dy)=(\mu\times\nu)(Z_k\cap B_1)<\infty$であるので$\mu((Z_k\cap B_1)_y)$は$\nu$可積分となることから定理2.20より$\underset{n\to \infty}{lim}\int_Y\mu((Z_k\cap B_n)_y)\nu(dy)=\int_Y\underset{n\to \infty}{lim}\mu((Z_k\cap B_n)_y)\nu(dy)=\int_Y\mu((Z_k\cap B)_y)\nu(dy)$となる．以上より$B=\overset{\infty}{\underset{n=1}{\bigcap}}B_n\in\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k$が示された．よって$\overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k$は単調族となる．以上より$\mathfrak{M}_X\times\mathfrak{M}_Y \subset \overset{\infty}{\underset{k=1}{\bigcap}}\mathfrak{T}_k$となることがわかった．よって$^\forall E\in \mathfrak{M}_X\times\mathfrak{M}_Y$に対して$E_y\in \mathfrak{M}_X,{\ }\mu((Z_k\cap E)_y){\ }(k=1,2,\cdots) は \mathfrak{M}_Y 可測 ,{\ }(\mu\times\nu)(Z_k\cap E)=\int_Y\mu((Z_k\cap E)_y)\nu(dy){\ }(k=1,2,\cdots)$が成り立つ．$k$についての極限を取れば，題意が成り立つ．\qed
+\end{proof}
+%
+%
+%
+\begin{theorem}[Fubiniの定理]
+$(X,\mathfrak{M}_X,\mu ),(Y,\mathfrak{M}_Y,\nu )$を$\sigma$-有限な測度空間とする．$f$を非負$\mathfrak{M}_X\times\mathfrak{M}_Y$可測関数とする．このとき，
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $y\in Y$を固定すると$f(x,y)$は$x$の関数として$\mathfrak{M}_X$可測である．
+\item $\int_Xf(x,y)\mu(dx)$は非負$\mathfrak{M}_Y$可測関数である．
+\item $\int_{X\times Y}f(x,y)(\mu\times\nu)(dxdy)=\int_Y\left(\int_Xf(x,y)\mu(dx)\right)\nu(dy)$
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+$G\in \mathfrak{M}_X\times\mathfrak{M}_Y$のとき$f=1_G$を考えると，補題3.34より(i)$G_y\in \mathfrak{M}_X$であるので$y\in Y$を固定すると$1_G(x,y)$は$x$の関数として$\mathfrak{M}_X$可測となり，(ii)$\mu(G_y)=\int_X1_{G_y}(x)\mu(dx)=\int_X1_G(x,y)\mu(dx)$は非負$\mathfrak{M}_Y$可測関数となり，(iii)$(\mu\times\nu)(G)=\int_Y\mu(G_y)\nu(dy)$であるので$\int_{X\times Y}1_G(x,y)(\mu\times\nu)(dxdy)=\int_Y\left(\int_X1_G(x,y)\mu(dx)\right)\nu(dy)$となる．よって$f=1_G$は(i)(ii)(iii)を満たす．\\
+{\ }{\ }$f$が非負$\mathfrak{M}_X\times\mathfrak{M}_Y$単関数のとき，$G_i\in\mathfrak{M}_X\times\mathfrak{M}_Y,{\ }0\leq a_i<\infty {\ }(i=1,2,\cdots,n)$に対して$f(x,y)=\overset{n}{\underset{i=1}{\sum}} a_i 1_{G_i}(x,y)$と置けば，(i)$y\in Y$を固定すると$1_{G_i}(x,y){\ }(i=1,2,\cdots,n)$は$x$の関数として$\mathfrak{M}_X$可測となるので命題2.7の後の文章より$\overset{n}{\underset{i=1}{\sum}} a_i 1_{G_i}(x,y)$は$y\in Y$を固定すると$x$の関数として$\mathfrak{M}_X$可測となり，(ii)命題2.10(ii)より$\int_X \left(\overset{n}{\underset{i=1}{\sum}} a_i 1_{G_i}(x,y)\right)\mu(dx)=\overset{n}{\underset{i=1}{\sum}} a_i \left(\int_X 1_{G_i}(x,y) \mu(dx)\right)$であり$\int_X1_{G_i}\mu(dx){\ }(i=1,2,\cdots,n)$は非負$\mathfrak{M}_Y$可測関数であるので命題2.7の後の文章より$\overset{n}{\underset{i=1}{\sum}} a_i \left(\int_X 1_{G_i}(x,y) \mu(dx)\right)$は非負$\mathfrak{M}_Y$可測関数となり，(iii)$\int_{X\times Y}1_{G_i}(x,y)(\mu\times\nu)(dxdy)=\int_Y\left(\int_X1_{G_i}(x,y)\mu(dx)\right)\nu(dy){\ }(i=1,2,\cdots,n)$であるので命題2.10(ii)より$\int_{X\times Y}\left(\overset{n}{\underset{i=1}{\sum}} a_i 1_{G_i}(x,y)\right)(\mu\times\nu)(dxdy)=\overset{n}{\underset{i=1}{\sum}}a_i\left(\int_{X\times Y}1_{G_i}(x,y)(\mu\times\nu)(dxdy)\right)=\overset{n}{\underset{i=1}{\sum}}a_i\left(\int_Y\left(\int_X1_{G_i}(x,y)\mu(dx)\right)\nu(dy)\right)=\int_Y\left(\overset{n}{\underset{i=1}{\sum}} a_i \left(\int_X 1_{G_i}(x,y) \mu(dx)\right)\right)\nu(dy)=$ \\ $\int_Y\left(\int_X\left(\overset{n}{\underset{i=1}{\sum}} a_i 1_{G_i}(x,y)\right)\mu(dx)\right)\nu(dy)$となる．よって$f$が非負$\mathfrak{M}_X\times\mathfrak{M}_Y$単関数のとき(i)(ii)(iii)を満たす．\\
+{\ }{\ }$f$が非負$\mathfrak{M}_X\times\mathfrak{M}_Y$可測関数のとき，命題2.8より$f$は非負単関数の増大列の極限となるので，(i)(ii)は命題2.7の後の文章より満たされ，(iii)は定理2.20より満たされる．\qed
+\end{proof}
+%
+%
+%
+\begin{theorem}[Fubiniの定理]
+$(X,\mathfrak{M}_X,\mu ),(Y,\mathfrak{M}_Y,\nu )$を$\sigma$-有限な測度空間とする．$f$を(複素数値)$\mathfrak{M}_X\times\mathfrak{M}_Y$可測関数とする．このとき，
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $y\in Y$を固定すると$f(x,y)$は$x$の関数として$\mathfrak{M}_X$可測である．
+\item $f$は$\mu\times\nu$可積分とする．このときa.e.$y$に対して$g(y)=\int_Xf(x,y)\mu(dx)$は有限であり\sout{$y$の関数として$\mathfrak{M}_Y$可測関数である}\textcolor{red}{$g(y)$に同値で$y$の関数として$\mathfrak{M}_Y$可測関数であるものが存在する}\footnote{同値の定義は命題2.14の注意で述べた通りである．}．
+\item $f$は$\mu\times\nu$可積分とする．このとき$g$は$\nu$可積分で$\int_{X\times Y}f(x,y)(\mu\times\nu)(dxdy)=\int_Y\left(\int_Xf(x,y)\mu(dx)\right)\nu(dy)$
+\end{enumerate}
+\end{theorem}
+\begin{attention}
+(ii)(iii)において定理3.35にはなかった$f$は$\mu\times\nu$可積分という条件が付いているが，これは$\int_{X\times Y}f(x,y)(\mu\times\nu)(dxdy)$が定義できるための条件である．すなわちP.31より，$(A,\mathfrak{M}_A,\mu_A)$を測度空間として$f_A$を$A$上の複素数値関数とすると，$f_A$が$\mathfrak{M}_A$可測であることは${\rm Re}f_A,{\rm Im}f_A$が$\mathfrak{M}_A$可測であることで定義され，その$E\in\mathfrak{M}_A$上の積分は$|f_A(a)|$が$A$上可積分のとき$\int_Ef_A(a)\mu_A(da)=\int_E{\rm Re}f_A(a)\mu_A(da)+i\int_E{\rm Im}f_A(a)\mu_A(da)$と定義される．複素数値関数に対して$A$上可積分は定義されていないので条件の$f$は$\mu\times\nu$可積分という表現は不正確であるが，$A$上の複素数値関数$f_A$について$|f_A(a)|$が$A$上可積分のとき$f_A$は$A$上可積分であると定義するならば意味は通る．\\
+{\ }{\ }{\footnotesize また，この定理の証明において命題2.14で述べたように被積分関数のwell-defined性が問題になる．以下，極端な例を挙げてこれを見てみよう(暇な人向け)．$\mathfrak{M}$をLebesgue可測集合全体，$\mu$をLebesgue測度とすると$(\mathbb{R},\mathfrak{M},\mu)$は$\sigma$-有限な測度空間である．また，$^\forall a\in\mathbb{R}$を固定して1点集合$A=\{a\}$を考える．$\mathfrak{M}_A=\{\phi,A\}$は$A$の$\sigma$加法族である．$\nu$を$\nu(\phi)=0,\nu(A)=0$で定義すると$(A,\mathfrak{M}_A,\nu)$は$\sigma$-有限な測度空間である．$^\forall (x,y)\in\mathbb{R}\times A$に対して$f$を
+\begin{eqnarray*}
+f(x,y):=\begin{cases}
+\displaystyle
+{\ }1 & (x\geq 0,{\ } ^\forall y\in A) \\
+{\ }-1 & (x<0,{\ } ^\forall y\in A)
+\end{cases}
+\end{eqnarray*}
+と定義すると，明らかに$f$は$\mathfrak{M}\times\mathfrak{M}_A$可測関数である．$\mathbb{R}_\geq\in\mathfrak{M},{\ }\mathbb{R}_<\in\mathfrak{M},{\ }A\in\mathfrak{M}_A$であるので$(\mu\times\nu)(\mathbb{R}_\geq\times A)=\mu(\mathbb{R}_\geq)\nu(A)=0,{\ }(\mu\times\nu)(\mathbb{R}_<\times A)=\mu(\mathbb{R}_<)\nu(A)=0$と計算できる．よって，$f^+,f^-$は$\mathbb{R}\times A$上の単関数であるので$\int_{\mathbb{R}\times A}f^+(x,y)(\mu\times\nu)(dxdy)=(\mu\times\nu)(\mathbb{R}_\geq\times A)=0,{\ }\int_{\mathbb{R}\times A}f^-(x,y)(\mu\times\nu)(dxdy)=(\mu\times\nu)(\mathbb{R}_<\times A)=0$と計算できる．よって$\int_{\mathbb{R}\times A}f(x,y)(\mu\times\nu)(dxdy)$が存在して$\int_{\mathbb{R}\times A}f(x,y)(\mu\times\nu)(dxdy)=0$となる．一方，$y$を固定すると明らかに$f(x,y)$は$\mathfrak{M}$可測関数であるので，$f^+,f^-$も$\mathfrak{M}$可測関数である．$y$を固定すると$f^+,f^-$は$\mathbb{R}$上の単関数であるので$\int_\mathbb{R}f^+(x,y)\mu(dx)=\mu(\mathbb{R}_\geq)=\infty,{\ }\int_\mathbb{R}f^-(x,y)\mu(dx)=\mu(\mathbb{R}_<)=\infty$と計算できる．よって$\int_\mathbb{R}f(x,y)\mu(dx)$は存在しない．\\
+{\ }{\ }{\ }与えられた条件である$f$が$\mu\times\nu$可積分であることに加えて$f$は$\mu$可積分であるとすると，定理の証明において曖昧な点はなくなるが，そのようにするとFubiniの定理を使える関数のクラスが大きく制限されてしまう．よって，命題2.14の注意で述べたように積分が定義されていると考えて証明を行う．}\\
+{\ }{\ }{\ }最後に，以下の2つの補題を証明する．
+\begin{itembox}[l]{補題1}
+$(A,\mathfrak{M}_A,\mu_A)$を測度空間とする．$A$上の(複素数値)関数$f_A$が$\mathfrak{M}_A$可測関数となることの必要十分条件は$({\rm Re}f_A)^\pm,({\rm Im}f_A)^\pm$が$\mathfrak{M}_A$可測関数となることである．
+\end{itembox}
+(複素数値)可測関数の定義より$f_A$が$\mathfrak{M}_A$可測関数となることと${\rm Re}f_A,{\rm Im}f_A$が$\mathfrak{M}_A$可測関数となることは同値である．よって，$g_A$を$A$上の実数値関数とすると，$g_A$が$\mathfrak{M}_A$可測関数となることと${g_A}^\pm$が$\mathfrak{M}_A$可測関数となることが同値であることを示せばよい．これは以下のように示される．${g_A}^\pm$が$\mathfrak{M}_A$可測関数とすると$^\forall t\geq 0$に対して${g_A}^{-1}((t,\infty])=({g_A}^+)^{-1}((t,\infty])\in \mathfrak{M}_A$，$^\forall t< 0$に対して${g_A}^{-1}((t,\infty])=A-({g_A}^-)^{-1}([-t,\infty])\in \mathfrak{M}_A$となるので結局$^\forall t\in \bar{\mathbb{R}}$に対して${g_A}^{-1}((t,\infty])\in \mathfrak{M}_A$となり$g_A$は$\mathfrak{M}_A$可測関数となる．逆も同様に示すことができる．\qed
+\begin{itembox}[l]{補題2}
+$(A,\mathfrak{M}_A,\mu_A)$を測度空間とする．$A$上の(複素数値)関数$f_A$が$\mu_A$可積分となることの必要十分条件は$({\rm Re}f_A)^\pm,({\rm Im}f_A)^\pm$が$\mu_A$可積分となることである．
+\end{itembox}
+十分性は定義そのものである．必要性を示す．$f_A$が$\mu_A$可積分であることと$|{\rm Re}f_A|\leq |f_A|,{\ }|{\rm Im}f_A|\leq |f_A|$であることとP.28の「従って任意の非負$\mathfrak{M}$可測関数$f,g$に対しても命題2.10が成立することが容易に分る」ことより${\rm Re}f_A,{\rm Im}f_A$は$\mu_A$可積分である．よってP.29より$({\rm Re}f_A)^\pm,({\rm Im}f_A)^\pm$は$\mu_A$可積分である．\qed
+\end{attention}
+\begin{proof}
+注意で示した補題1より$({\rm Re}f)^\pm,({\rm Im}f)^\pm$は$\mathfrak{M}_X\times\mathfrak{M}_Y$可測関数である．よって$({\rm Re}f)^\pm,({\rm Im}f)^\pm$それぞれについて定理3.35が成り立つ．\\
+{\ }{\ }(i){\ }命題2.7の後の文章より明らかである．\\
+{\ }{\ }(ii){\ }注意で示した補題2より$({\rm Re}f)^\pm,({\rm Im}f)^\pm$は$\mu\times\nu$可積分である．$h$を$({\rm Re}f)^\pm,({\rm Im}f)^\pm$のどれかを表すとすると$h$についての定理3.35(ii)(iii)より$\int_Xh(x,y)\mu(dx)$は$y$の関数として$\mathfrak{M}_Y$可測関数であり$\int_{X\times Y}h(x,y)(\mu\times\nu)(dxdy)=\int_Y\left(\int_Xh(x,y)\mu(dx)\right)\nu(dy)$であるので，$h$が$\mu\times\nu$可積分であることと命題2.13よりa.e.$y$に対して$\int_Xh(x,y)\mu(dx)$は有限である．
+\begin{eqnarray*}
+E_1=\left\{ y\in Y \middle| \int_X({\rm Re}f)^+(x,y)\mu(dx)=\infty \right\} \\
+E_2=\left\{ y\in Y \middle| \int_X({\rm Re}f)^-(x,y)\mu(dx)=\infty \right\} \\
+E_3=\left\{ y\in Y \middle| \int_X({\rm Im}f)^+(x,y)\mu(dx)=\infty \right\} \\
+E_4=\left\{ y\in Y \middle| \int_X({\rm Im}f)^-(x,y)\mu(dx)=\infty \right\} \\
+\end{eqnarray*}
+とすると，$\int_Xh(x,y)\mu(dx)$は$y$の関数として$\mathfrak{M}_Y$可測関数であるので$E_i\in\mathfrak{M}_Y{\ }(n=1,2,3,4)$であり，$\nu(E_i)=0{\ }(i=1,2,3,4)$であるので$E=\overset{4}{\underset{i=1}{\bigcup}}E_i$とすると$E\in\mathfrak{M}_Y,{\ }\nu(E)=0$が成りたつ．$Y-E$上$\int_Xh(x,y)\mu(dx)$は有限であるので$\int_X|{\rm Re}f(x,y)|\mu(dx)=\int_X(({\rm Re}f)^+(x,y)+({\rm Re}f)^-(x,y))\mu(dx)=\int_X({\rm Re}f)^+(x,y)\mu(dx)+\int_X({\rm Re}f)^-(x,y)\mu(dx)<\infty$となり，$Y-E$上${\rm Re}f$は$\mu$可積分となるので，$Y-E$上$\int_X{\rm Re}f(x,y)\mu(dx)$が定義できて有限となる．同様に$Y-E$上$\int_X{\rm Im}f(x,y)\mu(dx)$が定義できて有限となる．よって，a.e.$y$に対して$g(y)=\int_Xf(x,y)\mu(dx)$は有限となる．\\
+{\ }{\ }{\ }{\footnotesize 次に，$g(y)$の可測性について考える．P.23より有限値$\mathfrak{M}_Y$可測関数の差は$\mathfrak{M}_Y$可測関数であるので，$\int_X{\rm Re}f(x,y)\mu(dx)=\int_X({\rm Re}f)^+(x,y)\mu(dx)-\int_X({\rm Re}f)^-(x,y)\mu(dx)$は$\mathfrak{M}_Y$可測関数であると結論したくなるが，$\int_X{\rm Re}f(x,y)\mu(dx)$は$E$上で定義されていないのでそもそも$Y$上の関数になっていない．よって可測性は議論できない．命題2.14の注意で述べたように$\int_X{\rm Re}f(x,y)\mu(dx)$と同値で$\mathfrak{M}_Y$可測関数となるようなものは構成できるが，$({\rm Re}f)^\pm(x,y)$の値を適当に取り直すなどしても，一般には$\int_X{\rm Re}f(x,y)\mu(dx)$自体が$\mathfrak{M}_Y$可測関数となるようにすることはできない．一般には$({\rm Re}f)^\pm(x,y)$の可測性を保ったまま値を取り直すことができないからである．よって，可測性については証明できないものとして諦めることにして，$g(y)$に同値で$\mathfrak{M}_Y$可測であるようなものが存在するとコメントするに留めておくことにする．実際，\cite{ito}では$g(y)$の可測性については定理の主張の中に含まれていない．}\\
+{\ }{\ }(iii){\ }(ii)より$h$は$\mu\times\nu$可積分であるので，$h$についての定理3.35(iii)と命題2.17より，$\left|\int_Y\left(\int_Xh(x,y)\mu(dx)\right)\nu(dy)\right|=\left|\int_{X\times Y}h(x,y)(\mu\times\nu)(dxdy)\right|\leq\int_{X\times Y}\left|h(x,y)\right|(\mu\times\nu)(dxdy)<\infty$となるので$\int_Xh(x,y)\mu(dx)$は$\nu$可積分となる．よって$\int_X{\rm Re}f(x,y)\mu(dx),\int_X{\rm Im}f(x,y)\mu(dx)$は$\nu$可積分となるので，結局$g(y)=\int_Xf(x,y)\mu(dx)$は$\nu$可積分となる．
+\begin{eqnarray*}
+\widetilde{\int_X({\rm Re}f)^+(x,y)\mu(dx)}:=\begin{cases}
+\displaystyle
+{\ }\int_X({\rm Re}f)^+(x,y)\mu(dx) & ((x,y)\in X\times (Y-E_1)) \\
+{\ }0 & ((x,y)\in X\times E_1)
+\end{cases} \\
+\widetilde{\int_X({\rm Re}f)^-(x,y)\mu(dx)}:=\begin{cases}
+\displaystyle
+{\ }\int_X({\rm Re}f)^-(x,y)\mu(dx) & ((x,y)\in X\times (Y-E_2)) \\
+{\ }0 & ((x,y)\in X\times E_2)
+\end{cases} \\
+\widetilde{\int_X({\rm Im}f)^+(x,y)\mu(dx)}:=\begin{cases}
+\displaystyle
+{\ }\int_X({\rm Im}f)^+(x,y)\mu(dx) & ((x,y)\in X\times (Y-E_3)) \\
+{\ }0 & ((x,y)\in X\times E_3)
+\end{cases} \\
+\widetilde{\int_X({\rm Im}f)^-(x,y)\mu(dx)}:=\begin{cases}
+\displaystyle
+{\ }\int_X({\rm Im}f)^-(x,y)\mu(dx) & ((x,y)\in X\times (Y-E_4)) \\
+{\ }0 & ((x,y)\in X\times E_4)
+\end{cases}
+\end{eqnarray*}
+として$\widetilde{\int_X h(x,y)\mu(dx)}$を$\widetilde{\int_X({\rm Re}f)^\pm(x,y)\mu(dx)},\widetilde{\int_X({\rm Im}f)^\pm(x,y)\mu(dx)}$のどれかを表すとすると，$\widetilde{\int_X h(x,y)\mu(dx)}$は至るところ有限で$\nu$可積分な$\mathfrak{M}_Y$可測関数である．よって，命題2.14(i){\ }より
+\begin{eqnarray*}
+&&\int_Y\left(\widetilde{\int_X({\rm Re}f)^+(x,y)\mu(dx)}-\widetilde{\int_X({\rm Re}f)^-(x,y)\mu(dx)}\right)
+\nu(dy) \\
+&=&\int_Y\left(\widetilde{\int_X({\rm Re}f)^+(x,y)\mu(dx)}\right)\nu(dy)-\int_Y\left(\widetilde{\int_X({\rm Re}f)^-(x,y)\mu(dx)}\right)\nu(dy)
+\end{eqnarray*}
+となる．よって
+\begin{eqnarray*}
+&&\int_{X\times Y}{\rm Re}f(x,y)(\mu\times\nu)(dxdy) \\
+&=&\int_{X\times Y}({\rm Re}f)^+(x,y)(\mu\times\nu)(dxdy)-\int_{X\times Y}({\rm Re}f)^-(x,y)(\mu\times\nu)(dxdy) \\
+&=&\int_Y\left(\int_X({\rm Re}f)^+(x,y)\mu(dx)\right)\nu(dy)-\int_Y\left(\int_X({\rm Re}f)^-(x,y)\mu(dx)\right)\nu(dy) \\
+&=&\int_Y\left(\widetilde{\int_X({\rm Re}f)^+(x,y)\mu(dx)}\right)\nu(dy)-\int_Y\left(\widetilde{\int_X({\rm Re}f)^-(x,y)\mu(dx)}\right)\nu(dy) \\
+&=&\int_Y\left(\widetilde{\int_X({\rm Re}f)^+(x,y)\mu(dx)}-\widetilde{\int_X({\rm Re}f)^-(x,y)\mu(dx)}\right)\nu(dy) \\
+&=&\int_Y\left(\int_X{\rm Re}f(x,y)\mu(dx)\right)\nu(dy)
+\end{eqnarray*}
+となる．1つ目の等号では(ii)で示したように${\rm Re}f$が$\mu\times\nu$可積分であることを用いた．2つ目の等号では$h$についての定理3.35(iii)を用いた．3つ目の等号は命題2.14の注意で述べたように積分の''定義''そのものである．4つ目の等号はすぐ上で示した．5つ目の等号は再び命題2.14の注意で述べたように積分の''定義''そのものである．\qed
+\end{proof}
+%
+%
+%
+\begin{theorem}[Lebesgue-Fubiniの定理]
+$(X,\mathfrak{M}_X,\mu ),(Y,\mathfrak{M}_Y,\nu )$を$\sigma$-有限な測度空間とする．$f$を(複素数値)$\overline{\mathfrak{M}_X\times\mathfrak{M}_Y}$可測関数とする．このとき，
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $y\in Y$を固定するとa.e.$x\in X$に対して$f(x,y)$は$x$の関数として$\overline{\mathfrak{M}_X}$可測である．
+\item $f$は$\mu\times\nu$可積分とする．このときa.e.$y$に対して$f(x,y)$は$x$の関数として$\mu$可積分で$g(y)=\int_Xf(x,y)\mu(dx)$は$y$の関数として$\overline{\mathfrak{M}_Y}$可測関数である．
+\item $f$は$\mu\times\nu$可積分とする．このとき$g$は$\nu$可積分で$\int_{X\times Y}f(x,y)(\mu\times\nu)(dxdy)=\int_Y\left(\int_Xf(x,y)\mu(dx)\right)\nu(dy)$
+\end{enumerate}
+\end{theorem}
+\begin{attention}
+以下の3つの補題を示す．
+\begin{itembox}[l]{補題1}
+$(A,\mathfrak{M}_A,\mu_A)$を測度空間，$(A,\overline{\mathfrak{M}_A},\overline{\mu_A})$をその完備化とする．$f_A$を$A$上の実数値$\mathfrak{M}_A$可測関数とする．$A$上のある実数値関数$h_A$に対して$\mu_A(B)=0,{\ }B\in\mathfrak{M}_A,{\ }\{a\in A \mid f_A\neq h_A\}\subset B$となるとき$h_A$は$A$上の実数値$\overline{\mathfrak{M}_A}$可測関数となる．
+\end{itembox}
+$(A,\overline{\mathfrak{M}_A},\overline{\mu_A})$は完備なので$\{a\in A \mid f_A\neq h_A\}\in \overline{\mathfrak{M}_A}$となる．$^\forall t\in \bar{\mathbb{R}}$に対して${h_A}^{-1}((t,\infty])=(A-\{a\in A \mid f_A\neq h_A\})\cap {f_A}^{-1}((t,\infty])+\{a\in A \mid f_A\neq h_A\}\cap {h_A}^{-1}((t,\infty])\in \overline{\mathfrak{M}_A}$となる．ここで$\{a\in A \mid f_A\neq h_A\}\cap {h_A}^{-1}((t,\infty])\subset\{a\in A \mid f_A\neq h_A\}$より$\{a\in A \mid f_A\neq h_A\}\cap {h_A}^{-1}((t,\infty])\in\overline{\mathfrak{M}_A}$となることを用いた．よって示された．\qed
+\begin{itembox}[l]{補題2}
+$(A,\mathfrak{M}_A,\mu_A)$を測度空間，$(A,\overline{\mathfrak{M}_A},\overline{\mu_A})$をその完備化とする．$f_A$を$A$上の複素数値$\mathfrak{M}_A$可測関数とする．$A$上のある複素数値関数$h_A$に対して$\mu_A(B)=0,{\ }B\in\mathfrak{M}_A,{\ }\{a\in A \mid f_A\neq h_A\}\subset B$となるとき$h_A$は$A$上の複素数値$\overline{\mathfrak{M}_A}$可測関数となる．
+\end{itembox}
+補題1の拡張である．定義より${\rm Re}f_A,{\rm Im}f_A$は$A$上の実数値$\mathfrak{M}_A$可測関数であり，$\{a\in A \mid {\rm Re}f_A\neq {\rm Re}h_A\}\subset \{a\in A \mid f_A\neq h_A\},{\ }\{a\in A \mid {\rm Im}f_A\neq {\rm Im}h_A\}\subset \{a\in A \mid f_A\neq h_A\}$であるので上で示した補題1より${\rm Re}h_A,{\rm Im}h_A$は$A$上の実数値$\overline{\mathfrak{M}_A}$可測関数となる．よって$h_A$は$A$上の複素数値$\overline{\mathfrak{M}_A}$可測関数となる．\qed
+\begin{itembox}[l]{補題3}
+$(A,\mathfrak{M}_A,\mu_A)$を測度空間，$(A,\overline{\mathfrak{M}_A},\overline{\mu_A})$をその完備化とする．(複素数値)$\overline{\mathfrak{M}_A}$可測関数$f_A$に対して$|f_A|\geq |h_A|,{\ }F:=\{a\in A\ \mid f_A(a)\neq h_A(a)\} \subset B,{\ }\mu_A(B)=0$を満たす$B\in \mathfrak{M}_A$と(複素数値)$\mathfrak{M}_A$可測関数$h_A$が存在する．
+\end{itembox}
+補題3.38の拡張である．$\{f_i\}_{i=1}^n$を非負$\overline{\mathfrak{M}_A}$可測関数とする．補題3.38より非負$\mathfrak{M}_A$可測関数$h_i$で$f_i\geq h_i$かつ$F_i=\{a\in A \mid f_i(a)\neq h_i(a)\}\in \overline{\mathfrak{M}_A},{\ }\overline{\mu_A}(F_i)=0$を満たすものが存在する．$F_i\in \overline{\mathfrak{M}_A}$より$F_i\subset B_i\in \mathfrak{M}_A,{\ }\overline{\mu_A}(F_i)=\mu_A(B_i)=0$を満たす$B_i$が存在する．$n=4$として$f_1=({\rm Re}f_A)^+,f_2=({\rm Re}f_A)^-,f_3=({\rm Im}f_A)^+,f_4=({\rm Im}f_A)^-$とする．各点$a\in A$に対して$f_1(a)=0$または$f_2(a)=0$，$f_3(a)=0$または$f_4(a)=0$が成り立つことと，$f_i\geq h_i$であるので$h_1-h_2,h_3-h_4$において$\infty-\infty$は表われない．よって，$h_A:=(h_1-h_2)+i(h_3-h_4)$とおけば$h_A$は(複素数値)$\mathfrak{M}_A$可測関数となる．また，
+\begin{eqnarray*}
+&&\overset{4}{\underset{i=1}{\bigcap}}\{a\in A \mid f_i(a)=h_i(a)\} \subset \{a\in A \mid f_A(a)=h_A(a)\} \\
+&\Longleftrightarrow&F:=\{a\in A \mid f_A(a)\neq h_A(a)\} \subset B:=\overset{4}{\underset{i=1}{\bigcup}}\{a\in A \mid f_i(a)\neq h_i(a)\}
+\end{eqnarray*}
+である．最後に，$|f_A|\geq |h_A|$を示す．各点$a\in A$に対して$f_1(a)=0$または$f_2(a)=0$，$f_3(a)=0$または$f_4(a)=0$が成り立つ．$f_i\geq h_i$であるので，$f_1(a)=0$とすると
+\begin{equation*}
+|h_2(a)-h_1(a)|=h_2(a)\leq f_2(a)=f_2(a)-f_1(a)=|f_2(a)-f_1(a)|
+\end{equation*}
+$f_2(a)=0$とすると
+\begin{equation*}
+|h_2(a)-h_1(a)|=h_1(a)\leq f_1(a)=f_1(a)-f_2(a)=|f_2(a)-f_1(a)|
+\end{equation*}
+となることから，結局各点$a\in A$に対して$|h_2(a)-h_1(a)|\leq |f_2(a)-f_1(a)|$，$|h_4(a)-h_3(a)|\leq |f_4(a)-f_3(a)|$が成り立つ．よって，$|f_A|\geq |h_A|$が成り立つ．\qed
+\begin{itembox}[l]{補題4}
+$(X,\mathfrak{M}_X,\mu ),(Y,\mathfrak{M}_Y,\nu )$を測度空間とする．$(\mu\times\nu)(B)=0$となる$^\forall B\in\mathfrak{M}_X\times\mathfrak{M}_Y$について$\nu(C)=0$となる$^\exists C\in\mathfrak{M}_Y$が存在して$Y-C$上で$\mu(B_y)=0$，$C$上で$\mu(B_y)>0$となる．
+\end{itembox}
+補題3.34より$\int_Y\mu(B_y)\nu(dy)=0{\ }(B_y\in \mathfrak{M}_X)$となるので，命題2.13よりa.e.yに対して$\mu(B_y)=0$となる．$C$上で$\mu(B_y)>0$，$Y-C$上で$\mu(B_y)=0$とする．$\mu(B_y)$は$\mathfrak{M}_Y$可測関数であるので，$C\in\mathfrak{M}_Y$である．\qed
+\end{attention}
+\begin{proof}
+注意で示した補題3より$f$に対して$|f|\geq |h|,{\ }F:=\{(x,y)\in X\times Y \mid f(x,y)\neq h(x,y)\} \subset B,{\ }(\mu\times\nu)(B)=0$を満たす$B\in \mathfrak{M}_X\times\mathfrak{M}_Y$と(複素数値)$\mathfrak{M}_X\times\mathfrak{M}_Y$可測関数$h$が存在する．また，この$B$に対して注意で示した補題4より$\nu(C)=0$となる$^\exists C\in\mathfrak{M}_Y$が存在して$C$上で$\mu(B_y)>0$，$Y-C$上で$\mu(B_y)=0$となる．\\
+{\ }{\ }(i){\ }定理3.36(i)より$y$を固定すると$h(x,y)$は$x$の関数として$\mathfrak{M}_X$可測である．a.e.$y\in Y$に対して$\mu(B_y)=0,{\ }B_y\in \mathfrak{M}_X,{\ }F_y=\{x\in X \mid f(x,y)\neq h(x,y)\}\subset B_y$であるので，注意で示した補題2を用いるとa.e.$y\in Y$に対して$f(x,y)$は$x$の関数として$\overline{\mathfrak{M}_X}$可測となる．\\
+{\ }{\ }(ii){\ }$\int_{X\times Y}|h(x,y)|(\mu\times\nu)(dxdy)=\int_{X\times Y-B}|h(x,y)|(\mu\times\nu)(dxdy)=\int_{X\times Y-B}|f(x,y)|(\mu\times\nu)(dxdy)=\int_{X\times Y}|f(x,y)|(\mu\times\nu)(dxdy)$であるので，$f$が$\mu\times\nu$可積分であることから$h$も$\mu\times\nu$可積分である．よって定理3.36(ii)の条件が満たされたので$h$に対して定理3.36(ii)を用いると，a.e.$y$に対して$\int_Xh(x,y)\mu(dx)$は有限であり，$\int_Xh(x,y)\mu(dx)$に同値で$\mathfrak{M}_Y$可測関数であるようなものが存在する．定理3.36(ii)で除かれている点の集合を$D_1$とする．すなわち，$Y-D_1$上で$\int_Xh(x,y)\mu(dx)$は有限である．$Y-(C\cup D_1)$上で$y$を固定すると，$X-B_y$上で$f(x,y)=h(x,y)$となるので，．$Y-(C\cup D_1)$上で$\int_Xf(x,y)\mu(dx)=\int_Xh(x,y)\mu(dx)$となる($Y-C$上で$y$を固定してもa.e.$x$に対して$f(x,y)=h(x,y)$となるが$D_1$上では$\int_Xh(x,y)\mu(dx)$は定義されていないので$D_1$も除いておく必要がある)．よって，a.e.$y$に対して$\int_Xf(x,y)\mu(dx)$は有限となる．すなわち，a.e.$y$に対して$f(x,y)$は$x$の関数として$\mu$可積分となる．\\
+{\ }{\ }{\ }次に$g(y)$の可測性について考える．$\int_Xh(x,y)\mu(dx)$に同値で$\mathfrak{M}_Y$可測関数であるようなものを$\widetilde{\int_Xh(x,y)\mu(dx)}$とする．
+\begin{equation*}
+D_2:=\left\{y\in Y \middle| \widetilde{\int_Xh(x,y)\mu(dx)}\neq \int_Xh(x,y)\mu(dx)\right\}
+\end{equation*}
+$Y-(C\cup D_1\cup D_2)$上で$\widetilde{\int_Xh(x,y)\mu(dx)}=\int_Xh(x,y)\mu(dx)=\int_{X-B_y}h(x,y)\mu(dx)=\int_{X-B_y}f(x,y)\mu(dx)=\int_Xf(x,y)\mu(dx)$であるので
+\begin{eqnarray*}
+&&Y-(C\cup D_1\cup D_2)\subset \left\{y\in Y \middle| \widetilde{\int_Xh(x,y)\mu(dx)}=\int_Xf(x,y)\mu(dx)\right\} \\
+&\Longleftrightarrow&\left\{y\in Y \middle| \widetilde{\int_Xh(x,y)\mu(dx)}\neq \int_Xf(x,y)\mu(dx)\right\} \subset C\cup D_1\cup D_2
+\end{eqnarray*}
+となることと，$\widetilde{\int_Xh(x,y)\mu(dx)}$は$y$の関数として$\mathfrak{M}_Y$可測関数であることから，注意で示した補題2より$g(y)=\int_Xf(x,y)\mu(dx)$は$y$の関数として$\overline{\mathfrak{M}_Y}$可測関数となる．定理3.36(ii)で$g(y)$が$\mathfrak{M}_Y$可測であることが証明できなかったことを考えると対照的な結果である．\\
+{\ }{\ }(iii){\ }(ii)で$f$が$\mu\times\nu$可積分であることから$h$が$\mu\times\nu$可積分であることを見たので，定理3.36(iii)が使えて$\int_Xh(x,y)\mu(dx)$は$\nu$可積分で
+\begin{equation*}
+\int_{X\times Y}h(x,y)(\mu\times\nu)(dxdy)=\int_Y\left(\int_Xh(x,y)\mu(dx)\right)\nu(dy)
+\end{equation*}
+が成り立つ．(ii)で$Y-(C\cup D_1)$上で$\int_Xh(x,y)\mu(dx)=\int_Xf(x,y)\mu(dx)$であることを見たので，$g(y)=\int_Xf(x,y)\mu(dx)$は$\nu$可積分である．$\int_{X\times Y}h(x,y)(\mu\times\nu)(dxdy)=\int_{X\times Y-B}h(x,y)(\mu\times\nu)(dxdy)=\int_{X\times Y-B}f(x,y)(\mu\times\nu)(dxdy)=\int_{X\times Y}f(x,y)(\mu\times\nu)(dxdy)$であるので，あとは$\int_Y\left(\int_Xh(x,y)\mu(dx)\right)\nu(dy)=\int_Y\left(\int_Xf(x,y)\mu(dx)\right)\nu(dy)$が示せれば題意が示されるが，
+\begin{eqnarray*}
+\int_Y\left(\int_Xh(x,y)\mu(dx)\right)\nu(dy)&=&\int_{Y-(C\cup D_1)}\left(\int_Xh(x,y)\mu(dx)\right)\nu(dy) \\
+&=&\int_{Y-(C\cup D_1)}\left(\int_Xf(x,y)\mu(dx)\right)\nu(dy) \\
+&=&\int_Y\left(\int_Xf(x,y)\mu(dx)\right)\nu(dy)
+\end{eqnarray*}
+により示される．2つ目の等号では$Y-(C\cup D_1)$上で$\int_Xh(x,y)\mu(dx)=\int_Xf(x,y)\mu(dx)$であることを用いた．\qed
+\end{proof}
+%
+%
+%
+{\bf (c){\ }無限直積測度}
+\begin{lemma}
+$(\Omega_n,\mathfrak{M}_n){\ }(n=1,2,\cdots)$を可測空間とする．$\displaystyle \Omega=\prod_{n=1}^\infty\Omega_n$とおく．$\Omega$上の有限加法族$\mathfrak{F}$を
+\begin{equation*}
+\mathfrak{F}=\left\{A=E_n\times\prod_{i=n+1}^\infty\Omega_i{\ }\middle|{\ }E_n\in \mathfrak{M}_1\times\cdots\mathfrak{M}_n,{\ }1\leq n<\infty\right\}
+\end{equation*}
+とする．空集合を含む直積は空集合となるので，$A\in\mathfrak{F}$ならば$A^c=\phi$となる．よって$A^c\in\mathfrak{F}$となるので，$\mathfrak{F}$は有限加法族である．$\mu_n$を$(\Omega_n,\mathfrak{M}_n)$上の$\mu_n(\Omega_n)=1$を満たす測度とする．$\mathfrak{F}$上の有限加法的測度を
+\begin{equation*}
+m(A)=(\mu_1\times\cdots\times\mu_n)(E_n)
+\end{equation*}
+とする．このとき，$m$は$\mathfrak{F}$上完全加法的である．
+\end{lemma}
+\begin{attention}
+有限加法的測度空間$(\Omega,\mathfrak{F},m)$上で初等関数族を
+\begin{equation*}
+\mathcal{E}_{\mathfrak{F}}=\left\{f{\ }\middle|{\ }x\in \Omega,{\ }f(x)=\sum_{i=1}^ma_i1_{A_i}(x),{\ }m<\infty,{\ }0\leq a_i<\infty,{\ }A_i\in\mathfrak{F}\right\}
+\end{equation*}
+とする．$A_i$は
+\begin{equation*}
+A_i=E_{n_i}\times\prod_{j=n_i+1}^\infty\Omega_j \quad (E_{n_i}\in \mathfrak{M}_1\times\cdots\times\mathfrak{M}_{n_i})
+\end{equation*}
+と書ける．$\mathcal{E}_{\mathfrak{F}}$上の初等積分$l$を
+\begin{equation*}
+l(f)=\sum_{i=1}^ma_im(A_i)
+\end{equation*}
+とする．$N\geq 0$に対し，$\underset{j=N+1}{\overset{\infty}{\prod}}\Omega_j$上で$\Omega$のときと同じく有限加法族$\mathfrak{F}_N$と有限加法的測度$m_N$と初等関数族$\mathcal{E}_{\mathfrak{F}_N}$と初等積分$l_N$を定義する．$\mathfrak{F}_0=\mathfrak{F},{\ }m_0=m,{\ }l_0=l$である．$\Omega$の残りの座標に関する集合$\underset{j=1}{\overset{N}{\prod}}\Omega_j$上の$\sigma$加法族$\mathfrak{M}_1\times\cdots\times\mathfrak{M}_N$と直積測度$\mu_1\times\cdots\times\mu_N$を考える．この直積測度による非負$\mathfrak{M}_1\times\cdots\times\mathfrak{M}_N$可測関数$f$の積分を$\widetilde{l}_N(f)$と書く．\\
+{\ }{\ }{\ }さらに，この定式化の拡張として，初めの$M$個の変数$(\widetilde{x_1},\cdots,\widetilde{x_M})\in\underset{j=1}{\overset{M}{\prod}}\Omega_j$を常に固定する場合の定式化をしておく．$l_{M+N}$を$l^{(M)}_N$と書く．$\underset{j=M+1}{\overset{N}{\prod}}\Omega_j$上の$\sigma$加法族$\mathfrak{M}_{M+1}\times\cdots\times\mathfrak{M}_N$と直積測度$\mu_{M+1}\times\cdots\times\mu_N$を考えて，この直積測度による非負$\mathfrak{M}_{M+1}\times\cdots\times\mathfrak{M}_N$可測関数$f$の積分を$\widetilde{l}^{(M)}_N(f)$と書く．$M=0$のとき$l^{(0)}_N=l_N,{\ }\widetilde{l^{(0)}_N}=\widetilde{l_N}$となる．このとき，以下の2つの補題を証明する．
+\begin{itembox}[l]{補題1}
+$g\in\mathcal{E}_{\mathfrak{F}}$ならば$(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N})\in\underset{j=1}{\overset{M+N}{\prod}}\Omega_j$を固定すれば$g(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},y)$は$y$の関数として$g\in\mathcal{E}_{\mathfrak{F}_{M+N}}$となる．
+\end{itembox}
+$\displaystyle g(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},y)=\sum_{i=1}^ma_i1_{A_i}(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},y)$とおく．$M+N\geq n_i$のときは，$1_{\underset{j=M+N+1}{\overset{\infty}{\prod}}\Omega_j}(y)=1$であるので
+\begin{eqnarray*}
+&&1_{A_i}(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},y) \\
+&=&1_{(A_i)_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}}(y) \\
+&=&1_{E_{n_i}\times\underset{j=n_i+1}{\overset{M+N}{\prod}}\Omega_j}(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N})
+\end{eqnarray*}
+となり，$\displaystyle (\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N})\in\prod_{j=1}^{M+N}\Omega_j$を固定すれば$1_{A_i}(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},y)$は$y$に依らない定数となる．$M+N<n_i$のときは
+\begin{eqnarray*}
+&&1_{A_i}(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},y) \\
+&=&1_{(A_i)_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}}(y) \\
+&=&1_{(E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\times\underset{j=n_i+1}{\overset{\infty}{\prod}}\Omega_j}(y)
+\end{eqnarray*}
+となる．ここで，補題3.34と数学的帰納法より$(E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\in\mathfrak{M}_{M+N+1}\times\cdots\times\mathfrak{M}_{n_i}$となるので，$(E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\times\underset{j=n_i+1}{\overset{\infty}{\prod}}\Omega_j\in\mathfrak{F}_{M+N}$となる．以上より，$g(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},y)$は$y$の関数として$g\in\mathcal{E}_{\mathfrak{F}_{M+N}}$となる．\qed
+\begin{itembox}[l]{補題2}
+補題1の設定で
+\begin{eqnarray*}
+h(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N})&:=&l^{(M)}_N(g(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},\cdot{\ })) \\
+&:=&l_{M+N}(g(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N},\cdot{\ }))
+\end{eqnarray*}
+とおくと，$(\widetilde{x_1},\cdots,\widetilde{x_M})\in\underset{j=1}{\overset{M}{\prod}}\Omega_j$を固定したとき$h$は$\mathfrak{M}_{M+1}\times\cdots\times\mathfrak{M}_{M+N}$可測関数となり
+\begin{equation*}
+\widetilde{l^{(M)}_N}(h(\widetilde{x_1},\cdots,\widetilde{x_M},\cdot{\ }))=l_M(g(\widetilde{x_1},\cdots,\widetilde{x_M},\cdot{\ }))
+\end{equation*}
+となる．
+\end{itembox}
+必要なら$i=1,\cdots,k$で$M\geq n_i$，$i=k+1,\cdots,l$で$M+N\geq n_i>M$，$i=l+1,\cdots,m$で$M+N<n_i$となるように$i$を入れ換えておく．
+\begin{eqnarray*}
+&&h(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}) \\
+&=&\sum_{i=1}^la_i\cdot 1_{E_{n_i}\times\underset{j=n_i+1}{\overset{M+N}{\prod}}\Omega_j}(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}) \\
+&&+\sum_{i=l+1}^m a_i \cdot m_{M+N}\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\times\underset{j=n_i+1}{\overset{\infty}{\prod}}\Omega_j\right) \\
+&=&\sum_{i=1}^la_i\cdot 1_{E_{n_i}\times\underset{j=n_i+1}{\overset{M+N}{\prod}}\Omega_j}(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}) \\
+&&+\sum_{i=l+1}^m a_i \cdot(\mu_{M+N+1}\times\cdots\times\mu_{n_i})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\right)
+\end{eqnarray*}
+となり，$M+N<n_i$のとき補題3.34と数学的帰納法より$(\mu_{M+N+1}\times\cdots\times\mu_{n_i})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\right)$は$\mathfrak{M}_1\times\cdots\times\mathfrak{M}_{M+N}$可測関数となるので，$h$は$\mathfrak{M}_1\times\cdots\times\mathfrak{M}_{M+N}$可測関数となる．定理3.35(i)と数学的帰納法より$(\widetilde{x_1},\cdots,\widetilde{x_M})\in\underset{j=1}{\overset{M}{\prod}}\Omega_j$を固定したとき$h$は$\mathfrak{M}_{M+1}\times\cdots\times\mathfrak{M}_{M+N}$可測関数となる．また，
+\begin{eqnarray*}
+&&h(\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}) \\
+&=&\sum_{i=1}^ka_i\cdot 1_{E_{n_i}\times\underset{j=n_i+1}{\overset{M}{\prod}}\Omega_j}(\widetilde{x_1},\cdots,\widetilde{x_M}) \\
+&&+\sum_{i=k+1}^la_i\cdot 1_{(E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M}}\times\underset{j=n_i+1}{\overset{M+N}{\prod}}\Omega_j}(x_{M+1},\cdots,x_{M+N}) \\
+&&+\sum_{i=l+1}^m a_i \cdot(\mu_{M+N+1}\times\cdots\times\mu_{n_i})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\right)
+\end{eqnarray*}
+であるので，
+\begin{eqnarray*}
+&&\widetilde{l^{(M)}_N}(h(\widetilde{x_1},\cdots,\widetilde{x_M},\cdot{\ })) \\
+&=&\sum_{i=1}^ka_i\cdot 1_{E_{n_i}\times\underset{j=n_i+1}{\overset{M}{\prod}}\Omega_j}(\widetilde{x_1},\cdots,\widetilde{x_M}) \\
+&&+\sum_{i=k+1}^la_i\cdot (\mu_{M+1}\times\cdots\times\mu_{M+N})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M}}\times\underset{j=n_i+1}{\overset{M+N}{\prod}}\Omega_j\right) \\
+&&+{\!\!}\sum_{i=l+1}^m{\!\!}a_i{\!\!}\cdot{\!\!\!\!}\int_{\Omega_{M+1}\times\cdots\times\Omega_{M+N}}{\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!}\left((\mu_{M+N+1}\times\cdots\times\mu_{n_i})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\right)\right)(\mu_{M+1}\times\cdots\times\mu_{M+N})(dx_{M+1}\cdots dx_{M+N})
+\end{eqnarray*}
+となる．ここで，$^\forall L\in\mathbb{N}$に対して
+\begin{eqnarray*}
+1_{E_{n_i}\times\underset{j=n_i+1}{\overset{M}{\prod}}\Omega_j}(\widetilde{x_1},\cdots,\widetilde{x_M})&=&(\mu_{M+1}\times\cdots\times\mu_{M+L})\left(\left(E_{n_i}\times\underset{j=n_i+1}{\overset{M+L}{\prod}}\Omega_j\right)_{\widetilde{x_1},\cdots,\widetilde{x_M}}\right) \\
+&=&m((A_i)_{\widetilde{x_1},\cdots,\widetilde{x_M}})
+\end{eqnarray*}
+であり，
+\begin{eqnarray*}
+\sum_{i=k+1}^la_i\cdot (\mu_{M+1}\times\cdots\times\mu_{M+N})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M}}\times\underset{j=n_i+1}{\overset{M+N}{\prod}}\Omega_j\right)=m((A_i)_{\widetilde{x_1},\cdots,\widetilde{x_M}})
+\end{eqnarray*}
+であり，$(E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}=((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M}})_{x_{M+1},\cdots,x_{M+N}}$であることと，補題3.34と数学的帰納法より
+\begin{eqnarray*}
+&&\int_{\Omega_{M+1}\times\cdots\times\Omega_{M+N}}{\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!}\left((\mu_{M+N+1}\times\cdots\times\mu_{n_i})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M},x_{M+1},\cdots,x_{M+N}}\right)\right)(\mu_{M+1}\times\cdots\times\mu_{M+N})(dx_{M+1}\cdots dx_{M+N}) \\
+&=&(\mu_{M+1}\times\cdots\times\mu_{n_i})\left((E_{n_i})_{\widetilde{x_1},\cdots,\widetilde{x_M}}\right) \\
+&=&m((A_i)_{\widetilde{x_1},\cdots,\widetilde{x_M}})
+\end{eqnarray*}
+であることから
+\begin{eqnarray*}
+\widetilde{l^{(M)}_N}(h(\widetilde{x_1},\cdots,\widetilde{x_M},\cdot{\ }))&=&\sum_{i=1}^m a_i \cdot m((A_i)_{\widetilde{x_1},\cdots,\widetilde{x_M}}) \\
+&=&l_M(g(\widetilde{x_1},\cdots,\widetilde{x_M},\cdot{\ }))
+\end{eqnarray*}
+となる．\qed
+\begin{itembox}[l]{補題3}
+$g\in\mathcal{E}_\mathfrak{F}$ならば十分大きな任意の$N$に対して$l_N(g(x_1,\cdots,x_N,\cdot{\ }))=g(x)$となる．ただし，$x=(x_1,\cdots,x_N,\cdot{\ })$である．
+\end{itembox}
+$g(x)=\underset{i=1}{\overset{m}{\sum}}a_i1_{A_i}(x)$とおく．$A_i$は
+\begin{equation*}
+A_i=E_{n_i}\times\prod_{j=n_i+1}^\infty\Omega_j \quad (E_{n_i}\in \mathfrak{M}_1\times\cdots\times\mathfrak{M}_{n_i})
+\end{equation*}
+と書ける．$n_0=\max\{n_1,\cdots,n_m\}$とする．$^\forall N>n_0$に対して
+\begin{eqnarray*}
+1_{A_i}(x)=1_{E_{n_i}\times\underset{j=n_i+1}{\overset{N}{\prod}}\Omega_j}(x_1,\cdots,x_N) \cdot 1_{\underset{j=N+1}{\overset{\infty}{\prod}}\Omega_j}({\ }\cdot{\ })=1_{E_{n_i}\times\underset{j=n_i+1}{\overset{N}{\prod}}\Omega_j}(x_1,\cdots,x_N) \quad(i=1,\cdots,m)
+\end{eqnarray*}
+となる．一方，
+\begin{eqnarray*}
+l_N(1_{A_i})=1_{E_{n_i}\times\underset{j=n_i+1}{\overset{N}{\prod}}\Omega_j}(x_1,\cdots,x_N)\cdot m_N\left(\underset{j=N+1}{\overset{\infty}{\prod}}\Omega_j\right)=1_{E_{n_i}\times\underset{j=n_i+1}{\overset{N}{\prod}}\Omega_j}(x_1,\cdots,x_N) \quad(i=1,\cdots,m)
+\end{eqnarray*}
+となるので，$^\forall N>n_0$に対して$l_N(g(x_1,\cdots,x_N,\cdot{\ }))=g(x)$となる．\qed
+\end{attention}
+\begin{proof}
+$m(A)=l(1_A)$であるので，$l$が$\mathcal{E}_\mathfrak{F}$上完全可積分であることを示せば$m$の完全加法性がわかる．$f_n,f\in\mathcal{E}_\mathfrak{F}$で$\{f_n\}$は増大列で$f$に収束するとする．$g_n=f-f_n$とおけば，$g_n\in\mathcal{E}_\mathfrak{F}$で$\{g_n\}$は減少列で$0$に収束する．$^\exists n_0\in\mathbb{N}$で$l(f_{n_0})=\infty$とすると$\{f_n\}$は増大列なので$\underset{n\to\infty}{lim}l(f)=\infty=l(f)$となる．よって$^\forall n\in\mathbb{N}$について$l(f_n)<\infty$として$l$が$\mathcal{E}_\mathfrak{F}$上完全可積分であることを示せばよい．$l(f)=l(f_n)+l(f-f_n)$であり$l(f_n)<\infty$であるので$l(f)-l(f_n)=l(f-f_n)=l(g_n)$となる．よって$\underset{n\to\infty}{lim}l(g_n)=0$を示せれば十分である．$^\forall \alpha\in\mathbb{R},{\ }0<\alpha<\infty$に対して一般の初等積分$l$について$l(\alpha f)=\alpha l(f)$は成り立たないが，今は初等積分の定義から明らかに成り立つ．$f=0$のときは自明なので$f\neq 0$として$f=\underset{i=1}{\overset{m}{\sum}}a_i1_{A_i}$とする．$\alpha=\max\{a_1,a_2,\cdots,a_m\}(>0)$として，$\widetilde{f}=\frac{f}{\alpha},{\ }\widetilde{f_n}=\frac{f_n}{\alpha},{\ }\widetilde{g_n}=\frac{g_n}{\alpha}$とおく．このとき，$\widetilde{f}\leq 1,{\ }\widetilde{f_n}\leq 1,{\ }\widetilde{g_n}\leq 1$であり，$\underset{n\to\infty}{lim}l(\widetilde{g_n})=0$を示せれば十分である．このように，初めから$f\leq 1$としても一般性を失わないので，初めから$f\leq 1$であるとして，以下$\widetilde{f}$などは用いない．そこで，$\underset{n\to\infty}{lim}l(g_n)=\epsilon_0>0$とする．\\
+{\ }{\ }$M=0,{\ }N=1,{\ }g=g_n(x_1,\cdot{\ })$に対して注意で示した補題1,2を用いると，$h_n(x_1)=l^{(0)}_1(g_n(x_1,\cdot{\ }))$として$\widetilde{l^{(0)}_1}(h_n)=l_0(g_n)$が成り立つ．$0< ^\forall \delta_1<1$を固定して$B_n=\{x_1\in\Omega \mid h_n(x_1)\geq\delta_1\epsilon_0\}$とおく．注意で示した$補題2$より$h_n$は$\mathfrak{M}_1$可測関数であるので，$B_n\in\mathfrak{M}_1$となる．$g_n\leq 1_\Omega$より$h_n=l^{(0)}_1(g_n)\leq l^{(0)}_1(1_\Omega)=1_{\Omega_1}$であり，$\widetilde{l^{(0)}_1}(1_{\Omega_1})=1$であるので
+\begin{eqnarray*}
+\epsilon_0 \leq l(g_n)=\widetilde{l^{(0)}_1}(h_n)&=&\widetilde{l^{(0)}_1}(1_{B_n}h_n)+\widetilde{l^{(0)}_1}((1-1_{B_n})h_n) \\
+&<&\widetilde{l^{(0)}_1}(1_{B_n})+\widetilde{l^{(0)}_1}((1-1_{B_n})\delta_1\epsilon_0) \\
+&=&\widetilde{l^{(0)}_1}(1_{B_n})+\delta_1\epsilon_0\widetilde{l^{(0)}_1}(1-1_{B_n}) \\
+&\leq&\widetilde{l^{(0)}_1}(1_{B_n})+\delta_1\epsilon_0
+\end{eqnarray*}
+となる．$\widetilde{l^{(0)}_1}(1_{B_n})=\mu_1(B_n)$であり，$\{h_n\}$は減少列であるから$\{B_n\}$も減少列になり，$\mu_1(B_1)\leq \mu_1(\Omega_1)=1<\infty$であるので，命題2.3(iv)より$B=\underset{n=1}{\overset{\infty}{\bigcap}}B_n$とすると$\widetilde{l^{(0)}_1}(1_B)=\mu_1(B)=\underset{n\to\infty}{lim}\mu_1(B_n)=\underset{n\to\infty}{lim}\widetilde{l^{(0)}_1}(1_{B_n})$となる．よって
+\begin{equation*}
+\epsilon_0<\widetilde{l^{(0)}_1}(1_B)+\delta_1\epsilon_0 \quad\Longleftrightarrow\quad \widetilde{l^{(0)}_1}(1_B)>(1-\delta_1)\epsilon_0>0
+\end{equation*}
+となるので，$B\neq \phi$となり，$\widetilde{x_1}\in B$を1つ選ぶと$^\forall n\geq 1$について$h_n(\widetilde{x_1})=l^{(0)}_1(g_n(\widetilde{x_1},\cdot{\ }))=l_1(g_n(\widetilde{x_1},\cdot{\ }))\geq\delta_1\epsilon_0$が成り立つ．\\
+{\ }{\ }$M=1,N=1,{\ }g=g_n(\widetilde{x_1},x_2,\cdot{\ })$に対して注意で示した補題1,2を用いると，$h_n(\widetilde{x_1},x_2)=l^{(1)}_1(g_n(\widetilde{x_1},x_2,\cdot{\ }))$として$\widetilde{l^{(1)}_1}(h_n(\widetilde{x_1},\cdot{\ }))=l_1(g_n(\widetilde{x_1},\cdot{\ }))$が成り立つ．$0< ^\forall \delta_2<1$を固定して$B_n=\{x_2\in\Omega \mid h_n(\widetilde{x_1},x_2)\geq\delta_2\delta_1\epsilon_0\}$とおく．注意で示した$補題2$より$\widetilde{x_1}\in\Omega_1$を固定したとき$h_n(\widetilde{x_1},x_2)$は$\mathfrak{M}_2$可測関数であるので，$B_n\in\mathfrak{M}_2$となる．$g_n(\widetilde{x_1},x_2,\cdot{\ })\leq 1_{\underset{j=2}{\overset{\infty}{\prod}}\Omega_j}$より$h_n(\widetilde{x_1},x_2)=l^{(1)}_1(g_n(\widetilde{x_1},x_2,\cdot{\ }))\leq l^{(1)}_1(1_{\underset{j=2}{\overset{\infty}{\prod}}\Omega_j})=1_{\Omega_2}$であり，$\widetilde{l^{(1)}_1}(1_{\Omega_2})=1$であるので
+\begin{eqnarray*}
+\delta_1\epsilon_0 \leq l_1(g_n(\widetilde{x_1},\cdot{\ }))=\widetilde{l^{(1)}_1}(h_n(\widetilde{x_1},\cdot{\ }))&=&\widetilde{l^{(1)}_1}(1_{B_n}h_n(\widetilde{x_1},\cdot{\ }))+\widetilde{l^{(1)}_1}((1-1_{B_n})h_n(\widetilde{x_1},\cdot{\ })) \\
+&<&\widetilde{l^{(1)}_1}(1_{B_n})+\widetilde{l^{(1)}_1}((1-1_{B_n})\delta_2\delta_1\epsilon_0) \\
+&=&\widetilde{l^{(1)}_1}(1_{B_n})+\delta_2\delta_1\epsilon_0\widetilde{l^{(1)}_1}(1-1_{B_n}) \\
+&\leq&\widetilde{l^{(1)}_1}(1_{B_n})+\delta_2\delta_1\epsilon_0
+\end{eqnarray*}
+となる．$\{h_n\}$は減少列であるから$\{B_n\}$も減少列になり，$\mu_2(B_1)\leq \mu_2(\Omega_2)=1<\infty$であるので，命題2.3(iv)より$B=\underset{n=1}{\overset{\infty}{\bigcap}}B_n$とすると$l^{(1)}_1(1_B)=\mu_2(B)=\underset{n\to\infty}{lim}\mu_2(B_n)=\underset{n\to\infty}{lim}l^{(1)}_1(1_{B_n})$となる．よって
+\begin{equation*}
+\delta_1\epsilon_0< \widetilde{l^{(1)}_1}(1_B)+\delta_2\delta_1\epsilon_0 \quad\Longleftrightarrow\quad \widetilde{l^{(1)}_1}(1_B)>(1-\delta_2)\delta_1\epsilon_0>0
+\end{equation*}
+となるので，$B\neq \phi$となり，$\widetilde{x_2}\in B$を1つ選ぶと$^\forall n\geq 1$について$h_n(\widetilde{x_1},\widetilde{x_2})=l^{(1)}_1(\widetilde{x_1},\widetilde{x_2},\cdot{\ })=l_2(g_n(\widetilde{x_1},\widetilde{x_2},\cdot{\ }))\geq\delta_2\delta_1\epsilon_0$が成り立つ．\\
+{\ }{\ }{\ }同様にして，$^\forall N\in \mathbb{N}$に対して，任意の$0<\delta_i<1{\ }(i=1,2,\cdots,N)$に対してある点列$(\widetilde{x_1},\cdots,\widetilde{x_N})$を取って
+\begin{equation*}
+l_N(g_n(\widetilde{x_1},\cdots,\widetilde{x_N},\cdot{\ }))\geq \delta_N\cdots\delta_1\epsilon_0 \quad (n=1,2,\cdots)
+\end{equation*}
+が成り立つようにできる．注意で示した補題3より十分大きな$N_n$に対して$g_n(x)=l_{N_n}(g_n(\widetilde{x_1},\cdots,\widetilde{x_{N_n}},\cdot{\ }))\geq \delta_{N_n}\cdots\delta_1\epsilon_0{\ }(n=1,2,\cdots)$が成り立つ．ただし$x=(\widetilde{x_1},\cdots,\widetilde{x_{N_n}},\cdot{\ })$である．例えば$\displaystyle \delta_{N_n}=1-\frac{1}{(N_n+1)^2}$とすると$N_n\to\infty$のとき$\displaystyle \delta_{N_n}\cdots\delta_1\to \frac{1}{2}(>0)$となるので，$\widetilde{x}=(\widetilde{x_1},\widetilde{x_2},\cdots)$として，任意の$n$に対して
+\begin{equation*}
+g_n(\widetilde{x})\geq \frac{1}{2}\epsilon_0>0
+\end{equation*}
+が成り立つ．これは$n\to\infty$で$g_n\to 0$となることに矛盾するので，結局$n\to\infty$で$l(g_n)\to 0$となる．\qed
+\end{proof}
+%
+%
+%
+\begin{theorem}
+$(\Omega_n,\mathfrak{M}_n,\mu_n){\ }(n=1,2,\cdots)$を測度空間の列で$\mu_n(\Omega_n)=1$とする．有限加法族$\mathfrak{F}$と有限加法的測度$m$を
+\begin{eqnarray*}
+\mathfrak{F}=\left\{a=E\times\prod_{i=n+1}^\infty\Omega_i \middle| E\in\mathfrak{M}_1\times\cdots\times\mathfrak{M}_n,{\ }1\leq n<infty \right\} \\
+m(A)=(\mu_1\times\cdots\times\mu_n)(E),{\ }A=E\times\prod_{i=n+1}^\infty\Omega_i\in\mathfrak{F}
+\end{eqnarray*}
+で定義すると$m$は$\sigma(\mathfrak{F})$上に一意的に測度に拡張できる．
+\end{theorem}
+\begin{proof}
+定理3.19と命題3.21と補題3.39による．
+\end{proof}
+%
+%
+%
+$\sigma(\mathfrak{F})$を$\underset{i=1}{\overset{\infty}{\prod}}\mathfrak{M}_i$，$m$の拡張を$\underset{i=1}{\overset{\infty}{\prod}}\mu_i$と書き，それぞれ無限直積$\sigma$加法族，無限直積測度とよぶ．
+%
+%
+%
+\begin{instance}
+各$n\geq 1$に対して$\Omega_n$を2点集合$\{0,1\}$とする．$\mathfrak{M}_n$は$\Omega_n$の部分集合全体とするが，この場合は4点集合$\mathfrak{M}_n=\{\phi,\{0,1\},\{0\},\{1\}\}$である．$0<p<1$とする．$\mu_n$は
+\begin{equation*}
+A\in\mathfrak{M}_n\Longrightarrow \mu_n(A)=(1-p)1_A(0)+p1_A(1)
+\end{equation*}
+と決める．$P_p=\underset{i=1}{\overset{\infty}{\prod}}\mu_i$とする(積ではなく記号であることに注意！)．$P_p$は$\Omega=\{0,1\}^\mathbb{N}$上の(確率)測度である．$P_p$をBernoulli測度という．$\phi:\Omega \rightarrow [0,1]$を次のように定義する．
+\begin{equation*}
+\phi(\omega)=\sum_{n=1}^\infty \frac{\omega_n}{2^n} \quad (\omega=(\omega_1,\omega_2,\cdots,\omega_n,\cdots))
+\end{equation*}
+$X_n(\omega)=\omega_n$とすれば
+\begin{eqnarray*}
+X_n(\omega)=\begin{cases}
+1 & \left(\displaystyle \omega\in \prod_{i=1}^{n-1}\Omega_i\times\{1\}\times\prod_{i=n+1}^\infty\Omega_i\right) \\
+0 & \left(\displaystyle \omega\in \prod_{i=1}^{n-1}\Omega_i\times\{0\}\times\prod_{i=n+1}^\infty\Omega_i\right)
+\end{cases}
+\end{eqnarray*}
+となり，$X_n$は$\underset{n=1}{\overset{\infty}{\prod}}\mathfrak{M}_n$可測関数となるので，その無限和として$\phi$も$\underset{n=1}{\overset{\infty}{\prod}}\mathfrak{M}_n$可測関数となる．そこで$A\in\mathfrak{B}([0,1])$に対し，
+\begin{equation*}
+\nu_p(A)=P_p(\phi^{-1}(A))
+\end{equation*}
+と定義する．$f$を一般の集合$A$から一般の集合$B$への写像として，$(P_\lambda)_{\lambda\in\Lambda}$を$A$の部分集合族とすれば$f(\underset{{\lambda\in\Lambda}}{\bigcup}P_\lambda)=\underset{\lambda\in\Lambda}{\bigcup} f(P_\lambda)$が成り立つ(松坂P.45)ので，$A_n\in\mathfrak{B}([0,1]){\ }(n=1,2,\cdots),{\ }A_i\cap A_j=\phi{\ }(i\neq j)$に対して
+\begin{equation*}
+\nu_p\left(\underset{n=1}{\overset{\infty}{\bigcup}}A_n\right)=P_p\left(\phi^{-1}\left(\underset{n=1}{\overset{\infty}{\bigcup}}A_n\right)\right)=P_p\left(\underset{n=1}{\overset{\infty}{\bigcup}} \phi^{-1}(A_n)\right)=\sum_{n=1}^\infty P_p(\phi^{-1}(A_n))=\sum_{n=1}^\infty \nu_p(A_n)
+\end{equation*}
+となる．3つ目の等号では$P_p$が$\Omega=\{0,1\}^\mathbb{N}$上の(確率)測度であることを用いた．よって$\nu_p$は$[0,1]$上の確率測度になる．$\nu_p$は$\phi$による$P_p$の像測度(image measure)である．像測度のことを誘導測度(induced measure)とも言う．\\
+{\ }{\ }{\ }また，$p=\frac{1}{2}$のときには$\nu_p$は$\mathbb{R}$上のLebesgue測度$\mu$を$[0,1]$に制限したものになることを示す．方針としては
+\begin{equation*}
+\mathfrak{T}=\{A\in\mathfrak{B}(\mathbb{R})\mid \nu_{\frac{1}{2}}(A)=\mu(A)\}
+\end{equation*}
+として，$\mathfrak{B}(\mathbb{R})\subset\mathfrak{T}$を示す．そのためには，$\sigma(\mathfrak{A})=\mathfrak{B}(\mathbb{R})$であることから，$\mathfrak{A}\subset\mathfrak{T}$と$\mathfrak{T}$が単調族であることを示せばよい．$\mathfrak{T}$が単調族であることは自明であるので，あとは$\mathfrak{A}\subset\mathfrak{T}$を示す．$^\forall a,b\in [0,1]$に対して$[a,b]\in\mathfrak{T}$を示せば十分である．
+まず簡単な例で考える．\\
+{\ }{\ }$A=\left[0,\frac{1}{2}\right]$のとき，
+\begin{equation*}
+\phi^{-1}(A)=\{0\}\times\underset{i=2}{\overset{\infty}{\prod}}\Omega_i+\{1\}\times\{0\}\times\{0\}\times\cdots
+\end{equation*}
+であるので$P_p$が$m$の拡張であることから$P_p(\phi^{-1}(A))=\frac{1}{2}$となる．\\
+{\ }{\ }$A=\left[\frac{1}{4},\frac{3}{4}\right]=\left[\frac{1}{4},\frac{1}{2}\right]+\left(\left[\frac{1}{2},\frac{3}{4}\right]-\{\frac{1}{2}\}\right)$のとき，
+\begin{equation*}
+\phi^{-1}\left(\left[\frac{1}{4},\frac{1}{2}\right]\right)=\{0\}\times\{1\}\times\underset{i=3}{\overset{\infty}{\prod}}\Omega_i+\{0\}\times\{0\}\times\{1\}\times\{1\}\times\{1\}\times\cdots+\{1\}\times\{0\}\times\{0\}\times\cdots
+\end{equation*}
+であり
+\begin{equation*}
+\phi^{-1}\left(\left[\frac{1}{2},\frac{3}{4}\right]\right)=\{1\}\times\{0\}\times\underset{i=3}{\overset{\infty}{\prod}}\Omega_i+\{1\}\times\{0\}\times\{0\}\times\cdots+\{1\}\times\{1\}\times\{0\}\times\{0\}\times\{0\}\times\cdots
+\end{equation*}
+であり
+\begin{equation*}
+\phi^{-1}\left(\left\{\frac{1}{2}\right\}\right)=\{1\}\times\{0\}\times\{0\}\times\cdots
+\end{equation*}
+であるので$P_p$が$m$の拡張であることから$P_p(\phi^{-1}(A))=\frac{1}{2}$となる．\\
+{\ }{\ }{\ }同様にして，$n$を$n=0,1,\cdots$，$m$を$m=0,1,\cdots,2^n$として，一般に区間の端が$\displaystyle \frac{m}{2^n}$と書ける閉集合については$\nu_{\frac{1}{2}}=\mu$が成り立つ．これを用いて，一般の$a,b\in [0,1]{\ }(a\leq b)$について$\nu_{\frac{1}{2}}([a,b])=\mu([a,b])$を示す．$^\forall n\in\mathbb{N}$に対して，$a,b$それぞれについて$^\exists m_1,m_2\in \{0,1,\cdots,2^n\}$が存在して$m_1+1,m_2+1\in [0,1]$となり
+\begin{eqnarray*}
+\frac{m_1}{2^n}\leq a<\frac{m_1+1}{2^n} \\
+\frac{m_2}{2^n}\leq b<\frac{m_2+1}{2^n}
+\end{eqnarray*}
+が成り立つ．ただし，$a$や$b$が$1$であるときは
+\begin{equation*}
+\frac{m_1-1}{2^n}<a\leq\frac{m_1}{2^n}
+\end{equation*}
+などとすればよい．とにかく$^\forall n\in\{0,1,\cdots\}$に対して，$[0,1]$上の点を区間の端が$\frac{m}{2^n}{\ }(m=0,1,\cdots,2^n)$と書ける閉集合で被覆できることが重要である．これを用いると
+\begin{equation*}
+\nu_{\frac{1}{2}}(\{a\})\leq\nu_{\frac{1}{2}}\left(\left[\frac{m_1}{2^n},\frac{m_1+1}{2^n}\right]\right)=\mu\left(\left[\frac{m_1}{2^n},\frac{m_1+1}{2^n}\right]\right)=\frac{1}{2^n}\to 0{\ }(n\to\infty)
+\end{equation*}
+となるので，任意の1点集合について$\nu_{\frac{1}{2}}$の値は0となる．よって
+\begin{eqnarray*}
+\nu_{\frac{1}{2}}([a,b])&=&\nu_{\frac{1}{2}}\left(\left[\frac{m_1}{2^n},\frac{m_2+1}{2^n}\right]-\left[\frac{m_1}{2^n},a\right)-\left(b,\frac{m_2+1}{2^n}\right]\right) \\
+&=&\nu_{\frac{1}{2}}\left(\left[\frac{m_1}{2^n},\frac{m_2+1}{2^n}\right]-\left[\frac{m_1}{2^n},a\right]-\left[b,\frac{m_2+1}{2^n}\right]\right) \\
+&=&\nu_{\frac{1}{2}}\left(\left[\frac{m_1}{2^n},\frac{m_2+1}{2^n}\right]\right)-\nu_{\frac{1}{2}}\left(\left[\frac{m_1}{2^n},a\right]\right)-\nu_{\frac{1}{2}}\left(\left[b,\frac{m_2+1}{2^n}\right]\right) \\
+&=&\mu\left(\left[\frac{m_1}{2^n},\frac{m_2+1}{2^n}\right]\right)-\nu_{\frac{1}{2}}\left(\left[\frac{m_1}{2^n},a\right]\right)-\nu_{\frac{1}{2}}\left(\left[b,\frac{m_2+1}{2^n}\right]\right) \\
+&\to&\mu([a,b])-\nu_{\frac{1}{2}}(\{a\})-\nu_{\frac{1}{2}}(\{b\}){\ }(n\to\infty) \\
+&=&\mu([a,b])
+\end{eqnarray*}
+となり，以上より$\nu_{\frac{1}{2}}=\mu$であることが示された．$\displaystyle p\neq \frac{1}{2}$のときにLebesgue測度との関係はどのようになるかは8.1節を参照．
+\end{instance}
+%
+%
+%
+%
+\section{距離空間上の測度}
+\subsection{Euclid空間上の測度}
+{\bf (b){\ }Lebesgue非可測集合} \\
+{\ }{\ }{\ }加法についての可換群$\mathbb{R}$は，通常の位相$\mathfrak{O}$によってHausdorff位相群となる．自然な写像$\phi:\mathbb{R}\rightarrow \mathbb{R}/\mathbb{Z}=\mathbb{T}$によって$\mathbb{T}$の位相$\mathfrak{O}'$が定まり，$\mathbb{Z}$は$\mathbb{R}$の正規閉部分群であるので，$\mathbb{T}$はHausdorff位相群になる\footnote{位相群についての一般論は付録Aを参照．}．$\mathbb{T}$上の$\sigma$加法族を$\mathfrak{B}(\mathbb{T})=\sigma(\mathfrak{O}')$によって定義する．また，$\mathbb{T}$上の測度を$\phi$による$\mathbb{R}$上のLebesgue測度$\mu$の像測度$\hat{\mu}$によって以下のように定義する\footnote{\cite{kotani}の$\hat{\mu}$の定義では$\hat{\mu}(\mathbb{T})=\infty$となってしまい後で矛盾が導けなくなる．}．
+\begin{equation*}
+\hat{\mu}(A)=\mu([0,1]\cap \phi^{-1}(A)) \quad (A\in\mathfrak{B}(\mathbb{T}))
+\end{equation*}
+$\xi\in\mathbb{T}$に対して$T_\xi:\mathbb{T}\rightarrow\mathbb{T}$を
+\begin{equation*}
+T_\xi (a)=\xi+a \quad a\in\mathbb{T}
+\end{equation*}
+とすると，$T_\xi$は同相写像であるので，$T_\xi,T_\xi^{-1}$は$\mathfrak{B}(\mathbb{T})$可測写像となる．よって,$^\forall A\in\mathfrak{B}(\mathbb{T})$について
+\begin{equation*}
+(T_\xi^{-1})^{-1}(A)=T_\xi(A)\in\mathfrak{B}(\mathbb{T})
+\end{equation*}
+となる．この後は命題4.4の証明を辿れば良い．
+\begin{equation*}
+\mathfrak{G}:=\{A\in\mathfrak{B}(\mathbb{T}) \mid \hat{\mu}(T_\xi(A))=\hat{\mu}(A)\}
+\end{equation*}
+とおく．$\mathfrak{O}'\subset \mathfrak{G}$を示せば後は命題4.4の証明と全く同様にして(4.4)式までが示される．$\mathfrak{O}'\subset \mathfrak{G}$については，$T_\xi$が''平行移動''の同相写像であることと$\hat{\mu}$の定義より，既に示してある$\mu$の平行移動不変性に帰着できるので，直感的には自明である．よって省略する．
+%
+%
+%
+%
+\section{関数空間}
+\setcounter{subsection}{1}
+\subsection{$\mathbb{R}^n$上の関数空間}
+\setcounter{definition}{20}
+\begin{prop}
+$f\in L^p(\mathbb{R}^n,dx){\ }(1\leq p\leq \infty)$，$g\in L^1(\mathbb{R}^n,dx)$なら$||f\ast g||_p\leq ||f||_p\cdot ||g||_1$
+\end{prop}
+\begin{attention}
+\cite{ito}より定理を引用する．証明は長くなるものもあるので省略する．定理番号は\cite{ito}のものである．
+\begin{itembox}[l]{定理10.3}
+$f$が可測ならば，任意の実数$\alpha\neq 0$に対して$|f(x)|^\alpha$は可測である．ただし，$\alpha<0$のときは$f(x)=0$なる点$x$においては$|f(x)|^\alpha=\infty$と規約する．
+\end{itembox}
+\begin{itembox}[l]{定理11.3}
+$(X,\mathfrak{B}_X)$を任意の可測関数とし，$X$と$\mathbb{R}^n$との直積空間$Z=X\times\mathbb{R}^n$において直積$\sigma$加法族$\mathfrak{B}_Z=\mathfrak{B}_X\times\mathfrak{B}(\mathbb{R}^n)$を定義する．$Z$上の関数$f(x,y)$があって
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $y$を固定すれば$x$の関数として$\mathfrak{B}_X$可測であり
+\item $x$を固定すれば$y$の関数として連続である
+\end{enumerate}
+ならば$f(x,y)$は$(x,y)\in Z$の関数として$\mathfrak{B}_Z$可測である．
+\end{itembox}
+この定理より$\mathbb{R}^n$上の$\mathfrak{B}(\mathbb{R}^n)$可測関数$f(x)$は，$x$を固定して$y$を動かしたとき一定であると考えると$y$の関数として連続であるので，$\mathbb{R}^n\times\mathbb{R}^n$上の関数として$\mathfrak{B}(\mathbb{R}^n)\times\mathfrak{B}(\mathbb{R}^n)$可測関数となる．
+\begin{itembox}[l]{定理11.4}
+$f(x)$が$\mathbb{R}^n$の上の$\mathfrak{B}(\mathfrak{R}^n)$可測関数ならば$f(x\pm y)$は$\mathbb{R}^n\times\mathbb{R}^n$上の関数として$\mathfrak{B}(\mathbb{R}^n)\times\mathfrak{B}(\mathbb{R}^n)$可測関数となる．
+\end{itembox}
+\begin{itembox}[l]{定理12.7{\ }(Lebesgue積分の不変性)}
+Lebesgue可測集合全体を$\mathfrak{M}$とする．$f(x)$が$\mathbb{R}^n$の上の$\mathfrak{M}$可測関数で，定積分$\int_{\mathbb{R}^n}f(x)dx$を持つならば，任意の$y\in\mathbb{R}^n$に対して$f(x+y),f(-x)$は$x$の関数として$\mathfrak{M}$可測で定積分を持ち
+\begin{equation*}
+\int_{\mathbb{R}^n}f(x+y)dx=\int_{\mathbb{R}^n}f(-x)dx=\int_{\mathbb{R}^n}f(x)dx
+\end{equation*}
+\end{itembox}
+\cite{ito}では一般の$\bar{\mathbb{R}}$値可測関数$f$の積分を$f$が可積分のときに限定せず，それよりも弱いクラスとして，$\int_Xf^\pm(x)dx$の少なくとも一方が有限のとき，そのときに限り$f$は{\bf 定積分をもつ}といい，そのとき$\int_Xf(x)dx=\int_Xf^+(x)dx-\int_Xf^-(x)dx$と定義して，この値を$X$の上での$f$の{\bf 定積分}としている．そして，この定積分の値が有限のとき$f$は可積分であるとしている．この辺りの定義は\cite{kotani}も結局のところ，暗黙の内に\cite{ito}と同様の定義を用いて計算している場面が多々あるので，あまり気にしなくて構わない．
+\end{attention}
+\begin{proof}
+$p=1,\infty$のときは後で考えることにして$1<p<\infty$とする．$p^{-1}+q^{-1}=1$によって$q{\ }(1<q<\infty)$を定める．$|f(x-y)g(y)|=|f(x-y)||g(y)|^{\frac{1}{p}}|g(y)|^{\frac{1}{q}}$と分解してH${\rm \ddot{o}}$lderの不等式を用いる．そのためには$|f(x-y)||g(y)|^{\frac{1}{p}}\in L^p(\mathbb{R}^n,dx)$と$|g(y)|^{\frac{1}{q}}\in L^q(\mathbb{R}^n,dx)$を示す必要がある．後者は$g\in L^1(\mathbb{R}^n,dx)$より成り立っている．前者は
+\begin{eqnarray*}
+\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}\left\{|f(x-y)||g(y)|^{\frac{1}{p}}\right\}^p dy\right)dx&=&\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}|f(x-y)|^p|g(y)| dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x-y)|^p dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x)|^p dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\cdot ||f||_p^pdy \\
+&=&||g||_1\cdot ||f||_p^p<\infty
+\end{eqnarray*}
+より，a.e.$x\in\mathbb{R}^n$に対して$\int_{\mathbb{R}^n}\left\{|f(x-y)||g(y)|^{\frac{1}{p}}\right\}^p dy<\infty$となることより，a.e.$x\in\mathbb{R}^n$に対して$|f(x-y)||g(y)|^{\frac{1}{p}}$は$y$の関数として$|f(x-y)||g(y)|^{\frac{1}{p}}\in L^p(\mathbb{R}^n,dx)$となる．1つ目の等号では注意で引用した定理より$|f(x-y)|^p|g(y)|$は$\mathbb{R}^n\times\mathbb{R}^n$可測関数となるので，非負可測関数についてのFubiniの定理(定理3.35)を用いた．3つ目の等号では注意で引用した定理12.7を用いた．よって，$|f(x-y)||g(y)|^{\frac{1}{p}}\in L^p(\mathbb{R}^n,dx)$となるような$x$を固定すれば，$y$の関数としてH${\rm \ddot{o}}$lderの不等式を用いることができる．a.e.$x\in\mathbb{R}^n$に対して
+\begin{eqnarray*}
+\left|\int_{\mathbb{R}^n}f(x-y)g(y)dy\right|&\leq&\int_{\mathbb{R}^n}|f(x-y)g(y)|dy \\
+&\leq&\left(\int_{\mathbb{R}^n}\left\{|f(x-y)||g(y)|^{\frac{1}{p}}\right\}^p dy\right)^{\frac{1}{p}}\cdot\left(\int_{\mathbb{R}^n}\left\{|g(y)|^{\frac{1}{q}}\right\}^q dy\right)^{\frac{1}{q}}<\infty
+\end{eqnarray*}
+となるので，$(f\ast g)(x)=\int_{\mathbb{R}^n}f(x-y)g(y)dy$が定義できる．また，この式より
+\begin{equation*}
+\left|(f\ast g)(x)\right|^p=\left|\int_{\mathbb{R}^n}f(x-y)g(y)dy\right|^p\leq\left(\int_{\mathbb{R}^n}|f(x-y)|^p|g(y)|dy\right)\cdot ||g||_1^{\frac{p}{q}} \eqno(\ast)
+\end{equation*}
+である\footnote{\cite{kotani}の$\int_{\mathbb{R}^n}|f(x-y)g(y)|^pdy\leq\cdots$という式は成り立たないと思われる．}ので，両辺を$x$について積分すれば…としたいところだが，$|(f\ast g)(x)|$が$\mathfrak{B}(\mathbb{R}^n)$可測関数であるかわからない(複素数値可測関数についてのFubiniの定理(定理3.36(ii))からわかるがこれを適用するためには$f(x-y)g(y)$が$dx\times dy$可積分でなくてはならない)ので，左辺は積分できるかどうかはすぐにはわからない．そこで，$|f(x-y)g(y)|$をまず$x$について，次に$y$について積分すると
+\begin{eqnarray*}
+\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}|f(x-y)g(y)| dx\right)dy&=&\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x-y)| dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x)| dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\cdot ||f||_1 dy \\
+&=&||g||_1\cdot ||f||_1<\infty
+\end{eqnarray*}
+となる．3つ目の等号では例題5.12より$L^p\subset L^1$であることを用いた．一方，非負可測関数についてのFubiniの定理より
+\begin{equation*}
+\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}|f(x-y)g(y)| dx\right)dy=\int_{\mathbb{R}^n\times\mathbb{R}^n}|f(x-y)g(y)|(dx\times dy)(dxdy)
+\end{equation*}
+となるので，$|f(x-y)g(y)|$は$dx\times dy$可積分である．よって定理3.36の注意の初めでコメントしたように，複素数値可測関数についての可積分の定義より$f(x-y)g(y)$は$dx\times dy$可積分となるので，上に述べたように複素数値可測関数についてのFubiniの定理(定理3.36(ii))より，$(f\ast g)(x)$に同値で$\mathfrak{B}(\mathbb{R}^n)$可測であるようなものが存在する\footnote{ここで述べた定理3.36を適用するための論法は，\cite{ito}ではFubiniの定理の系として纏められている．すなわち，$f(x,y)$を$X\times Y$の上の複素数値$\mathfrak{M}_X\times\mathfrak{M}_Y$可測関数として
+\begin{equation*}
+\int_X\left(\int_Y|f(x,y)| \nu(dy)\right)\mu(dx),{\ }\int_Y\left(\int_X|f(x,y)| \mu(dx)\right)\nu(dy),{\ }\int_{X\times Y}|f(x,y)|(\mu\times\nu)(dxdy)
+\end{equation*}
+のどれか1つが有限ならば他の2つも有限で3つとも等しくなり，さらに複素数値可測関数についてのFubiniの定理(定理3.36)が成立するのである．ここで用いたように，実用上はこの形に纏めておくと便利である．}．よって，$(\ast)$の両辺を$x$について積分すれば
+\begin{eqnarray*}
+\int_{\mathbb{R}^n}|(f\ast g)(x)|^p dx&\leq& ||g||_1^{\frac{p}{q}}\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}|f(x-y)|^p|g(y)|dy\right)dx \\
+&=&||g||_1^{\frac{p}{q}}\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}|f(x-y)|^p|g(y)|dx\right)dy \\
+&=&||g||_1^{\frac{p}{q}}\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x-y)|^pdx\right)dy \\
+&=&||g||_1^{\frac{p}{q}}\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x)|^pdx\right)dy \\
+&=&||g||_1^{\frac{p}{q}}\int_{\mathbb{R}^n}|g(y)|\cdot ||f||_p^p dy \\
+&=&||g||_1^{\frac{p}{q}+1}\cdot ||f||_p^p<\infty
+\end{eqnarray*}
+となるので，$f\ast g\in L^p(\mathbb{R}^n,dx)$となる．よって，ノルム$||\cdot||_p$を使って書けば
+\begin{equation*}
+||f\ast g||_p^p\leq ||f||_p^p\cdot ||g||_1^{\frac{p}{q}+1}=||f||_p^p\cdot ||g||_1^p
+\end{equation*}
+\begin{equation*}
+\therefore ||f\ast g||_p\leq ||f||_p\cdot ||g||_1
+\end{equation*}
+となる．なお，a.e.$x\in\mathbb{R}^n$で成立する不等式を$x$について$\mathbb{R}^n$全体で積分して不等式が保たれることについて説明を省略したが，零集合上の関数の値は積分の値に寄与しないことを考えれば明らかである．\\
+{\ }{\ }{\ }次に$p=1$のときを考える．
+\begin{eqnarray*}
+\int_{\mathbb{R}^n}\left|\int_{\mathbb{R}^n}f(x-y)g(y) dy\right|dx&\leq&\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}|f(x-y)g(y)| dy\right)dx \\
+&=&\int_{\mathbb{R}^n}\left(\int_{\mathbb{R}^n}|f(x-y)g(y)| dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x-y)| dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\left(\int_{\mathbb{R}^n}|f(x)| dx\right)dy \\
+&=&\int_{\mathbb{R}^n}|g(y)|\cdot ||f||_1 dy \\
+&=&||g||_1\cdot ||f||_1<\infty
+\end{eqnarray*}
+であるので，a.e.$x\in\mathbb{R}^n$に対して$\int_{\mathbb{R}^n}|f(x-y)g(y)| dy<\infty$となるので$(f\ast g)(x)=\int_{\mathbb{R}^n}f(x-y)g(y)dy$が定義できる．また，$f\ast g\in L^1(\mathbb{R}^n,dx)$がわかるので，ノルム$||\cdot||_1$を使って書けば
+\begin{equation*}
+||f\ast g||_1\leq ||f||_1\cdot ||g||_1
+\end{equation*}
+となる．\\
+{\ }{\ }{\ }最後に，$p=\infty$のときを考える．$||f||_\infty=\alpha(<\infty)$とする．よって，特に$|f(x)|\leq\alpha{\ }$a.e.$x\in\mathbb{R}^n$である．
+\begin{eqnarray*}
+\left|\int_{\mathbb{R}^n}f(x-y)g(y)dy\right|&\leq&\int_{\mathbb{R}^n}|f(x-y)g(y)|dy \\
+&=&\int_{\mathbb{R}^n}|g(x-y)f(y)|dy \\
+&\leq&\int_{\mathbb{R}^n}|g(x-y)|\alpha dy \\
+&=&\alpha\int_{\mathbb{R}^n}|g(x-y)|dy \\
+&=&\alpha\int_{\mathbb{R}^n}|g(y)|dy \\
+&=&\alpha||g||_1<\infty
+\end{eqnarray*}
+であるので，$\int_{\mathbb{R}^n}|f(x-y)g(y)| dy<\infty$となるので$(f\ast g)(x)=\int_{\mathbb{R}^n}f(x-y)g(y)dy$が定義できる．2つ目の等号では問4を用いた．また，$|(f\ast g)(x)|\leq ||f||_\infty\cdot ||g||_1(<\infty)$がわかるが，これによって$f\ast g$は本質的に有界であり，また$f\ast g\in L^\infty(\mathbb{R}^n,dx)$となる．本質的上限はこのような右辺の下限であるので，左辺をノルムを使って書けば
+\begin{equation*}
+||f\ast g||_\infty\leq ||f||_\infty\cdot ||g||_1
+\end{equation*}
+が成り立つ．\qed
+\end{proof}
+%
+%
+%
+%
+\subsection{Fourier解析}
+%
+%怪しいことしてるのはやはり同一視
+%あとは補題5.27の\sigma_n(x)の書き換えあんまりわかってない．
+%同一視がどこまで許されるのか．それとも連続関数だからリーマン積分と同一視しているとか…
+%
+{\bf (a){\ }Fourier級数}\footnote{この小節は特に行間が広い．一方で，$\mathbb{T}$上のフーリエ級数について論じている本は極めて少ない．\cite{takahashi}を参照．}\\
+{\ }{\ }{\ }以下，$\mathbb{T}$は必要に応じて$[0,1]$と同一視する．同様に，$f\in C(\mathbb{T})$は必要に応じて$\mathbb{R}$上の周期1の関数$f(x+1)=f(x)$と同一視する．
+\begin{equation*}
+e_k(x)=e^{2\pi ikx} \quad (k\in\mathbb{Z})
+\end{equation*}
+とおく．$f$のFourier計数$f_k$は
+\begin{equation*}
+f_k=\int_\mathbb{T}f(x)\overline{e_k(x)}dx
+\end{equation*}
+と定義される．Fourier和$s_n(x)$は
+\begin{equation*}
+s_n(x)=\sum_{k=-n}^n f_ke_k(x)=\sum_{k=-n}^n\left(\int_\mathbb{T}f(y)\overline{e_k(y)}dy\right)e_k(x)=\int_\mathbb{T}f(y)\left(\sum_{k=-n}^ne_k(x-y)\right)dy
+\end{equation*}
+と定義される．ここで現れた関数
+\begin{equation*}
+D_n(x)=\sum_{k=-n}^ne_k(x) \quad (x\in\mathbb{T})
+\end{equation*}
+を{\bf Dirichlet核}という．Dirichlet核を用いればFourier和は
+\begin{equation*}
+s_n(x)=\int_\mathbb{T}D_n(x-y)f(y)dy
+\end{equation*}
+と書ける．
+\begin{itembox}[l]{Dirichlet核の基本的性質}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $D_n(0)=2n+1,{\ }D_n(-x)=D_n(x)$
+\item $x\in\mathbb{T},{\ }t\neq 0$のとき
+\begin{equation*}
+D_n(x)=\frac{\sin{(2n+1)\pi x}}{\sin{\pi x}}
+\end{equation*}
+\item $\int_\mathbb{T}D_n(x)dx=1$
+\end{enumerate}
+\end{itembox}
+また
+\begin{equation*}
+\sigma_n(x)=\frac{1}{n}\sum_{k=0}^{n-1}s_k(x)
+\end{equation*}
+をFej${\rm \acute{e}}r$和といい，対応するDirichlet核のCes${\rm \grave{a}}$ro平均
+\begin{equation*}
+K_n(x)=\frac{1}{n}\sum_{k=0}^{n-1}D_k(x)=\frac{1}{n}\sum_{k=0}^{n-1}\sum_{l=-k}^ke_l(x)
+\end{equation*}
+は{\bf Fej${\rm \acute{e}}$r核}という．Fej${\rm \acute{e}}$r核を用いればFej${\rm \acute{e}}r$和は
+\begin{equation*}
+\sigma_n(x)=\int_\mathbb{T}K_n(x-y)f(y)dy
+\end{equation*}
+と書ける．
+\begin{itembox}[l]{Fej${\rm \acute{e}}$r核の基本的性質}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $^\forall x\in\mathbb{T},{\ }F_n(x)\geq 0$
+\item $F_n(0)=n,{\ }F_n(-x)=F_n(x)$
+\item $x\in\mathbb{T},{\ }x\neq 0$のとき
+\begin{equation*}
+F_n(x)=\frac{1}{n}\left(\frac{\sin{n\pi x}}{\sin{\pi x}}\right)^2
+\end{equation*}
+\item $\int_\mathbb{T}F_n(x)dx=1$
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+(iv){\ }は明らかである．
+\begin{equation*}
+\sum_{k=0}^{n-1}\sum_{l=-k}^ke_l(x)=\sum_{l=-(n-1)}^{n-1}\sum_{k=|l|}^{n-1}e_l(x)=\sum_{l=-(n-1)}^{n-1}(n-|l|)e_l(x)=\left|\sum_{m=0}^{n-1}e_m(x)\right|^2
+\end{equation*}
+となるので，(i)(ii)(iii)が成り立つ．最後の等式は$e_p(x)\overline{e_q(x)}=e_{p-q}(x)$より成り立つ．\qed
+\end{proof}
+(iii)よりFej${\rm \acute{e}}$r核はディラックのデルタ関数のように振る舞うことが予想できるが，実際，以下の補題が成り立つ．
+\setcounter{definition}{26}
+\begin{lemma}[Fej${\rm \acute{e}}$rの定理]
+$f\in C(\mathbb{T})$に対して$||\sigma_n-f||_\infty\to 0\quad (n\to\infty )$
+\end{lemma}
+\begin{proof}
+命題1.24より，$f$は一様連続関数であるので，
+\begin{equation*}
+^\forall\epsilon>0,{\ } ^\exists\delta>0{\ }\st{\ }|x-y|<\delta \Longrightarrow |f(x)-f(y)|<\epsilon
+\end{equation*}
+となる．また
+\begin{equation*}
+\sigma_n(x)=\int_\mathbb{T}K_n(x-y)f(y)dy=\int_\mathbb{T}K_n(y)f(x-y)dy
+\end{equation*}
+であるので
+\begin{eqnarray*}
+|\sigma_n(x)-f(x)|&=&\left|\int_0^1K_n(y)f(x-y)dy-\int_0^1K_n(y)f(x)dy\right| \\
+&\leq&\int_0^1K_n(y)|f(x-y)-f(x)|dy \\
+&=&\int_0^\delta K_n(y)|f(x-y)-f(x)|dy+\int_\delta^1K_n(y)|f(x-y)-f(x)|dy \\
+&<&\epsilon\int_0^\delta K_n(y)dy+\int_\delta^1K_n(y)\left\{|f(x-y)|+|f(x)|\right\}dy \\
+&\leq&\epsilon+2||f||_\infty\int_\delta^1K_n(y)dy
+\end{eqnarray*}
+となる．ここで，$\delta<\frac{1}{2}$とすると
+\begin{equation*}
+\int_\delta^1K_n(y)dy=\frac{1}{n}\int_\delta^1\left(\frac{\sin{n\pi y}}{\sin{\pi y}}\right)^2dy\leq\frac{1}{n}\int_\delta^1\left(\frac{1}{\sin{\pi\delta}}\right)^2dy\leq\frac{1}{n}\left(\frac{1}{\sin{\pi\delta}}\right)^2
+\end{equation*}
+となるので，$\frac{2||f||_\infty}{N}\left(\frac{1}{\sin{\pi\delta}}\right)^2<\epsilon$となるように十分大きな$N\in\mathbb{N}$を選べば
+\begin{equation*}
+|\sigma_n(x)-f(x)|<2\epsilon
+\end{equation*}
+となる．よって示された．\qed
+\end{proof}
+%
+%
+%
+%
+\newpage
+%
+%
+%
+%
+\appendix
+\section{連続写像が可測写像であること}
+\begin{itembox}[l]{補題1}
+$(S_1,\mathfrak{O}_1),(S_2,\mathfrak{O}_2)$を位相空間として，$f:S_1\to S_2$を連続写像とする．$S_1$のBorel集合族を$\mathfrak{B}(S_1)$，$S_2$のBorel集合族を$\mathfrak{B}(S_2)$とする．このとき，$f$は$\mathfrak{B}(S_1)$-$\mathfrak{B}(S_2)$可測写像となる．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\begin{equation*}
+\mathfrak{T}=\{A\in\mathfrak{B}(S_2) \mid f^{-1}(A)\in\mathfrak{B}(S_1)\}
+\end{equation*}
+とする．$f$は連続写像であるので，$\mathfrak{O}_2\subset\mathfrak{T}$となる．$\mathfrak{T}$が単調族であることを示せば$\mathfrak{B}(S_2)=\sigma(\mathfrak{O}_2)\subset\mathfrak{T}$となり，題意が成り立つ．
+\begin{equation*}
+A_n\in\mathfrak{T}{\ }(n=1,2,\cdots),\quad A_1\subset A_2\subset\cdots\subset A_n\subset\cdots
+\end{equation*}
+とすると
+\begin{equation*}
+f^{-1}\left(\bigcup_{n=1}^\infty A_n\right)=\bigcup_{n=1}^\infty f^{-1}(A_n)\in\mathfrak{B}(S_1)
+\end{equation*}
+となるので$\underset{n=1}{\overset{\infty}{\bigcup}}A_n\in\mathfrak{T}$となる．また
+\begin{equation*}
+B_n\in\mathfrak{T}{\ }(n=1,2,\cdots),\quad B_1\supset B_2\supset\cdots\supset B_n\supset\cdots
+\end{equation*}
+とすると$f^{-1}\left(\underset{n=1}{\overset{\infty}{\bigcap}} B_n\right)\in\mathfrak{B}(S_1)$となることを示すために
+\begin{equation*}
+A\in\mathfrak{T} \Longrightarrow A^c\in\mathfrak{T}
+\end{equation*}
+に注意する．これは
+\begin{equation*}
+f^{-1}(A^c)=(f^{-1}(A))^c\in\mathfrak{B}(S_1)
+\end{equation*}
+となることよりわかる．よって
+\begin{equation*}
+f^{-1}\left(\underset{n=1}{\overset{\infty}{\bigcap}} B_n\right)=f^{-1}\left(\left(\underset{n=1}{\overset{\infty}{\bigcup}} B_n^c\right)^c\right)=\left(f^{-1}\left(\underset{n=1}{\overset{\infty}{\bigcup}} B_n^c\right)\right)^c\in\mathfrak{B}(S_1)
+\end{equation*}
+となるので$\underset{n=1}{\overset{\infty}{\bigcap}}A_n\in\mathfrak{T}$となる．\qed
+\end{proof}
+%
+%
+%
+%
+\section{位相群}
+位相群についての一般論を簡単にまとめておく．中間目標は定理5,定理9,定理13である．
+\subsection{定義}
+\begin{itembox}[l]{定義(位相群)}
+集合$G$が次の性質を持つとき，$G$を位相群という:
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $G$は群であり，同時に$G$は位相空間である．
+\item 直積空間$G\times G$から$G$への写像$\phi:(x,y)\mapsto x\cdot y$は連続である．ただし，$x\cdot y$は群$G$の元$x,y$の積を表す．
+\item $G$から$G$への写像$\psi:x\mapsto x^{-1}$は連続である．ここに$x^{-1}$は$G$の元$x$の逆元を表す．
+\end{enumerate}
+\end{itembox}
+%
+%
+%
+\begin{itembox}[l]{補題1}
+$G$を位相群，$g\in G$とするとき，$G$から$G$への写像$L_g,{\ }R_g$を
+\begin{equation*}
+L_g(x)=g\cdot x, \quad R_g(x)=x\cdot g \quad (x\in G)
+\end{equation*}
+により定義する．このとき，$\psi,{\ }L_g,{\ }R_g$は$G$の同相写像である．
+\end{itembox}
+\vspace{-1zh}%間隔調整
+\vspace{-1zh}%間隔調整
+\begin{proof}
+明らかに$\psi$は同相写像である．「多変数の連続写像は一部の変数を固定した場合残りの変数について連続である」(松坂P.194)ので，位相群の性質(2)より$L_g,{\ }R_g$は連続写像である．また，$L_g^{-1}=L_{g^{-1}},{\ }R_g^{-1}=R_{g^{-1}}$であるので，逆写像が存在することから$L_g,{\ }R_g$は全単射であり(松坂P.34)，逆写像も連続写像であるので，$L_g,{\ }R_g$は$G$の同相写像となる．\qed
+\end{proof}
+%
+%
+%
+\begin{itembox}[l]{補題2}
+位相群$G$の部分集合$A,B$に対し，
+\begin{eqnarray*}
+A\cdot B&=&\{a\cdot b \mid a\in A,{\ }b\in B\}
+\end{eqnarray*}
+とすると．$A$または$B$が開集合のとき$A\cdot B$も開集合になる．また，
+\begin{eqnarray*}
+A^{-1}&=&\{a^{-1} \mid a\in A\} \\
+g\cdot A\cdot g^{-1}&=&\{gag^{-1} \mid a\in A\} \quad (g\in G)
+\end{eqnarray*}
+とすると，$A$が開集合のとき$A^{-1}$および$gAg^{-1}$も開集合になる．
+\end{itembox}
+\vspace{-1zh}%間隔調整
+\vspace{-1zh}%間隔調整
+\begin{proof}
+$A\cdot B=\underset{b\in B}{\bigcup}R_b(A)=\underset{a\in A}{\bigcup}L_a(B)$であり，補題1より$R_b,{\ }L_a$は$G$の同相写像であるので，$A$または$B$が$G$の開集合とすると$R_b(A)$または$L_a(B)$は開集合である．$A,B$はこれらの和であることから，$A$または$B$が開集合であれば$A\cdot B$も開集合になる．同様に$A$が開集合のとき，$A^{-1}$および$gAg^{-1}$も開集合になる．\qed
+\end{proof}
+%
+%
+%
+{\ }{\ }{\ }ある集合が位相群であることを実際に示すとき，位相群の性質(2)(3)の形は不便であるので，近傍の言葉を用いた同値な言い換えについて述べておく．その前に，位相空間の知識について簡単にまとめておく．(i){\ }$(S,\mathfrak{O})$を位相空間とする．$x\in S$に対して${\bf V}_S(x)=\{V\subset S \mid x\in V^\circ\}$を$x$の全近傍系といい，${\bf V}_S(x)$の元を$x$の近傍という(松坂P.161)．$x\in V^\circ$は$^\exists O\in \mathfrak{O}{\ }\st{\ }x\in O,{\ }O\subset V$と同値である．また，$(\phi\neq){\ }O\in\mathfrak{O}$であることと$^\forall x\in O$に対して$O\in{\bf V}_S(x)$となることは同値である．(ii){\ }$(S',\mathfrak{O}')$をもう1つの位相空間として，$f:S\to S'$を写像とすると，$f$が連続写像であることは，$^\forall x\in S$に対して，$f(x)=x'$としたとき$^\forall V'\in {\bf V}_{S'}(x')$に対して$f^{-1}(V')\in {\bf V}_S(x)$となることと同値である(松坂P.175)．(iii){\ }$^\forall V\in {\bf V}_S(x),{\ } ^\exists U\in {\bf V}_S^\ast(x){\ }\st{\ }U\subset V$が成り立つ${\bf V}(x)$の部分集合${\bf V}_S^\ast(x)$を$x$の基本近傍系という(松坂P.171)．(iv){\ }$((S_\lambda,\mathfrak{O}_\lambda))_{\lambda\in\Lambda}$を位相空間の族として，$S=\underset{\lambda\in\Lambda}{\prod}S_\lambda$とする．各$\lambda\in\Lambda$について$S$から$S_\lambda$への射影を${\rm pr}_\lambda$とするとき，全ての${\rm pr_\lambda}$が連続となるような$S$における最弱の位相$\mathfrak{O}$を$S$の直積位相という(松坂P.191)．$(S,\mathfrak{O})$を直積空間という．定義より${\rm pr}_\lambda$は連続写像となるが，さらに${\rm pr}_\lambda$は開写像となる(松坂P.192)．また，$x=(x_\lambda)_{\lambda\in\Lambda}$を$S$の任意の1点とすると，$x$の基本近傍系として
+\begin{equation*}
+\bigcap_{i=1}^n {\rm pr}_{\lambda_i}^{-1}(V_{\lambda_i})=\left(\prod_{\lambda\in\Lambda-\{\lambda_1,\cdots,\lambda_n\}}S_\lambda\right)\times V_{\lambda_1}\times\cdots\times V_{\lambda_n}
+\end{equation*}
+の形の集合全体を取ることができる(松坂P.192)．ただし，$(\lambda_1,\cdots,\lambda_n$は$\Lambda$の異なる元であり，$V_{\lambda_i}\in{\bf V}_{S_{\lambda_i}}(x_{\lambda_i}){\ }(i=1,\cdots,n))$である．以上を用いて，次の補題3を示す．
+%
+%
+%
+\begin{itembox}[l]{補題3}
+$G$を位相群とする．位相群の性質(2)(3)は以下の(i)(ii)(iii)それぞれと同値である．
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item $G\times G$から$G$への写像$(x,y)\mapsto x\cdot y^{-1}$は連続である．
+\item
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\item $U\in{\bf V}_G(x\cdot y) \Longrightarrow ^\exists V\in{\bf V}_G(x),{\ } ^\exists W\in{\bf V}_G(y){\ }\st{\ }V\cdot W\subset U$
+\item $U\in{\bf V}_G(x^{-1}) \Longrightarrow ^\exists V\in{\bf V}_G(x){\ }\st{\ }V^{-1}\subset U$
+\end{enumerate}
+\item $U\in{\bf V}_G(x^{-1}\cdot y) \Longrightarrow ^\exists V\in{\bf V}_G(x),{\ } ^\exists W\in{\bf V}_G(y){\ }\st{\ }V^{-1}\cdot W\subset U$
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+$G$の開集合系を$\mathfrak{O}$，単位元を$e$とする．\\
+{\ }{\ }{\ }(i){\ }一般に，同じ添字集合を持つ2つの直積空間$S=\underset{\lambda\in\Lambda}{\prod}S_\lambda,{\ }S'=\underset{\lambda\in\Lambda}{\prod}S_\lambda'$に対して，各$f_\lambda:S_\lambda\to S_\lambda'$が連続写像であるとき，以下のように定義される$f$は連続写像となる．
+\begin{eqnarray*}
+\begin{array}{ccc}
+S & \stackrel{f}{\longrightarrow} & S' \\
+\rotatebox{90}{$\in$} & & \rotatebox{90}{$\in$} \\
+(x_\lambda)_{\lambda\in\Lambda} & \longmapsto & (f_\lambda(x_\lambda))_{\lambda\in\Lambda}
+\end{array}
+\end{eqnarray*}
+証明は省略する(松坂には載っていない！)．まず，(2)(3)が成り立つとする．${\rm id}_G$を$G$の恒等写像とすると，${\rm id}_G,\psi$は連続写像であるので，$(x,y)\mapsto (x,y^{-1})$は連続写像となる．(2)より$(x,y^{-1})\mapsto x\cdot y^{-1}$は連続写像であるので，結局$(x,y)\mapsto x\cdot y^{-1}$は連続写像となり，(i)が成り立つ．逆に，(i)が成り立つとする．$(x,y)\mapsto (x,y)$は恒等写像であるので連続写像である．「多変数の連続写像は一部の変数を固定した場合残りの変数について連続である」(松坂P.194)ので，$x=e$とすると$y\mapsto (e,y)$が連続写像であることがわかる．(i)より$(e,y)\mapsto e\cdot y^{-1}=y^{-1}$は連続写像であるので，結局$y\mapsto y^{-1}$は連続写像となる．よって，$(x,y)\mapsto (x,y^{-1})$は連続写像となる．(i)より$(x,y^{-1})\mapsto x\cdot y$は連続写像であるので，結局$(x,y)\mapsto xy$は連続写像となり，(2)が成り立つ．(3)についても成り立つことが同様に示せるので，結局(2)(3)が成り立つ．\\
+{\ }{\ }{\ }(ii){\ }まず，(2)(3)が成り立つとする．(2)より$\phi:(x,y)\mapsto x\cdot y$は連続写像であるので，$^\forall V'\in {\bf V}_{G}(x\cdot y)$に対して$\phi^{-1}(V')\in {\bf V}_{G\times G}((x,y))$となる．よって，基本近傍系の定義より$^\exists V\in {\bf V}_G(x),{\ } ^\exists W\in {\bf V}_G(y){\ }\st{\ }V\times W \in {\bf V}^\ast_{G\times G}((x,y)),{\ }V\times W\subset \phi^{-1}(V')$となる．よって，$\phi(V\times W)=V\cdot W\subset \phi(\phi^{-1}(U))\subset U$となる(松坂P.31)ので，(ii)(a)が成り立つ．(ii)(b)が成り立つことも同様に示せる．逆に，(ii)(a)と(ii)(b)が成り立つとする．$x\cdot y\in V\cdot W=\phi(V\times W)\subset U$であるので，$(x,y)\in V\times W \subset \phi^{-1}(\phi(V\times W))\subset \phi^{-1}(U)$となる(松坂P.31)．よって，近傍の定義より
+\begin{eqnarray*}
+^\exists O_1\in\mathfrak{O}{\ }\st{\ }x\in O_1,{\ }O_1\subset V \\
+^\exists O_2\in\mathfrak{O}{\ }\st{\ }y\in O_2,{\ }O_2\subset W
+\end{eqnarray*}
+が成り立つ．$O_1\times O_2$は$G\times G$の開集合であり(松坂P.191)，$(x,y)\in O_1\times O_2\subset V\times W\subset \phi^{-1}(U)$であるので，近傍の定義より$\phi^{-1}(U)$は$(x,y)$の近傍となる．よって$\phi$は連続写像となる．$\psi:x\mapsto x^{-1}$についても同様に示せるので，結局(2)(3)が成り立つ．\\
+{\ }{\ }{\ }(iii){\ }(ii)$\Longleftrightarrow$(iii)を示す．(ii)の証明と同様であるので，省略する．\qed
+\end{proof}
+一見すると(iii)が一番使いやすいように思えるが，(ii)(a)と(ii)(b)の証明はほぼ同様にできるので，実際の証明では(ii)(a)のみを示して(ii)(b)を省略することが多い．
+%
+%
+%
+\subsection{部分群・商群}
+{\ }{\ }{\ }まず，部分位相空間について簡単にまとめておく．$(S,\mathfrak{O})$を位相空間とする．$M$を$S$の空でない部分集合として，$i$を$M$から$S$への標準的単射とする．このとき，$\mathfrak{O}_M=\{i^{-1}(O)=O\cap M \mid O\in\mathfrak{O}\}$によって$M$に位相が定義され，$M$は位相空間になる(松坂P.188)．この$\mathfrak{O}_M$は$i$が連続写像となるような$M$における最弱の位相である．$\mathfrak{O}_M$を$M$における$\mathfrak{O}$の相対位相という．$(M,\mathfrak{O}_M)$を$(S.\mathfrak{O})$の部分位相空間という．
+%
+%
+%
+\begin{itembox}[l]{補題4}
+$G$を位相群，$H$を群$G$の部分群とする．$H$に$G$の部分位相空間としての位相を入れると$H$は位相群になる．
+\end{itembox}
+\vspace{-1zh}%間隔調整
+\vspace{-1zh}%間隔調整
+\begin{proof}
+$G$の開集合系を$\mathfrak{O}$とする．$x,y\in H$に対して$x\cdot y\in H$であるので，$^\forall U\in{\bf V}_H(x\cdot y)$を考えると，近傍の定義より$^\exists O_U\in\mathfrak{O}_H{\ }\st{\ }x\cdot y\in O_U\subset U$となる．$O_U\in\mathfrak{O}_H$より$^\exists O\in\mathfrak{O}{\ }\st{\ }O_U=O\cap U$となる．よって，$x\cdot y\in O\subset G$となるので，$O\in{\bf V}_G(x\cdot y)$となることから，補題3(ii)より$^\exists V\in{\bf V}_G(x),{\ } ^\exists W\in{\bf V}_G(y){\ }\st{\ }V\cdot W\subset U$となる．$i$は連続写像であるので，$i^{-1}(V)=V\cap H\in{\bf V}_H(x),{\ }i^{-1}(W)=W\cap H\in{\bf V}_H(y)$となる．よって，結局$^\forall U\in{\bf V}_H(x\cdot y)$に対して，ある$V\cap H\in{\bf V}_H(x),{\ }W\cap H\in{\bf V}_H(y)$が存在して$(V\cap M)\cdot(W\cap M)\subset V\cdot W\subset U$となるので，補題3(ii)(a)が成り立つ．補題3(ii)(b)が成り立つことも同様に示せるので，結局補題3(ii)が成り立ち，$H$が位相群となることが示された．\qed
+\end{proof}
+{\ }{\ }{\ }位相群$H$を位相群$G$の位相部分群または単に部分群という．特に$H$が$G$の閉集合の場合，$H$を$G$の閉部分群という．$G$の$H$による左剰余類の作る集合を$G/H$で表し，$G$の元$x$の属する左剰余類を$\pi(x)$で表す．すなわち$\pi(x)=xH$とする．$\pi$は$G$から$G/H$への写像である．$\pi$を$G$から$G/H$への自然な写像という．$G$に入っている位相を$\mathfrak{O}$とすると，$\mathfrak{O}'=\{O'\subset G/H \mid \phi^{-1}(O')\in\mathfrak{O}\}$によって$G/H$に位相が定義され，$G/H$は位相空間になる(松坂P.194)．この$\mathfrak{O}'$は$\pi$が連続写像となるような$G/H$における位相の中で最強のものである．この位相空間$G/H$を位相群$G$の部分群$H$による商空間という．定義より$\pi$は連続写像となるが，さらに$\pi$は開写像となる．実際，$U\in\mathfrak{O}$とすると$\pi(U)=\underset{x\in U}{\bigcup}xH$であるので，$\pi^{-1}(\pi(U))=U\cdot H$となるが，$U\in\mathfrak{O}$より$U\cdot H$も開集合となるので，$\mathfrak{O}'$の定義より$\pi(U)\in \mathfrak{O}'$となる．\\
+{\ }{\ }{\ }$H$が$G$の正規部分群であるとき，$G/H$は群になり，$\pi$は準同型写像になる．このとき，以下の補題が成り立つ．
+%
+%
+%
+\begin{itembox}[l]{定理5}
+$G$を位相群，$H$を正規部分群とする．$G/H$に商空間としての位相を入れると$G/H$は位相群になる．
+\end{itembox}
+\vspace{-1zh}%間隔調整
+\vspace{-1zh}%間隔調整
+\begin{proof}
+$G$の開集合系を$\mathfrak{O}$とする．$G$の元を$x$，$G/H$の元を$[x]$などと書く．また，$\phi:(x,y)\mapsto x\cdot y,{\ }\phi':([x],[y])\mapsto [x\cdot y]$とおく．$\phi'$が連続写像となることを示せばよい．$\pi$は連続写像であるので，$^\forall U'\in {\bf V}_{G/H}([x\cdot y])$に対して$\pi^{-1}(U')\in {\bf V}_G(x\cdot y)$となる．$U=\pi^{-1}(U')$とおく．$\phi$は連続写像であるので，補題3(ii)より$^\exists V\in{\bf V}_G(x),{\ } ^\exists W\in{\bf V}_G(y){\ }\st{\ }V\cdot W\subset U$となる．よって，近傍の定義より
+\begin{eqnarray*}
+^\exists O_1\in\mathfrak{O}{\ }\st{\ }x\in O_1,{\ }O_1\subset V \\
+^\exists O_2\in\mathfrak{O}{\ }\st{\ }y\in O_2,{\ }O_2\subset W
+\end{eqnarray*}
+が成り立つ．$\pi$は開写像であるので，$\pi(O_1),{\ }\pi(O_2)$は$G/H$の開集合となり，$[x]\in \pi(O_1)\subset \pi(V),{\ }[y]\in \pi(O_2)\subset \pi(W)$となるので，$\pi(V)\in{\bf V}_{G/H}([x]){\ }\pi(W)\in{\bf V}_{G/H}([y])$となる．また，$\pi$は準同型写像であるので，$\pi(V)\cdot\pi(W)=\pi(V\cdot W)\subset \pi(U)=U'$となる\textcolor{red}{(本当に等号成り立つ？)}．よって，結局$^\forall U'\in {\bf V}_{G/H}([x\cdot y])$に対してある$\pi(V)\in{\bf V}_{G/H}([x]),{\ }\pi(W)\in{\bf V}_{G/H}([y])$が存在して$\pi(V)\cdot\pi(W)\subset U'$となるので，補題3(ii)(a)が成り立つ．補題3(ii)(b)が成り立つことも同様に示せるので，結局補題3(ii)が成り立ち，$G/H$が位相群となることが示された．\qed
+\end{proof}
+%
+%
+%
+{\ }{\ }{\ }次の補題6は補題1と合わせて位相群が「均質」であることを示している．つまり，位相群の大域的な位相は単位元の近傍における局所的な性質のみから知ることができるのである．
+\begin{itembox}[l]{補題6}
+$G$を$e$を単位元とする位相群とする．$e$の全近傍系を$\mathfrak{U}:={\bf V}_G(e)$とする．このとき，$g\in G$に対して${\bf V}_G(g)=g\cdot\mathfrak{U}:=\{g\cdot U \mid U\in \mathfrak{U}\}$となる．
+\end{itembox}
+\vspace{-1zh}%間隔調整
+\vspace{-1zh}%間隔調整
+\begin{proof}
+$G$の開集合系を$\mathfrak{O}$とする．$^\forall V\in {\bf V}_G(g)$に対して，$U=g^{-1}V$とすると$g\in V$であるので$U\ni g^{-1}g=e$となり$U$は単位元を含む．$V\in{\bf V}_G(g)$であるので$^\exists O_g\in\mathfrak{O}{\ }\st{\ }g\in O_g,{\ }O_g\subset V$となる．補題1より$g^{-1}\cdot O_g\in\mathfrak{O}$となり，$e\in g^{-1}\cdot O_g\subset U$となるので，近傍の定義より$U\in\mathfrak{U}$となる．$U=g^{-1}\cdot V$であったので，$V=g\cdot U\in g\cdot\mathfrak{U}$となり，結局${\bf V}_G(g)\subset g\cdot\mathfrak{U}$が成り立つ．逆向きの包含関係も全く同様に示せるので，結局$g\in G$に対して${\bf V}_G(g)=g\cdot\mathfrak{U}:=\{g\cdot U \mid U\in \mathfrak{U}\}$が成り立つ．\qed
+\end{proof}
+\begin{itembox}[l]{補題7}
+$\mathfrak{U}$について以下が成り立つ:
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $\mathfrak{U}\neq\phi$，$^\forall U\in\mathfrak{U},{\ }e\in U$
+\item $^\forall U_1,U_2\in\mathfrak{U},{\ } ^\exists U_3\in\mathfrak{U}{\ }\st{\ }U_3\subset U_1\cap U_2$
+\item $^\forall U\in\mathfrak{U},{\ } ^\exists V\in\mathfrak{U}{\ }\st{\ }V\cdot V^{-1}\subset U$
+\item $^\forall U\in\mathfrak{U},{\ } ^\forall a\in U\textcolor{red}{ ^\circ},{\ } ^\exists V\in\mathfrak{U}{\ }\st{\ }a\cdot V\subset U$
+\item $^\forall U\in\mathfrak{U},{\ } ^\forall g\in G,{\ } ^\exists V\in\mathfrak{U}{\ }\st{\ }g\cdot V\cdot g^{-1}\subset U$
+\end{enumerate}
+\end{itembox}
+\vspace{-1zh}%間隔調整
+\vspace{-1zh}%間隔調整
+\begin{proof}
+(1)(2)は自明である．(3){\ }補題3(iii)より$U\in{\bf V}_G(x^{-1}\cdot y) \Longrightarrow ^\exists V_1\in{\bf V}_G(x),{\ } ^\exists V_2\in{\bf V}_G(y){\ }\st{\ }V_1^{-1}\cdot V_2\subset U$であるので，$x=y=e$とすると$U\in \mathfrak{U}={\bf V}_G(e) \Longrightarrow ^\exists V_1\in{\bf V}_G(e),{\ } ^\exists V_2\in{\bf V}_G(e){\ }\st{\ }V_1^{-1}\cdot V_2\subset U$となる．近傍の定義より$e\in V_1^\circ,{\ }e\in V_2^\circ$であるので，$(V_1\cap V_2)^\circ=V_1^\circ\cap V_2^\circ\neq\phi$であり，$e\in (V_1\cap V_2)^\circ$となる．よって$V=V_1\cap V_2$とすれば近傍の定義より$V\in\mathfrak{U}$となり，$V\cdot V^{-1}\subset V_1^{-1}\cdot V_2\subset U$となる．(3)は(2)を用いても示すことができる．(4){\ }条件を$^\forall a\in U$とすると，以下のような反例が存在する．加法についての可換群$\mathbb{R}$は通常の位相$\mathfrak{O}$によって位相群となる．単位元は$0$であり，$U=[-1,1]$は$0$の近傍である．$a=1$とすると$a\in U$であるが，
+\begin{equation*}
+a\cdot V \subset U \Longleftrightarrow V\subset [-2,0] \Longrightarrow V^\circ \subset (-2,0)
+\end{equation*}
+となるので，$0$の近傍で$a\cdot V \subset U$となるような$V$は存在しない．条件を$^\forall a\in U$としている文献では開近傍を以って近傍と定義している(松島P.2)．よって条件を$^\forall a\in U^\circ$として証明を行う．$^\forall a\in U$を固定する．このとき，$U\in{\bf V}_G(a)$であるので，近傍の定義より$^\exists O_a\in\mathfrak{O}{\ }\st{\ }a\in O_a\subset U$となる．$O_a\in{\bf V}_G(a)$であり，$L_a(e)=a$であり，$L_a$は連続写像であるので，$L_a^{-1}(O_a)\in\mathfrak{U}$となる．補題1より$L_a$は同相写像であるので$L_a^{-1}(O_a)\in\mathfrak{O}$となる．よって，$V=L_a^{-1}(O_a)$とすれば$a\cdot V=L_a(L_a^{-1}(O_a))=O_a\subset U$となる．(5){\ }近傍の定義より$^\exists O\in\mathfrak{O}{\ }\st{\ }e\in O\subset U$となる．$V=R_{g^{-1}}^{-1}(L_g^{-1}(O))$とすると，補題1より$L_g,R_{g^{-1}}$は同相写像であるので$V\in\mathfrak{O}$となり，$R_{g^{-1}}^{-1}(L_g^{-1}(e))=e\in V$であるので$V\in\mathfrak{U}$となる．よって，$e\in g\cdot V\cdot g^{-1}=L_g(R_{g^{-1}}(V))=O\subset U$となる．\qed
+\end{proof}
+%
+%
+%
+{\ }{\ }{\ }$(S,\mathfrak{O})$を位相空間とする．
+\begin{equation*}
+(T_2):{\ } ^\forall x,y\in S,{\ }x\neq y,{\ } ^\exists U\in{\bf V}_S(x),{\ } ^\exists V\in{\bf V}_S(y){\ }\st{\ }U\cap V=\phi
+\end{equation*}
+$(T_2)$を満たすとき$S$をHausdorff空間という．Hausdorff空間は次の$(T_1)'$を満たす．
+\begin{equation*}
+(T_1)':{\ } ^\forall x\in S,{\ }\{x\}\in\mathfrak{A}
+\end{equation*}
+次の補題8は位相群$G$のHausdoff性が単位元の全近傍系によって決まると言っているので，やはり位相群が「均質」であることを示している．
+%
+%
+%
+\begin{itembox}[l]{補題8}
+位相群$G$が位相空間としてHausdorff空間であるとき，$G$をHausdorff位相群という．$G$がHausdorff位相群であるための必要十分条件は$\displaystyle \underset{U\in\mathfrak{U}}{\bigcap}U=\{e\}$となることである．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+$G$がHausdorff空間とすると，$e\neq ^\forall x\in G,{\ } ^\exists U\in\mathfrak{U}{\ }\st{\ }x\notin U$が成り立つ．よって$\underset{U\in\mathfrak{U}}{\bigcap}U=\{e\}$となる．逆に$\underset{U\in\mathfrak{U}}{\bigcap}U=\{e\}$が成り立つとして，$ ^\forall x,y\in G,{\ }x\neq y$とする．このとき，$y^{-1}\cdot x\neq e$となるので，$\underset{U\in\mathfrak{U}}{\bigcap}U=\{e\}$より$^\exists U\in\mathfrak{U}{\ }\st{\ }y^{-1}\cdot x\notin U$となる．補題7(3)より$^\exists V\in\mathfrak{U}{\ }\st{\ }V\cdot V^{-1}\subset U$となるので，$y^{-1}\cdot x\notin V\cdot V^{-1}$となる．ここで，$x\cdot V\cap y\cdot V\neq \phi$と仮定して$^\forall z\in x\cdot V\cap y\cdot V$とすると，$^\exists v_1,v_2\in V{\ }\st{\ }z=x\cdot v_1=y\cdot v_2$となるが，$y^{-1}\cdot x=v_2\cdot v_1^{-1}\in V\cdot V^{-1}$となり矛盾する．よって$x\cdot V\cap y\cdot V=\phi$となる．補題6より$x\cdot V\in{\bf V}_G(x),{\ }y\cdot V\in{\bf V}_G(y)$となるので，$G$はHausdorff空間となる．\qed
+\end{proof}
+%
+%
+%
+\begin{itembox}[l]{定理9}
+$G$をHausdorff位相群，$H$を群$G$の部分群とする．$G/H$に商空間としての位相を入れたとき$G/H$がHausdorff空間であるための必要十分条件は$H$が閉集合であることである．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+$G$の開集合系を$\mathfrak{O}$とする．$G/H$がHausdorff空間とすると$G$は$(T_1)'$を満たすので$\{\pi(e)\}$は$G/H$の閉集合である．$\pi$は連続写像であるので，$\pi^{-1}(\{\pi(e)\})\in\mathfrak{A}$であり，$\pi^{-1}(\{\pi(e)\})=H$であるので，$H$は閉集合となる．逆に，$H$が閉集合とする．$^\forall x\cdot H,{\ }y\cdot H\in G/H,{\ }x\cdot H\neq y\cdot H$とすると，$x^{-1}\cdot y\notin H$であり，$H=\bar{H}$であるので，$x^{-1}\cdot y\notin \bar{H}$となる．一般に$(S,\mathfrak{O})$を位相空間として$x\in S,{\ }M\subset S$とすると
+\begin{equation*}
+x\notin \bar{M} \Longleftrightarrow ^\exists U\in {\bf V}_S^\ast(x){\ }\st{\ }U\cap M=\phi
+\end{equation*}
+である(松坂P.174問題5(b))．よって，補題6より${\bf V}_G(x^{-1}\cdot y)=(x^{-1}\cdot y)\cdot\mathfrak{U}$であるので，$^\exists U\in\mathfrak{U}{\ }\st{\ }(x^{-1}\cdot y)\cdot U\cap H=\phi$となる．ここで，補題3(iii)より
+\begin{equation*}
+^\exists W_1\in{\bf V}_G(x),{\ } ^\exists W_2\in{\bf V}_G(y){\ }\st{\ }W_1^{-1}\cdot W_2\subset (x^{-1}\cdot y)\cdot U
+\end{equation*}
+となるが，補題6より$^\exists V_1,V_2\in\mathfrak{U}{\ }\st{\ }W_1=x\cdot V_1,{\ }W_2=y\cdot V_2$となり，補題7(2)より，$^\exists V\in\mathfrak{U}{\ }\st{\ }V\subset V_1\cap V_2$となるので，
+\begin{equation*}
+(x\cdot V)^{-1}\cdot(y\cdot V)\subset (x\cdot V_1)^{-1}\cdot(x\cdot V_2)=W_1^{-1}\cdot W_2\subset (x^{-1}\cdot y)\cdot U
+\end{equation*}
+となり，結局$(x\cdot V)^{-1}\cdot(y\cdot V)\subset (x^{-1}\cdot y)\cdot U$が成り立つ．$(x^{-1}\cdot y)\cdot U\cap H=\phi$であったので，$(x\cdot V)^{-1}\cdot(y\cdot V)\cap H=\phi$となる．ここで，$\pi(x\cdot V)\cap \pi(y\cdot V)\neq \phi$と仮定して$\pi(z)\in\pi(x\cdot V)\cap \pi(y\cdot V)$とすると，$z\in (x\cdot V)\cap(y\cdot V)$となり\textcolor{red}{(本当に？)}，$^\exists v_1,v_2\in V,{\ }\st{\ }z=x\cdot v_1=y\cdot v_2$となるが，$(x\cdot v_1)^{-1}\cdot y\cdot v_2=e\in H$となり$(x\cdot V)^{-1}\cdot(y\cdot V)\cap H=\phi$に矛盾する．よって$\pi(x\cdot V)\cap \pi(y\cdot V)=\phi$となる．一般に，位相空間$(S,\mathfrak{O})$から$(S',\mathfrak{O}')$への写像$\pi$が開写像であるためには，$^\forall x\in S$に対して$V\in{\bf V}_S(x)\Longrightarrow f(V)\in {\bf V}_{S'}(f(x))$となることが必要十分である(松坂P.185問題6)ので，$\pi(x\cdot V)\in {\bf V}_{G/H}(x\cdot H),{\ }\pi(y\cdot V)\in {\bf V}_{G/H}(y\cdot H)$となり，$G/H$はHausdorff空間となる．\qed
+\end{proof}
+定理5と定理9より以下の定理10を得る．
+\begin{itembox}[l]{定理10}
+$G$をHausdorff位相群，$H$を$G$の部分群とする．$G/H$に商空間としての位相を入れたとき$G/H$がHausdorff位相群であるための必要十分条件は$H$が正規閉部分群であることである．
+\end{itembox}
+%
+%
+%
+\subsection{分離公理}
+\begin{itembox}[l]{定義(分離公理)}
+$(S,\mathfrak{O})$を位相空間とする．$\mathfrak{A}$を閉集合系とする．$C(S)$を$S$上の連続関数全体とする．\\
+{\ }{\ }{\ }$(T_0)$ $^\forall x,y\in S,x\neq y, ^\exists U\in{\bf V}_S(x){\ }\st x\in U, y\notin U$または$^\exists V\in{\bf V}_S(y){\ }\st x\notin V, y\in V$ \\
+{\ }{\ }{\ }$(T_1)${\ }$^\forall x,y\in S,{\ }x\neq y,{\ } ^\exists U\in{\bf V}_S(x){\ }\st{\ }y\notin U$ \\
+{\ }{\ }{\ }$\Longleftrightarrow (T_1)'${\ }$^\forall x\in S,{\ }\{x\}\in\mathfrak{A}$ \\
+{\ }{\ }{\ }$(T_2)${\ }$^\forall x,y\in S,{\ }x\neq y,{\ } ^\exists U\in{\bf V}_S(x),{\ } ^\exists V\in{\bf V}_S(y){\ }\st{\ }U\cap V=\phi$ \\
+{\ }{\ }{\ }$(T_3)${\ }$^\forall x\in S,{\ } ^\forall A\in\mathfrak{A},{\ }x\notin A,{\ } ^\exists O_1,O_2\in\mathfrak{O}{\ }\st{\ }x\in O_1,{\ }A\subset O_2,{\ }O_1\cap O_2=\phi$ \\
+{\ }{\ }{\ }$(T_{3\frac{1}{2}})$ $^\forall F\in\mathfrak{A}, ^\forall x_0\in S, x_0\notin F, ^\exists f\in C(S) \st f:S\rightarrow [0,1], f(x_0)=0, f(x)=1 ( ^\forall x\in F)$ \\
+{\ }{\ }{\ }$(T_4)${\ }$^\forall A_1,A_2\in\mathfrak{A},{\ }A_1\cap A_2=\phi,{\ } ^\exists O_1,O_2\in\mathfrak{O}{\ }\st{\ }A_1\subset O_1,{\ }A_2\subset O_2,{\ }O_1\cap O_2=\phi$ \\
+$(T_0)$を満たすとき$S$を$T_0$-空間，$(T_1)$を満たすとき$S$を$T_1$-空間，$(T_2)$を満たすとき$S$をHausdorff空間，$(T_1),(T_3)$を満たすとき$S$を正則空間，$(T_1,T_{3\frac{1}{2}})$を満たすとき$S$を完全正則空間，$(T_1),(T_4)$を満たすとき$S$を正規空間という．正規空間であれば完全正則空間となり，完全正則空間であれば正則空間となり，正則空間であればHausdorff空間となり，Hausdorff空間であれば$T_1$-空間となり，$T_1$-空間であれば$T_0$-空間となる．
+\end{itembox}\\
+%
+%
+%
+\begin{itembox}[l]{補題11}
+位相群$G$は$(T_3)$を満たす．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+$G$の開集合系を$\mathfrak{O}$，閉集合系を$\mathfrak{A}$，単位元を$e$とする．まず
+\begin{equation*}
+^\forall F\in\mathfrak{A},{\ }e\notin F,{\ } ^\exists O_1,O_2\in\mathfrak{O}{\ }\st{\ }e\in O_1,{\ }F\subset O_2,{\ }O_1\cap O_2=\phi \eqno(\ast)
+\end{equation*}
+を示す．$G-F\in\mathfrak{O}$であり，$e\in G-F$であるので，近傍の定義より$G-F\in\mathfrak{U}$となる．補題7(3)より$^\exists V\in\mathfrak{U}{\ }\st{\ }V\cdot V^{-1}\subset G-F$となる．ここで近傍の定義より$V\in\mathfrak{O}$と取ることができることに注意する．よって
+\begin{eqnarray*}
+x^{-1}\cdot y\notin F{\ }( ^\forall x,y\in G)&\Longleftrightarrow& y\notin x\cdot F{\ }( ^\forall x,y\in G) \\
+&\Longleftrightarrow& V\cap x\cdot F=\phi{\ }( ^\forall x\in G) \\
+&\Longleftrightarrow& V\cap V\cdot F=\phi
+\end{eqnarray*}
+となる．$V\in\mathfrak{O}$であるので，補題2より$V\cdot F\in\mathfrak{O}$となり，$e\in V$より$F\subset V\cdot F$であるので，$O_1=V,{\ }O_2=V\cdot F$として$(\ast)$が示された．次に$^\forall x\in S,{\ } ^\forall A\in\mathfrak{A},{\ }x\notin A$に対して，補題1より$L_{x^{-1}}$は同相写像であるので$x^{-1}\cdot F\in\mathfrak{A}$であり，$x\notin F \Longleftrightarrow e\notin x^{-1}\cdot F$となる．$(\ast)$より$^\exists O_1,O_2\in\mathfrak{O}{\ }\st{\ }e\in O_1,{\ }x^{-1}\cdot F\subset O_2,{\ }O_1\cap O_2=\phi$となる．補題2より$L_x$は同相写像であるので$x\cdot O_1,{\ }x\cdot O_2\in\mathfrak{O}$となり，$x\in x\cdot O_1,{\ }F\subset x\cdot O_2$となる．よって$G$は$(T_3)$を満たす．\qed
+\end{proof}
+%
+%
+%
+\begin{itembox}[l]{補題12}
+位相群$G$が$T_0$-空間であるとき$G$は$T_1$-空間となる．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+$G$の開集合系を$\mathfrak{O}$，閉集合系を$\mathfrak{A}$，単位元を$e$とする．補題1より$^\forall x\in G$に対して$L_x$は同相写像であるので，$\{e\}\in\mathfrak{A} \Longrightarrow \{x\}\in\mathfrak{A}$となる．よって，$(T_1)'$を示すには
+\begin{equation*}
+\{e\}\in\mathfrak{A} \Longleftrightarrow G-\{e\}\in\mathfrak{O} \Longleftrightarrow ^\forall x\in G-\{e\},{\ }G-\{e\}\in{\bf V}_G(x) \eqno(\ast)
+\end{equation*}
+を示せば十分である．$G$は$(T_0)$を満たすので，$G-\{e\}\in{\bf V}_G(x)$または$G-\{x\}\in{\bf V}_G(e)$が成り立つ．前者が成り立つときは$(\ast)$が成り立つので，後者が成り立つときを考える．補題1より$L_{x^{-1}}$は同相写像であるので，$L_{x^{-1}}(G-\{x\})=G-\{e\}$となり\textcolor{red}{(本当に？)}，補題6より$G-\{e\}\in{\bf V}_G(x^{-1})$となる．補題1より$\psi$は同相写像であるので，$\psi(G-\{e\})=G-\{e\}$となり\textcolor{red}{(本当に？)}，補題6より$G-\{e\}\in{\bf V}_G(x)$となる．よって$(\ast)$が成り立つ．\qed
+\end{proof}
+%
+%
+%
+補題11と補題12より以下の定理13を得る．
+\begin{itembox}[l]{定理13}
+位相群$G$において以下は同値:
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $G$は位相空間として$T_0$-空間である．
+\item $G$は位相空間として$T_1$-空間である．
+\item $G$は位相空間としてHausdorff空間である．
+\item $G$は位相空間として正則空間である．
+\end{enumerate}
+\end{itembox}
+一般に，$(S,\mathfrak{O})$を位相空間として，$S$が正則空間で第2可算公理を満たすとき$S$は正規空間となり(松坂P.228)，$S$が正規空間で第2可算公理を満足すれば$S$は距離付け可能である(松坂P.290)ので，以下の定理14を得る．
+\begin{itembox}[l]{定理14}
+位相群$G$が位相空間として$T_0$-空間で第2可算公理を満たすとき，$G$は距離付け可能である．
+\end{itembox}
+%
+%
+%
+実は一様位相空間についての結果から定理13,定理14の拡張として以下の定理15,定理16が成り立つことが知られている(河田P.197)．
+\begin{itembox}[l]{定理15}
+位相群$G$において以下は同値:
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $G$は位相空間として$T_0$-空間である．
+\item $G$は位相空間として$T_1$-空間である．
+\item $G$は位相空間としてHausdorff空間である．
+\item $G$は位相空間として正則空間である．
+\item $G$は位相空間として完全正則空間である．
+\end{enumerate}
+\end{itembox}
+\begin{itembox}[l]{定理16}
+位相群$G$が位相空間として$T_0$-空間で第1可算公理を満たすとき，$G$は距離付け可能である．
+\end{itembox}
+一般に，$S$が距離空間のとき$S$はパラコンパクトとなる
+\footnote{証明は難しい．初等的な証明としては\cite{rudin}などがある．パラコンパクト空間についてはWikipediaが詳しい．}
+．よって位相群$G$が位相空間として$T_0$空間で第1可算公理を満たすとき，$G$はパラコンパクト空間としての性質を持つ．
+%
+%
+%
+\subsection{連結性}
+\begin{itembox}[l]{定義(連結・完全不連結)}
+$(S,\mathfrak{O})$を位相空間とする．$\mathfrak{O}\cap\mathfrak{A}=\{S,\phi\}$であるとき，$S$は{\bf 連結}(connected)という．$S$が連結であることは
+\begin{equation*}
+S=O_1\cup O_2,{\ }O_1\cap O_2=\phi,{\ }O_1\neq\phi,{\ }O_2\neq\phi
+\end{equation*}
+となるような$O_1,O_2\in\mathfrak{O}$が存在しないことと同値である．$S$の各点の連結成分が全て1点集合であるとき，$S$は{\bf 完全不連結}(totally disconnected)という．
+\end{itembox}
+位相空間$S$の部分集合$M$が連結であるためには
+\begin{equation*}
+M\subset O_1\cup O_2,{\ }O_1\cap O_2\cap M=\phi,{\ }O_1\cap M\neq\phi,{\ }O_2\cap M\neq\phi \eqno(\ast)
+\end{equation*}
+となるような$S$の開集合$O_1,O_2$が存在しないことが必要十分である．
+\begin{itembox}[l]{定義(局所連結)}
+$(S,\mathfrak{O})$を位相空間とする．$S$の各点の連結な近傍の全体がその点の基本近傍系になる場合，すなわち$^\forall x\in S$について，$^\forall U\in{\bf V}_S(x),{\ } ^\exists V\in{\bf V}_S(x){\ }\st{\ }V\subset U$かつ$V$が連結となるとき，$S$は{\bf 局所連結}(locally connected)という．
+\end{itembox}
+位相空間$S$について，次の3つの条件は互いに同値である．\footnote{証明は\cite{uchida}のP.133を参照．}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $S$は局所連結である．
+\item $S$の任意の開部分空間の各連結成分は開集合である．
+\item $S$の連結な開集合の全体が位相$\mathfrak{O}$の開基になる．
+\end{enumerate}
+一般に，局所連結であっても連結とは限らず，連結であっても局所連結とは限らない．連結なコンパクト空間を連続体という．特に，連結かつ局所連結なコンパクト距離空間をペアノ連続体という．\footnote{$(S,d)$を距離空間とすると，$S$がペアノ連続体であることと$[0,1]\to S$なる全射連続写像が存在することは同値であることが知られている(Hahn-Mazurkiewiczの定理)．簡単な紹介は\cite{peano}を，証明は\cite{kitada}を参照．連続体に関してはまだ分からないことが多く，現在でも盛んに研究されているらしい．位相空間論でもまだまだ研究対象があるというのは夢が広がる話である．}
+\begin{itembox}[l]{補題17}
+$G$を位相群，$H$を$G$を部分群とする．$H$および$G/H$がともに連結ならば$G$は連結である．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+$G=O_1\cup O_2,{\ }O_1\cap O_2=\phi$を満たす$G$の開集合$O_1,O_2$をとると$O_1=\phi$または$O_2=\phi$となることを示せばよい．$\pi$は開写像であるので$\pi(O_1),\pi(O_2)$は開集合であり，$\pi(O_1\cup O_2)=\pi(O_1)\cup\pi(O_2)=G/H$である．$\pi(O_1)\cap\pi(O_2)=\phi$であれば$G/H$は連結であるので，$\pi(O_1)=\phi$または$\pi(O_2)=\phi$となり，$O_1=\phi$または$O_2=\phi$となる．よって，$\pi(O_1)\cap\pi(O_2)\neq\phi$として矛盾を導く．$\pi(g)\in\pi(O_1)\cap\pi(O_2)$に対して，$^\exists g_1\in O_1,{\ } ^\exists g_2\in O_2{\ }\st{\ }g\cdot H=g_1\cdot H=g_2\cdot H$となる．ここで，$H$は連結であり$L_{g_1}$は同相写像であるので$g_1\cdot H$は連結部分集合であり，$g_1\cdot O_1,g_1\cdot O_2$は開集合であり，$g_1\cdot H$は
+\begin{equation*}
+g_1\cdot H=g_1\cdot H\cap G=g_1\cdot H\cap (O_1\cup O_2)=(g_1\cdot H\cap O_1)\cup (g_1\cdot H\cap O_2)
+\end{equation*}
+と書けるので，$g_1\cdot H\cap O_1=\phi$または$g_1\cdot H\cap O_2=\phi$となる．$g_1\cdot H\cap H\neq\phi$であるので，$g_1\cdot H\cap O_2=\phi \Longleftrightarrow g_1\cdot H\subset O_1$となる．同様に$g_2\cdot H\subset O_2$となる．よって，$g_1\cdot H=g_2\cdot H\subset O_1\cap O_2$となり，$O_1\cap O_2=\phi$と矛盾する．\qed
+
+\end{proof}
+\begin{itembox}[l]{補題18}
+$G$を位相群，$G$の単位元$e$を含む$G$の連結成分を$G_0$とすると，以下が成り立つ．
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $^\forall g\in G$について$g$を含む$G$の連結成分は$g\cdot G_0$である．
+\item $G_0$は$G$の正規閉部分群である．
+\item $G/G_0$は位相空間として完全不連結である．
+\item $G$を局所連結とすると，$G/G_0$の位相は離散位相となる．
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $g$を含む連結成分を$G_g$とする．$L_g$は同相写像であるので，$g\cdot G_0$は$g$を含む連結部分集合である．$G_g$は$g$を含む$G$の最大の連結部分集合であるので，$g\cdot G_0\subset G_g$となる．同様に，$g^{-1}\cdot G_g\subset G_0 \Longleftrightarrow G_g\subset g\cdot G_0$となるので，結局$G_g=g\cdot G_0$となる．
+\item $\psi$は同相写像であるので$\psi(G_0)=G_0^{-1}$は$e^{-1}=e$を含む$G$の連結部分集合である．$G_0$は$e$を含む$G$の最大の連結部分集合であるので，$G_0^{-1}\subset G_0$となる．よって，$^\forall g\in G_0$について$g^{-1}\in G_0$となる．$R_{g^{-1}}$は同相写像であるので
+\begin{equation*}
+R_{g^{-1}}(G_0)=G_0\cdot g^{-1} \quad R_{g}(G_0)=G_0\cdot g
+\end{equation*}
+は$e$を含む$G$の連結部分集合である．$G_0$は$e$を含む$G$の最大の連結部分集合であるので
+\begin{equation*}
+G_0\cdot g^{-1}\subset G_0 \quad G_0\cdot g\subset G_0
+\end{equation*}
+となる．$G_0\cdot g\subset G_0 \Longleftrightarrow G_0\subset G_0\cdot g^{-1}$となるので，結局$G_0\cdot g^{-1}=G_0$となり，$^\forall h\in G_0$について$h\cdot g^{-1}\in G_0$となる．よって，$G_0$は部分群である．同様に$g\cdot G_0\cdot g^{-1}\subset G_0$となるので，$G_0$は正規部分群となる．また，一般に連結成分は閉集合であるので，結局$G_0$は正規閉部分群となる．
+\item まず，$G/G_0$の単位元$G_0$を含む連結成分$(G/G_0)_0$は1点集合$(G/G_0)_0=\{G_0\}$となることを示す．(2){\ }より$(G/G_0)_0$は正規閉部分群である．一般に部分群の準同型写像による逆像は部分群となるので，$H=\pi^{-1}((G/G_0)_0)$とおくと$H$は$G$の部分群であり，$G_0\in (G/G_0)_0$であるので，$H\supset G_0$となる．
+\begin{equation*}
+\xymatrix{
+H \ar[d]\ar[r]^{\pi|_H} & (G/G_0)_0 \\
+H/G_0 \ar[ru]
+}
+\end{equation*}
+$\pi$は全射であるので${\rm Im}\pi|_H=\pi(H)=(G/G_0)_0$であり，${\rm Ker}\pi|_H=G_0$であるので，群の準同型定理より$H/G_0=(G/G_0)_0$となる．$G_0$と$H/G_0=(G/G_0)_0$は連結であるので，補題17より$H$は$e$を含む連結部分集合である．$G_0$は$e$を含む$G$の最大の連結部分集合であるので，$H\subset G_0$となり，結局$H=G_0$となる．よって，$(G/G_0)_0=\{G_0\}$となる．よって，(1)より，$^\forall g\cdot G_0\in G/G_0$について$g\cdot G_0$を含む連結成分は$\{g\cdot G_0\}$となるので，$G/G_0$は位相空間として完全不連結である．
+\item $G$は$G$の開部分空間であるので，$G$が局所連結であることから$G$の連結成分は開集合である．よって，$G_0$は開集合である．$L_g$は同相写像であるので，$L_g(G_0)=g\cdot G_0$は開集合である．$^\forall A\subset G/G_0$について，$\pi^{-1}(A)=\underset{\pi(g)\in A}{\bigcup}g\cdot G_0$であるので，$\pi^{-1}(A)$は$G$の開集合である．$\pi$は全射で開写像であるので，$A$は$G/G_0$の開集合である．よって，$G/G_0$の位相は離散位相となる．\qed
+\end{enumerate}
+\end{proof}
+一般に$(S,\mathfrak{O})$を位相空間とする．連結成分は閉集合であるので，$S$が完全不連結であれば$S$は$T_1$-空間となる．よって，定理15と補題18より$G/G_0$は完全正則空間となる．
+%
+%
+%
+\subsection{準同型定理}
+$G_1,G_2$を位相群とする．$f:G_1\to G_2$が準同型写像かつ同相写像であるとき，$f$は位相群の同型写像であるという．このような$f$が存在するとき$G_1$と$G_2$は位相群として同型であるといい，$G_1\simeq G_2$と書く．また，$f$が準同型写像かつ開写像であるとき$f$を開準同型写像という．
+\begin{itembox}[l]{補題19}
+$G_1,G_2$を位相群とする．$G_2$は$T_1$-空間であるとする．$f:G_1\to G_2$が連続写像かつ準同型写像であるとき，${\rm Ker}f$は正規閉部分群となる．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+自明．\qed
+\end{proof}
+\begin{itembox}[l]{定理20{\ }(準同型定理)}
+$G_1,G_2$を位相群とする．$f:G_1\to G_2$が連続写像かつ開写像かつ準同型写像であるとき，$G_1/{\rm Ker}f\simeq {\rm Im}f$となる．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\begin{equation*}
+\xymatrix{
+G_1 \ar[d]_g \ar[r]^{f} & {\rm Im}f \\
+G_1/{\rm Ker}f \ar[ru]_{\overline{f}}
+}
+\end{equation*}
+$g:G_1\to G_1/{\rm Ker}f$を自然な準同型写像とする．$\overline{f}$は以下のように定義する．
+\begin{eqnarray*}
+\begin{array}{ccc}
+G_1/{\rm Ker}f & \stackrel{\overline{f}}{\longrightarrow} & {\rm Im}f \\
+\rotatebox{90}{$\in$} & & \rotatebox{90}{$\in$} \\
+g\cdot {\rm Ker}f & \longmapsto & f(g)
+\end{array}
+\end{eqnarray*}
+群の準同型定理より$\overline{f}$は全単射準同型写像となる．また，連続写像の普遍性より$\overline{f}$は連続写像である．あとは$\overline{f}$が開写像であることを示せばよい．$G/{\rm Ker}f$の任意の開集合を$O$とすると，$\overline{f}(O)=f(g^{-1}(O))$となるが，$g$は連続写像であり$f$は開写像であるので$\overline{f}(O)$は$G_2$の開集合である．よって，$\overline{f}$は開写像となり，結局$\overline{f}$は位相群の同型写像となる．\qed
+\end{proof}
+$(S,\mathfrak{O}),(S',\mathfrak{O}')$を位相空間とする．一般に，$f:S\to S'$が与えられたとき$f$が開写像であることを示すのは簡単ではない．よってもう少し条件を加えて，実際に使いやすい定理を求めておきたい．一般に，$S$がコンパクト空間，$S'$がHausdorff空間のとき$f$が全単射連続写像であれば$f$は同相写像となる．また，$S$から$S$の上の同値関係$\sim$による商空間$S/\sim$への自然な写像は全射連続写像であるので，一般にコンパクト空間の連続写像による像がコンパクト空間となることから，$S/\sim$はコンパクト空間となる．以上を考えて，定理20の証明を辿れば以下の定理21を得る．
+\begin{itembox}[l]{定理21}
+$G_1$をコンパクト位相群，$G_2$をHausdorff位相群とする．$f:G_1\to G_2$が連続写像かつ準同型写像であるとき，$G_1/{\rm Ker}f\simeq {\rm Im}f$となる．
+\end{itembox}
+定理21は定理20よりは使いやすいが，$\mathbb{R}^n,GL(n,\mathbb{C})$などを考えればわかるように，コンパクトという条件は厳しいものである．局所コンパクト位相群に対して準同型定理を得るために，以下の開写像定理を用いる．
+\begin{itembox}[l]{定理22{\ }(開写像定理)}
+$G_1,G_2$を局所コンパクトHausdorff位相群とする．また，$G_1$は第二可算公理を満たすとする．このとき，$G_1$から$G_2$への全射な連続写像かつ準同型写像は開写像となる．
+\end{itembox}
+開写像定理は関数解析学で重要な定理であり，証明にはBaireのカテゴリー定理を用いる\footnote{証明は\cite{matsushima}のP.169を参照．}．開写像定理を用いて定理20の証明を辿れば以下の定理23を得る．
+\begin{itembox}[l]{定理23}
+$G_1,G_2$を局所コンパクトHausdorff位相群とする．また，$G_1$は第二可算公理を満たすとする．$f:G_1\to G_2$が全射な連続写像かつ準同型写像であるとき，$G_1/{\rm Ker}f\simeq G_2$となる．
+\end{itembox}
+%
+%
+%
+%
+\begin{comment}
+%
+%
+%
+\newpage
+\section{Cantor集合}
+\subsection{濃度}
+\begin{itembox}[l]{定義(集積点・導集合・孤立点・自己稠密集合・孤立集合・完全集合)}
+$(S,\mathfrak{O})$を位相空間として，$M\subset S$を部分集合とする．$x\in S,{\ }x\in\overline{M-\{x\}}$であるとき，$x$を$M$の{\bf 集積点}(accumulation point)という．$M$の集積点全体を$M$の{\bf 導集合}(derived set)といい，$M^d$で表す．$M-M^d$の元を{\bf 孤立点}(isolated point)という．$M$の孤立点全体の集合を$M^s$で表す．$M^s=\phi$であるとき，$M$を{\bf 自己稠密集合}(dense-in-itself set)という．$M=M^s$であるとき，$M$を{\bf 孤立集合}(isolated set)という．$M=M^d$であるとき，$M$を{\bf 完全集合}(perfect set)という．
+\end{itembox}
+\begin{itembox}[l]{補題1}
+$(S,\mathfrak{O})$を位相空間とする．閉集合系を$\mathfrak{A}$とする．$M\subset S$を部分集合とする．
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $x\in M^d \Longleftrightarrow ^\forall U\in{\bf V}_S^\ast(x),{\ } ^\exists y\in M,{\ }y\neq x{\ }\st{\ }y\in U$
+\item $M\in\mathfrak{A}\Longleftrightarrow M^d\subset M$
+\item $\overline{M}=M\cup M^d$
+\item $\overline{M}=M^s\cup M^d,{\ }M^s\cap M^d=\phi$
+\item $x\in M^s \Longleftrightarrow x\in M,{\ } ^\exists U\in {\bf V}_S(x){\ }\st{\ }U\cap M=\{x\}$
+\item $M$が自己稠密集合であるためには$M\subset M^d$であることが必要十分である．
+\item $M$が孤立集合であるためには$M$の相対位相が離散位相となることが必要十分である．
+\item $M$が完全集合であることは$M$が自己稠密な閉集合であることが必要十分である．
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+(1){\ }は松坂P.174問題5{\ }(e)を参照．(2){\ }は\cite{cantor1}を参照．\qed
+\end{proof}
+\begin{itembox}[l]{定義(縁集合・疎集合)}
+$(S,\mathfrak{O})$を位相空間として，$M\subset S$を部分集合とする．$M^\circ=\phi$であるとき，$M$を{\bf 縁集合}(border set)という．$M$の閉包が縁集合，すなわち$(\overline{M})^\circ=\phi$であるとき，$M$を{\bf (全)疎集合}(nowhere dense set)という．
+\end{itembox}
+\begin{itembox}[l]{補題2}
+$(S,\mathfrak{O})$を位相空間とする．閉集合系を$\mathfrak{A}$とする．$M\subset S$を部分集合とする．
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $M$が縁集合であるためには$M^c$が稠密であることが必要十分である．
+\item $M$が疎集合であるためには$(M^c)^\circ$が稠密であることが必要十分である．
+\item $M$が疎集合であるためには$^\forall O\in\mathfrak{O},{\ } ^\exists O'\in\mathfrak{O}{\ }\st{\ }\phi\neq O'\subset O,{\ }M\cap O'=\phi$であることが必要十分である．
+\item $M$が疎集合であることと$\overline{M}$が疎集合であることは同値である．
+\item $M\in\mathfrak{A}$のとき$M$が疎集合であるためには$M=M^f$であることが必要十分である．
+\item $M\in\mathfrak{O}$のとき$M^f$は疎集合である，
+\item 疎集合の部分集合は疎集合である．
+\item 有限個の疎集合の和集合は疎集合である．
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\qed
+\end{proof}
+\begin{itembox}[l]{定理3}
+Cantor集合は完全集合かつ疎集合である．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+疎集合であることは自明である．Cantor集合は閉集合であるので補題1{\ }(2)より$M^d\subset M$が成り立つ．よって$M\subset M^d$を示せば良い．補題1{\ }(1)と\cite{cantor2}を参照．\qed
+\end{proof}
+\begin{itembox}[l]{定義(第1類の集合・第2類の集合)}
+$(S,\mathfrak{O})$を位相空間として，$M\subset S$を部分集合とする．$M$が疎集合の高々可算個の和集合として表されるととき，$M$を{\bf 第1類}(first category)の集合という．第1類の集合でない集合を{\bf 第2類}(second category)の集合という．
+\end{itembox}
+\begin{itembox}[l]{補題3}
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item 第1類の集合の部分集合は第1類の集合である．
+\item 高々可算個の第1類の集合の和集合はまた第1類の集合である．
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\qed
+\end{proof}
+\begin{itembox}[l]{定義(Baire空間)}
+$(S,\mathfrak{O})$を位相空間として，$M\subset S$を部分集合とする．$S$の部分集合$M$が第1類の集合であれば$\overline{M^c}=S$となるとき，$S$を{\bf Baire空間}(Baire space)という．
+\end{itembox}
+\begin{itembox}[l]{定理4}
+$(S,\mathfrak{O})$を位相空間とする．$S$がBaire空間であるためには，次の各々の条件(1)(2)(3)がそれぞれ必要十分である．
+\vspace{-0.7zh}%間隔調整
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $X$の空でない開集合は第2類の集合である．
+\item $X$の閉集合$A_1,A_2,\cdots$に対して$E=\underset{n=1}{\overset{\infty}{\bigcup}}A_n$が内点を持てば，少なくとも1つの$A_n$は内点を持つ．
+\item $X$の開集合$O_1,O_2,\cdots$のどれもが$X$で稠密であれば，$E=\underset{n=1}{\overset{\infty}{\bigcap}}O_n$も$X$で稠密である．
+\end{enumerate}
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\qed
+\end{proof}
+\begin{itembox}[l]{補題5}
+$(S,\mathfrak{O})$をBaire空間とする．$S$の開集合は部分空間としてBaire空間となる．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\qed
+\end{proof}
+\begin{itembox}[l]{定理6}
+完備距離空間$(S,d)$は位相空間としてBaire空間となる．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\qed
+\end{proof}
+\begin{itembox}[l]{定理7}
+コンパクトHausdorff空間$(S,\mathfrak{O})$はBaire空間となる．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\qed
+\end{proof}
+\begin{itembox}[l]{定理8}
+自己稠密集合である完備距離空間の濃度は非可算以上である．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\cite{cantor3}を参照．\qed
+\end{proof}
+\begin{itembox}[l]{系}
+完備距離空間の完全集合である部分集合の濃度は非可算以上である．
+\end{itembox}
+%
+%
+%
+\subsection{位相的性質}
+\cite{yano}に載っている定理を紹介する．PDFでは纏まった情報は得られなかった．
+\begin{itembox}[l]{定理9}
+$(S,d)$をコンパクト距離空間とする．そのとき，Cantor集合から$S$への全射な連続写像が存在する．
+\end{itembox}
+\vspace{-0.7zh}%間隔調整
+\vspace{-0.7zh}%間隔調整
+\begin{proof}
+\cite{cantor4}を参照．\qed
+\end{proof}
+\begin{itembox}[l]{定理10}
+$(S,d)$を完全不連結で完全集合であるコンパクト距離空間とする．そのとき，$S$はCantor集合と同相である．
+\end{itembox}
+%
+%
+%
+\end{comment}
+%
+%
+%
+%
+\begin{thebibliography}{99}
+\bibitem{kotani}
+  小谷眞一『測度と確率』(岩波書店，2015年)
+\bibitem{ito}
+  伊藤清三『ルベーグ積分入門』(裳華房，2008年)
+\bibitem{yoshida}
+  吉田伸生『ルベーグ積分入門―使うための理論と演習』(遊星社，2006年)
+\bibitem{takahashi}
+  高橋陽一郎『実関数とFourier解析1』(岩波書店，1996年)
+\bibitem{ubutun1}
+  \href{http://ubutun.blogspot.jp/2010/01/blog-post_23.html}{うぶつん: 可測関数}（\today アクセス）
+\bibitem{matsuzaka}
+  松坂和夫『集合・位相入門』(岩波書店，1968年)
+\bibitem{uchida}
+  内田伏一『集合と位相』(裳華房，2009年)
+\bibitem{matsushima}
+  松島与三『多様体入門』(裳華房，2008年)
+\bibitem{pdf1}
+  \href{https://www.google.co.jp/url?sa=t\&rct=j\&q=\&esrc=s\&source=web\&cd=5\&ved=0ahUKEwj_s87F0ozPAhUJ82MKHRk3DN4QFgg1MAQ\&url=http\%3A\%2F\%2Fwww.geocities.jp\%2Faoirei2002\%2Fmath\%2Fpapers\%2Ftopogp.pdf\&usg=AFQjCNEbVslzl1jcHi8vqBaBZg2nf3ElEQ\&sig2=cPgs9ru-pSSlnvH9Wq-3JQ\&bvm=bv.132479545,d.dGo}{「位相群の基礎理論」}（\today アクセス）
+\bibitem{pdf2}
+  \href{http://mathematics-pdf.com/pdf/top_grp.pdf}{「1 位相群」}（\today アクセス）
+\bibitem{kawata}
+  河田敬義，三村征雄『現代数学概説II』(岩波書店，1965年)
+\bibitem{rudin}
+  \href{http://www.ams.org/journals/proc/1969-020-02/S0002-9939-1969-0236876-3/S0002-9939-1969-0236876-3.pdf}{A new proof that metric spaces are paracompact}（\today アクセス）
+\bibitem{peano}
+  \href{http://motochans.blogspot.jp/2016/02/14.html}{Motoo Tange's Blog: トポロジー入門演習(第14回)}（\today アクセス）
+\bibitem{kitada}
+  北田韶彦『位相空間とその応用』(朝倉書店，2007年)
+\begin{comment}
+\bibitem{yano}
+  矢野 公一『距離空間と位相構造』(共立出版，1997年)
+\bibitem{cantor1}
+  \href{http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1339680048}{Eが閉集合となるための条件は、Eの集積点はすべてEに属することである ...}（\today アクセス）
+\bibitem{cantor2}
+  \href{http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q12153110757}{3進カントール集合がperfectであることを示せ。 ... - 大学数学 | Yahoo!知恵袋}（\today アクセス）
+\bibitem{cantor3}
+  \href{http://math.stackexchange.com/questions/201922/proof-that-a-perfect-set-is-uncountable}{real analysis - Proof that a perfect set is uncountable - Mathematics Stack Exchange}（\today アクセス）
+\bibitem{cantor4}
+  \href{http://www.ams.org/journals/proc/1974-046-01/S0002-9939-1974-0345083-7/S0002-9939-1974-0345083-7.pdf}{sets to compact metric spaces - American Mathematical Society}（\today アクセス）
+\end{comment}
+\end{thebibliography}
+%
+%
+%
+%
+\end{document}
