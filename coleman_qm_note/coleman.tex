@@ -1,0 +1,312 @@
+\documentclass[a4paper,11pt]{jsarticle}
+%
+%2.1節のまとめ(Introductionはg小と\hbar小が等価だと言っていて\hbarについて展開しても上手く行かない例(WKB近似)が書いてあるのでgについて展開しても上手く行かないことがあるよと言ってる)(1+O(\hbar)の疑問の解決，3乗の寄与はlecture noteの方でやったダイヤグラムの辺りの計算から明らかなように奇数乗は消えるから落ちてくる初めのオーダーは\hbarになってOK)など
+%AppendixAはまとめた方が良いかも
+%AppendixBを読み解け…ないかな…
+%K^nにn-インスタントンによる寄与を押し込めるところの気持ち(大貫P.62)
+%
+%
+\usepackage{amsmath}
+\usepackage{emath}
+\usepackage{ascmac}%screenのため
+\usepackage{yhmath}%長いtildeのため
+\usepackage{color}
+\usepackage{ulem}%取り消し線のため
+\allowdisplaybreaks[4]%式変形中の改ページの許可
+\usepackage[dvipdfmx]{hyperref}%ハイパーリンクの埋め込み
+\usepackage{pxjahyper} %%hyperref読み込みの直後に読み込んでおくおまじない
+\usepackage[all]{xy}%xypic
+\usepackage{comment}
+\usepackage{braket}%ブラケットが書けるようになる
+\usepackage{here}
+%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+%\lhead{名前}
+\rhead{\today}
+%
+%\pagestyle{empty}
+\title{Coleman}
+\author{\empty}
+\date{\today}
+%
+\newtheorem{definition}{定義}[section]%section単位でカウントをリセット
+\newtheorem{instance}[definition]{例}%定義から通し番号にする
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{prop}[definition]{命題}
+\newtheorem{lemma}[definition]{補題}
+\newtheorem{corollary}[definition]{系}
+\makeatletter
+\def\th@plain{\upshape}%定理環境で斜体を使わないためのおまじない
+\makeatother
+%
+\newtheorem{proof}{証明}
+\renewcommand{\theproof}{}%カウントしない
+\usepackage{latexsym}
+\def\qed{\hfill $\Box$}
+%
+\newtheorem{agree}{規約}
+\renewcommand{\theagree}{}%カウントしない
+\newtheorem{attention}{注意}
+\renewcommand{\theattention}{}%カウントしない
+%
+\newcommand{\st}{\mathrm{s.t.}\,}  %s.t.
+%
+%おまじない
+\setlength{\textwidth}{\fullwidth}
+\setlength{\textheight}{39\baselineskip}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.5in}
+\setlength{\headsep}{0.3in}
+\setlength{\abovedisplayskip}{3pt}%上部のマージン
+\setlength{\belowdisplayskip}{3pt}%下部のマージン
+%
+%一応引き継いで書いてあるが，今は機能していない
+\usepackage{stmaryrd}%\longmapsfrom
+\usepackage{bm}%数式中の太字
+\usepackage{graphicx}%写像の図式のため
+\usepackage[all]{xy}%xypic
+%
+\begin{document}
+%\maketitle
+%
+\section*{Appendix A}
+\begin{itembox}[l]{\href{https://ja.wikipedia.org/wiki/\%E3\%82\%B9\%E3\%83\%84\%E3\%83\%AB\%E3\%83\%A0\%EF\%BC\%9D\%E3\%83\%AA\%E3\%82\%A6\%E3\%83\%B4\%E3\%82\%A3\%E3\%83\%AB\%E5\%9E\%8B\%E5\%BE\%AE\%E5\%88\%86\%E6\%96\%B9\%E7\%A8\%8B\%E5\%BC\%8F}{ストゥルム・リュウビル型固有値問題}}
+\begin{equation*}
+-\frac{\mathrm{d}}{\mathrm{d}x}\left(p(x)\frac{\mathrm{d}\varphi(x)}{\mathrm{d}x}\right)+q(x)\varphi(x)=\lambda r(x)\varphi(x)
+\end{equation*}
+を$p(x)>0,w(x)>0$かつ$p(x),p'(x),q(x),r(x)$が$[a,b]$で連続のとき，境界条件
+\begin{eqnarray*}
+\alpha_1\varphi(a)+\alpha_2\varphi'(a)=0 \quad (\alpha_1^2+\alpha_2^2>0) \\
+\beta_1\varphi(b)+\beta_2\varphi'(b)=0 \quad (\beta_1^2+\beta_2^2>0)
+\end{eqnarray*}
+の下で解いたとき，固有値$\lambda$は可算無限個存在し，縮退がなく，全て実数である．また，最低固有値はあるが最大固有値は無い．つまり，$\{\lambda_n\}_{n=1}^\infty$が$\lambda_1<\lambda_2<\cdots$と並んでいるとすると，このとき$\underset{n\to\infty}{\lim}\lambda_n=\infty$となる．また，各固有値にはただ1つの固有関数が対応し，$\lambda_n$に対応する固有関数を$\varphi_n(x)$とすると$\varphi_n(x)$は丁度$n-1$個の零点を持つ．
+\end{itembox}
+\begin{equation*}
+(-\partial_\tau^2+W(\tau))\psi_\lambda=\lambda\psi_\lambda \quad (\lambda\in\mathbb{C}) \quad \left(\psi_\lambda\left(-\frac{T}{2}\right)=0,{\ }\partial_\tau\psi_\lambda\left(-\frac{T}{2}\right)=1\right) \eqno(1)
+\end{equation*}
+\begin{equation*}
+(-\partial_\tau^2+W(\tau))\phi=\lambda\phi \quad \left(\phi\left(\pm\frac{T}{2}\right)=0\right) \eqno(2)
+\end{equation*}
+(1)の解として$\psi_\lambda$を，(2)の固有値問題の解として$\lambda_n{\ }(n=1,2,\cdots)$を定義する．$W=W^{(1)}$として得た$\psi_\lambda$を$\psi^{(1)}_\lambda$，$\lambda_n$を$\lambda^{(1)}_n$とする．$W=W^{(2)}$についても同様である．このとき
+\begin{equation*}
+\mathrm{det}\left[\frac{-\partial_\tau^2+W^{(1)}-\lambda}{-\partial_\tau^2+W^{(2)}-\lambda}\right]:=\frac{\underset{n=1}{\overset{\infty}{\prod}} (\lambda^{(1)}_n-\lambda)}{\underset{n=1}{\overset{\infty}{\prod}} (\lambda^{(2)}_n-\lambda)}=\frac{\psi^{(1)}_\lambda\left(\frac{T}{2}\right)}{\psi^{(2)}_\lambda\left(\frac{T}{2}\right)}
+\end{equation*}
+が成り立つ．
+\begin{proof}
+まず，この左辺は次の意味で収束する．$n$が大きいときの$\lambda_n$は(2)で$W^{(1)},W^{(2)}<<\lambda$のときに得られているので$\underset{n\to\infty}{\lim}(\lambda^{(1)}-\lambda^{(2)})=0$となることが期待できる．よって$n\to\infty$で左辺の分母の$\lambda^{(1)}_n-\lambda$と分子の$\lambda^{(2)}_n-\lambda$は一致するので収束する．左辺を$f(\lambda)$，右辺を$g(\lambda)$とおく．$\psi_\lambda$は$\lambda=\lambda_n$のときのみ$\psi_{\lambda_n}\left(\frac{T}{2}\right)=0$を満たし，またストゥルムリュウビル型固有値問題の一般論より$\lambda^{(1)}_n,\lambda^{(2)}_n$は縮退がないので左辺と右辺は極とその位数，そして零点とその位数が一致している．よって$h(\lambda)$を正則関数として$\frac{f(\lambda)}{g(\lambda)}:=h(\lambda)$と置くことができる．\par
+\textcolor{red}{$\lambda\to\infty$のとき(1)で$W^{(1)},W^{(2)}<<\lambda$となるので$\psi^{(1)}_\lambda,\psi^{(2)}_\lambda$はおおよそ同じ関数となり$g(\lambda)\to 1$となることが期待できる．}一方，ストゥルムリュウビル型固有値問題の一般論より$\lambda^{(1)}_n,\lambda^{(2)}_n$はそれぞれ可算無限個存在する(個数が等しい)ので，(実軸上に沿った極限を除き)$\lambda\to\infty$とすると$f(\lambda)\to 1$となることが期待できる．実軸上に沿った極限が除かれるのは$h(\lambda)$の正則性などから上手く処理できて結局任意の方向について$f(\lambda)\to 1$となるとすると，$h(\lambda)$は有界な正則関数となるのでリュービルの定理より定数関数となる．よって$h(\lambda)=1$となるので欲しかった式が成り立つ．\qed
+\end{proof}
+得られた式を変形すると
+\begin{equation*}
+\frac{\underset{n=1}{\overset{\infty}{\prod}} (\lambda^{(1)}_n-\lambda)}{\psi^{(1)}_\lambda\left(\frac{T}{2}\right)}=\frac{\underset{n=1}{\overset{\infty}{\prod}} (\lambda^{(2)}_n-\lambda)}{\psi^{(2)}_\lambda\left(\frac{T}{2}\right)}
+\end{equation*}
+となるので
+\begin{equation*}
+F(\lambda):=\frac{\underset{n=1}{\overset{\infty}{\prod}} (\lambda_n-\lambda)}{\psi_\lambda\left(\frac{T}{2}\right)}
+\end{equation*}
+とおくと，$F(\lambda)$は$W$に依らない．よって$W$に依らない定数$\mathcal{N}$を用いて$F(0):=\pi\hbar \mathcal{N}^2$と定義することができる．この$\mathcal{N}$が本文で定義した規格化定数$\mathcal{N}$なのであるが，$\pi\hbar$を掛けているところなど，正しい結果を知っていることが前提の方法である\textcolor{red}{(これはColemanの冗談)}．以下で真面目に調和振動子の遷移振幅を計算した結果と一致することを見る．さて，この式を変形すると
+\begin{equation*}
+\mathcal{N}[\mathrm{det}(-\partial_\tau^2+W)]^{-\frac{1}{2}}=\left[\pi\hbar\psi_0\left(\frac{T}{2}\right)\right]^{-\frac{1}{2}}
+\end{equation*}
+となる．$\psi_0$は陽に求めることができて
+\begin{equation*}
+\psi_0(\tau)=\frac{1}{\omega}\sinh{\left\{\omega\left(\tau+\frac{T}{2}\right)\right\}}
+\end{equation*}
+となるので，代入して$T\to$大とすると，求めたかった
+\begin{equation*}
+\mathcal{N}[\mathrm{det}(-\partial_\tau^2+W)]^{-\frac{1}{2}}\simeq\sqrt{\frac{\omega}{\pi\hbar}}e^{-\frac{\omega T}{2}}
+\end{equation*}
+が得られた．
+%
+%
+%
+\subsection*{調和振動子の遷移振幅の計算}
+調和振動子のハミルトニアンを$\hat{H}=\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{x}^2$とする．$\left(-m\frac{\mathrm{d}^2}{\mathrm{d}\tau^2}+m\omega^2\right)x_n=\lambda_n x_n$を解くと，境界条件が$(0,T)$のときも$(-\frac{T}{2},\frac{T}{2})$のときも$\lambda_n=m\left\{\left(\frac{n\pi}{T}\right)^2+\omega^2\right\}$となる．よって$\displaystyle \mathrm{det}(-m\partial_\tau^2+m\omega^2)=\prod_{n=1}^\infty m\left\{\left(\frac{n\pi}{T}\right)^2+\omega^2\right\}$となる．よって
+\begin{equation*}
+\frac{\mathrm{det}(-m\partial_\tau^2+m\omega^2)}{\mathrm{det}(-m\partial_\tau^2)}=\prod_{n=1}^\infty\left\{1+\left(\frac{\omega T}{n\pi}\right)^2\right\}
+\end{equation*}
+となる．ここで，\href{https://ja.wikipedia.org/wiki/\%E4\%B8\%89\%E8\%A7\%92\%E9\%96\%A2\%E6\%95\%B0\%E3\%81\%AE\%E7\%84\%A1\%E9\%99\%90\%E4\%B9\%97\%E7\%A9\%8D\%E5\%B1\%95\%E9\%96\%8B}{三角関数の無限乗積展開}
+\begin{equation*}
+\frac{\sin{\pi z}}{\pi z}=\prod_{n=1}^\infty\left(1-\frac{z^2}{n^2}\right) \Longleftrightarrow \frac{\sin{z}}{z}=\prod_{n=1}^\infty\left(1-\frac{z^2}{n^2\pi^2}\right)
+\end{equation*}
+と$\sin{ix}=i\sinh{x}$を用いると
+\begin{equation*}
+\frac{\sinh{x}}{x}=\prod_{n=1}^\infty\left\{1+\left(\frac{x}{n\pi}\right)^2\right\}
+\end{equation*}
+となるので，結局
+\begin{equation*}
+\frac{\mathrm{det}(-m\partial_\tau^2+m\omega^2)}{\mathrm{det}(-m\partial_\tau^2)}=\frac{\sinh{\omega T}}{\omega T}
+\end{equation*}
+となる．経路積分における調和振動子の計算を自由粒子の解を用いて簡略化する際，この行列式の比が現れる．これを見てみよう．ユークリッド化した自由粒子の解は
+\begin{equation*}
+\braket{x_f|e^{-\frac{1}{\hbar}\frac{\hat{p}^2}{2m}T}|x_i}=\sqrt{\frac{m}{2\pi\hbar T}}e^{-\frac{1}{\hbar}\frac{m}{2T}(x_f-x_i)^2}
+\end{equation*}
+であった．WKB近似の表式を思い出しておくと
+\begin{equation*}
+\braket{x_f|e^{-\frac{HT}{\hbar}}|x_i}=\mathcal{N}e^{-S(\bar{x})/\hbar}[\mathrm{det}(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}[1+O(\hbar)]
+\end{equation*}
+である．調和振動子ではWKB近似が厳密であることに注意して，$x_i=x_f=0$のときを計算すると，古典解が$\bar{x}(\tau)=0$となることから，残る部分は規格化定数と行列式のみになるので
+\begin{eqnarray*}
+\braket{0|e^{-\frac{1}{\hbar}\left(\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{x}^2\right)T}|0}&=&\frac{\braket{0|e^{-\frac{1}{\hbar}\left(\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{x}^2\right)T}|0}}{\braket{0|e^{-\frac{1}{\hbar}\frac{\hat{p}^2}{2m}T}|0}}\braket{0|e^{-\frac{1}{\hbar}\frac{\hat{p}^2}{2m}T}|0} \\
+&=&\frac{\mathcal{N}[\mathrm{det}(-m\partial_\tau^2+m\omega^2)]^{-\frac{1}{2}}}{\mathcal{N}[\mathrm{det}(-m\partial_\tau^2)]^{-\frac{1}{2}}}\braket{0|e^{-\frac{1}{\hbar}\frac{\hat{p}^2}{2m}T}|0} \\
+&=&\sqrt{\frac{\omega T}{\sinh{\omega T}}}\sqrt{\frac{m}{2\pi\hbar T}} \\
+&=&\sqrt{\frac{m\omega}{2\pi\hbar\sinh{\omega T}}}
+\end{eqnarray*}
+と求まる．$T$が大きいとき
+\begin{equation*}
+\braket{0|e^{-\frac{1}{\hbar}\left(\frac{\hat{p}^2}{2m}+\frac{1}{2}m\omega^2\hat{x}^2\right)T}|0}\simeq\sqrt{\frac{m\omega}{\pi\hbar}}e^{-\frac{\omega T}{2}}
+\end{equation*}
+となるので，基底状態のエネルギーは$E_0=\frac{1}{2}\hbar\omega$となる．
+%
+%
+%
+\newpage
+\section*{2-2節}
+まずは経路積分に主要な寄与をする古典``解''を考える．まず2-1節のように$x=-a$に留まる解が考えられるが，反転したポテンシャルのグラフを見るとこの他にも$x=-a$から$x=a$へと至る古典解$\bar{x}$が存在することが予想できるので，この``解''を求めたい．古典解はユークリッド化されたエネルギー保存の式を満たしているので，今$E=0$であることから$E=\frac{1}{2}\left(\frac{\mathrm{d}\bar{x}}{\mathrm{d}\tau}\right)^2-V(\bar{x})=0$より
+\begin{equation*}
+\frac{\mathrm{d}\bar{x}}{\mathrm{d}\tau}=\pm\sqrt{2V(\bar{x})}
+\end{equation*}
+を得る．$+$の方を考える．これを積分することで
+\begin{equation*}
+\tau=\tau_1+\int_0^{\bar{x}}\mathrm{d}x\{2V(x)\}^{-\frac{1}{2}}
+\end{equation*}
+を得る．$\tau=\tau_1$は解が$x=0$を通る時刻を表す積分定数である．今，ポテンシャルの具体形は与えられていないが，例えば$V(x)=\frac{\omega^2}{2a^2}(x^2-a^2)^2$として実際に積分すると
+\begin{equation*}
+\bar{x}(\tau)=a\tanh{\omega(\tau-\tau_1)}
+\end{equation*}
+となる．この解を中心$\tau_1$のインスタントンという．この``解''は有限の$T$に対しては境界条件を満たしていないが，以下の(2)で考えるように指数関数的に減衰する，時間的に十分局在した解であるので，経路積分に主要な寄与をすると考えられる．同様に$-$の方から得られる解をアンチインスタントンという．
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item ユークリッド化されたエネルギー保存の式を用いるとユークリッド化された作用$S_0$は$S_0=\int_{-a}^a d\bar{x}\sqrt{2V(\bar{x})}$と書ける．これは$(1.7)$式の指数の肩に現れているものと同じである．これは後で見る．
+\item ポテンシャルを$x=a$の周りで$2$次まで展開すると比例定数を除いて$\frac{\mathrm{d}\bar{x}}{\mathrm{d}\tau}\sim\omega(a-\bar{x})$と書ける．ただし2-1節で置いたように$V''(a):=\omega^2$である．これを解くと
+\begin{equation*}
+a-\bar{x}\sim e^{-\omega\tau}
+\end{equation*}
+を得る．つまり，この解$\bar{x}$は$\frac{1}{\omega}$の大きさの時間スケールを持っている．言い換えれば，この解は$\tau_1$を中心として$\frac{1}{\omega}$の広がりで局在している．これにより，中心が十分離れた何個かのインスタントンの積もまた，近似的に境界条件を満たす古典``解''になっており，経路積分に主要な寄与をすると考えられる．このような古典``解''を$n$-インスタントンと言うことにする．
+\end{enumerate}
+以上より，$\braket{-a|e^{-\frac{HT}{\hbar}}|\pm a}$を計算するとき，主要な寄与をする古典``解''は2-1節のように$x=-a$に留まる解$\bar{x}(\tau)=-a$に加えて，いくつかのインスタントンが連なった解全てが主要な寄与をすると考えられる．よってこれらを全て足しあげれば良い．\par
+$n$-インスタントンの時間の中心を
+\begin{equation*}
+\frac{T}{2} > \tau_1 > \tau_2 > \cdots > \tau_n > -\frac{T}{2}
+\end{equation*}
+とする．
+足し上げる際の基本方針は，何個のインスタントンが連なっているか，そしてその時間の中心がどこであるかである．後者については単に$\frac{T^n}{n!}$を掛けることに帰着する．前者についてはここでは$n$-インスタントンの寄与を，$1$-インスタントンの寄与に$n$に依存した比例定数$K^n$を掛けたものとして表すことで，$K$を未知定数として含む形で解を求めるという方針を取るので，実際に計算することは特に無い．\par
+では，計算をしていく．足し上げる式を書いておくと
+\begin{equation*}
+\braket{x_f|e^{-\frac{HT}{\hbar}}|x_i}=\mathcal{N}e^{-S(\bar{x})/\hbar}[\mathrm{det}(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}[1+O(\hbar)]
+\end{equation*}
+である．以下では$[1+O(\hbar)]$は書かない．
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\item $n$-インスタントンのときに$1$-インスタントンのときの$e^{-S_0/\hbar}$の部分の寄与がどのようになるか考える．簡単のため$2$-インスタントンを考える．\textcolor{red}{中心$\tau_1$のインスタントンを$\bar{x}_1(\tau)$，中心$\tau_2$のアンチインスタントンを$\bar{x}_2(\tau)$，$\tau_1<<\tau_2$とすると，$2$-インスタントン$\bar{x}(\tau)$は$\bar{x}(\tau)=\frac{1}{a}\bar{x}_1(\tau)\bar{x}_2(\tau)$と書ける．}\textcolor{red}{(これは言ってみれば``人工的に''2-インスタントンを構成している．逆の運動を考えたときに符号の問題が現れてしまう辺りに無理が現れている．今，オフセット$a$が入ってるので素朴には難しいが，本質的には複数のインスタントンを繋げた解は``和''として実現されるらしい．)}このとき作用の値を計算すると
+\begin{eqnarray*}
+S(\bar{x})=\int_{-\frac{T}{2}}^{\frac{T}{2}}d\tau\left(\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}\right)^2&=&\int_{-\frac{T}{2}}^{\frac{T}{2}}d\tau\left\{\frac{\mathrm{d}}{\mathrm{d}\tau}\left(\frac{1}{a}\bar{x}_1(\tau)\bar{x}_2(\tau)\right)\right\}^2 \\
+&=&\int_{-\frac{T}{2}}^{\frac{T}{2}}d\tau\left(\frac{\bar{x}_2(\tau)}{a}\frac{\mathrm{d}\bar{x}_1(\tau)}{\mathrm{d}\tau}+\frac{\bar{x}_1(\tau)}{a}\frac{\mathrm{d}\bar{x}_2(\tau)}{\mathrm{d}\tau}\right)^2 \\
+&\simeq&\int_{-\frac{T}{2}}^{\frac{T}{2}}d\tau\left\{\left(\frac{\bar{x}_2(\tau)}{a}\right)^2\left(\frac{\mathrm{d}\bar{x}_1(\tau)}{\mathrm{d}\tau}\right)^2+\left(\frac{\bar{x}_1(\tau)}{a}\right)^2\left(\frac{\mathrm{d}\bar{x}_2(\tau)}{\mathrm{d}\tau}\right)^2\right\} \\
+&\simeq&\int_{-\frac{T}{2}}^{\frac{T}{2}}d\tau\left\{\left(\frac{\mathrm{d}\bar{x}_1(\tau)}{\mathrm{d}\tau}\right)^2+\left(\frac{\mathrm{d}\bar{x}_2(\tau)}{\mathrm{d}\tau}\right)^2\right\} \\
+&=&2S_0
+\end{eqnarray*}
+ここで，3つ目の近似では$\frac{\mathrm{d}\bar{x}_1(\tau)}{\mathrm{d}\tau},\frac{\mathrm{d}\bar{x}_2(\tau)}{\mathrm{d}\tau}$はそれぞれ$\tau_1,\tau_2$を中心とした$\delta$関数的に振る舞うことから，クロスタームを落とした．4つ目の近似では同様に$\frac{\mathrm{d}\bar{x}_1(\tau)}{\mathrm{d}\tau}$は$\tau_1$を中心とした$\delta$関数的に振る舞うことからこの項で積分に寄与するのは$\tau_1$の周りだけであり，その周りで$\left(\frac{\bar{x}_2(\tau)}{a}\right)^2\simeq 1$であることに依る．よって$2$-インスタントンのときは$e^{-S_0/\hbar}\rightarrow e^{-2S_0/\hbar}$となる．同様にして$n$-インスタントンのときは$e^{-S_0/\hbar}\rightarrow e^{-nS_0/\hbar}$となる．
+\item $x=-a$に留まる解$\bar{x}(\tau)=-a$の寄与の内，規格化定数と行列式の部分は，$V''(\bar{x}(\tau))$が定数$V''(-a)=:\omega^2$となることから2-1節の結果をそのまま用いて
+\begin{equation*}
+\left(\frac{\omega}{\pi\hbar}\right)^{\frac{1}{2}} e^{-\omega T/2}
+\end{equation*}
+となる($e^{-S(\bar{x})/\hbar}=1$なので規格化定数と行列式の部分が遷移振幅全体と一致している)．$n$-インスタントンの寄与の内，規格化定数と行列式の部分をこれを用いて
+\begin{equation*}
+\left(\frac{\omega}{\pi\hbar}\right)^{\frac{1}{2}} e^{-\omega T/2}K^n
+\end{equation*}
+と書く．「規格化定数と行列式の部分」と強調して書いているのは，ここで置いた$K$に$(1)$で考えた$e^{-nS_0/\hbar}$が含まれていないことを強調するためである．この$K$に$e^{-S_0/\hbar}$を含める流儀であれば$(1)$は必要ない．
+\item $n$-インスタントンの時間の中心の自由度について足し上げる．
+\begin{equation*}
+\int_{-\frac{T}{2}}^{\frac{T}{2}}\mathrm{d}\tau_1\int_{-\frac{T}{2}}^{\tau_1}\mathrm{d}\tau_2\cdots\int_{-\frac{T}{2}}^{\tau_{n-1}}\mathrm{d}\tau_n=\frac{T^n}{n!}
+\end{equation*}
+\item $\braket{-a|e^{-\frac{HT}{\hbar}}|-a}$を考えるときは$n$-インスタントンの内，偶数の$n$のみが境界条件を満たすこと，同様に$\braket{-a|e^{-\frac{HT}{\hbar}}|a}$を考えるときは$n$-インスタントンの内，奇数の$n$のみが境界条件を満たすことに注意する．以上を合わせて
+\begin{eqnarray*}
+\braket{-a|e^{-\frac{HT}{\hbar}}|-a}&\simeq&\sum_{even:n}\int_{-\frac{T}{2}}^{\frac{T}{2}}\mathrm{d}\tau_1\int_{-\frac{T}{2}}^{\tau_1}\mathrm{d}\tau_2\cdots\int_{-\frac{T}{2}}^{\tau_{n-1}}\mathrm{d}\tau_n
+e^{-\frac{nS_0}{\hbar}}\left(\frac{\omega}{\pi\hbar}\right)^{\frac{1}{2}} e^{-\omega T/2}K^n \\
+&=&\left(\frac{\omega}{\pi\hbar}\right)^{\frac{1}{2}}e^{-\omega T/2}\sum_{even:n}\frac{(Ke^{-S_0/\hbar}T)^n}{n!} \\
+&=&\left(\frac{\omega}{\pi\hbar}\right)^{\frac{1}{2}}e^{-\omega T/2}\cosh{Ke^{-S_0/\hbar}T} \\
+&=&\frac{1}{2}\left(\frac{\omega}{\pi\hbar}\right)^{\frac{1}{2}}e^{-\omega T/2}(e^{Ke^{-S_0/\hbar}T}+e^{-Ke^{-S_0/\hbar}T})
+\end{eqnarray*}
+となるので，基底状態と第一励起状態のエネルギーは
+\begin{equation*}
+E_\pm=\frac{1}{2}\hbar\omega \pm \hbar Ke^{-S_0/\hbar}
+\end{equation*}
+となる．$\braket{-a|e^{-\frac{HT}{\hbar}}|a}$についても同様である．
+\end{enumerate}
+最後に$K$の表式を求めれば完全なエネルギーの表式が得られるが，その前にいくつか注意をしておく．
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\item インスタントン解の寄与を足し上げることによって得られた第二項は予告したようにトンネル効果によって二重縮退したエネルギー$\frac{1}{2}\hbar\omega$の基底状態が変化したものと考えられる．
+\item 時間の中心が異なる1-インスタントンの積を古典``解''と考えて足しあげたが，この近似について振り返って考える．上の和
+\begin{equation*}
+\sum_{even:n}\frac{(Ke^{-S_0/\hbar}T)^n}{n!}\sim\sum_{even:n}\left(\frac{Ke^{-S_0/\hbar}T}{n}\right)^n
+\end{equation*}
+において主要な寄与をする項は
+\begin{equation*}
+n\lesssim KTe^{-S_0/\hbar} \Longleftrightarrow \frac{n}{T}\lesssim Ke^{-S_0/\hbar}
+\end{equation*}
+を満たす$n$である．つまり，この範囲の$n$について調べれば十分であると考えられる(この範囲にない$n$について近似が破綻していたとしても問題にならない)．この考えを推し進めると，この式を任意の$n$-インスタントンの密度$\frac{n}{T}$について成り立つ不等式と読むことができる．すると，$\hbar$が小さいとき自動的にインスタントンの密度は指数関数的に小さくなることがわかる．よって，初めに用いた近似は妥当である(新しく何か近似を入れていない)ことがわかった．この近似を希薄ガス近似と言う．
+\end{enumerate}
+さて，今度こそ$K$を求める．そのために，1-インスタントンの寄与を真面目に計算して，$K$を用いて表した1-インスタントンの寄与と比較することで$K$を求める．1-インスタントンの寄与はどう書けるだろうか？素朴に考えると
+\begin{eqnarray*}
+\braket{-a|e^{-\frac{HT}{\hbar}}|a}_{one{\ }inst}&=&\int_{-\frac{T}{2}}^{\frac{T}{2}}\mathrm{d}\tau\mathcal{N}e^{-S_0/\hbar}[\mathrm{det}(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}} \\
+&=&\mathcal{N}Te^{-S_0/\hbar}[\mathrm{det}(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}
+\end{eqnarray*}
+とすれば尽きているように思える．しかしこれには問題がある．$[\mathrm{det}(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}$が発散しているのである．これを見るためには古典``解''が満たすユークリッド化された運動方程式まで戻って考えれば良い．$\bar{x}(\tau)$を1-インスタントンとする．
+\begin{equation*}
+-\frac{\mathrm{d}^2\bar{x}(\tau)}{\mathrm{d}\tau^2}+V'(\bar{x}(\tau))\simeq 0
+\end{equation*}
+この式の両辺を$\tau$で微分すると
+\begin{equation*}
+-\frac{\mathrm{d}^2}{\mathrm{d}\tau^2}\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}+V''(\bar{x}(\tau))\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}=0 \Longleftrightarrow \left(-\frac{\mathrm{d}^2}{\mathrm{d}\tau^2}+V''(\bar{x}(\tau))\right)\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}=0
+\end{equation*}
+が得られる．この式は$\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}$が$-\frac{\mathrm{d}^2}{\mathrm{d}\tau^2}+V''(\bar{x}(\tau))$の固有値$0$の固有関数であることを表している．よって今，$\{x_n\}_{n=1}^\infty$の中には固有値$0$の固有関数が含まれていることになる．これは，$\bar{x}(\tau)$が時間に依存する解であることに依る(single-wellのときは$\bar{x}(\tau)=0$であったので時間に依存しない解であった)．$\{\lambda_n\}_{n=1}^\infty$を取ってきたとき$\lambda_n\geq 0$と言ったが，このように一般に古典解が時間に依存するとき``ゼロモード''が生じる．\par
+$\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}$は$-\frac{\mathrm{d}^2}{\mathrm{d}\tau^2}+V''(\bar{x}(\tau))$の固有関数であるので，規格化定数を除いて$\{x_n\}_{n=1}^\infty$の中のどれかに等しい．それを$x_1$として
+\begin{equation*}
+x_1=A\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}
+\end{equation*}
+とする．この規格化定数$A$は$S_0=\int_{-\frac{T}{2}}^{\frac{T}{2}}\mathrm{d}\tau\left(\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}\right)^2$から簡単に決められて
+\begin{equation*}
+1=\int_{-\frac{T}{2}}^{\frac{T}{2}}\mathrm{d}\tau x_1(\tau)x_1(\tau)=A^2\int_{-\frac{T}{2}}^{\frac{T}{2}}\mathrm{d}\tau\left(\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}\right)^2=A^2S_0
+\end{equation*}
+より$A=S_0^{-\frac{1}{2}}$となる．以上を踏まえて，1-インスタントンの寄与を正しく計算するために，WKB近似の表式を得る手前の式まで戻る．
+\begin{eqnarray*}
+\braket{-a|e^{-\frac{HT}{\hbar}}|a}_{one{\ }inst}&=&\mathcal{N}\int e^{-\frac{1}{\hbar}S_0-\frac{1}{2\hbar}\sum_{n=1}^\infty \lambda_n c_n^2}\prod_{n=1}^\infty\left(2\pi\hbar\right)^{-\frac{1}{2}}\mathrm{d}c_n \\
+&=&\mathcal{N}e^{-S_0/\hbar}\int\left(2\pi\hbar\right)^{-\frac{1}{2}}\mathrm{d}c_1\int e^{-\frac{1}{2\hbar}\sum_{n=2}^\infty \lambda_n c_n^2}\prod_{n=2}^\infty\left(2\pi\hbar\right)^{-\frac{1}{2}}\mathrm{d}c_n \\
+&=&\mathcal{N}e^{-S_0/\hbar}[\mathrm{det}'(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}\int\left(2\pi\hbar\right)^{-\frac{1}{2}}\mathrm{d}c_1
+\end{eqnarray*}
+ただし，$\mathrm{det}'$は固有値$0$を除いて計算した行列式を表す．よってあとは$\int\left(2\pi\hbar\right)^{-\frac{1}{2}}\mathrm{d}c_1$の部分を計算すれば良い．$\mathrm{d}c_1$を変換するために$\bar{x}(\tau_1)$の時間並進による変形$\bar{x}(\tau_1+\mathrm{d}\tau_1)$を考えて1次まで展開すると
+\begin{equation*}
+\bar{x}(\tau_1+\mathrm{d}\tau_1)\simeq \bar{x}(\tau_1)+\frac{\mathrm{d}\bar{x}(\tau_1)}{\mathrm{d}\tau_1}\mathrm{d}\tau_1
+\end{equation*}
+となる(つまり，$\mathrm{d}\tau_1$の平行移動を変形と考えて，元の$\bar{x}(\tau_1)$との差を考えた)．ここで，本文に合わせて時間の添字に$1$を付けているが，これは$1$-インスタントンである(1-インスタントンの時間の中心は$\tau_1$と書いたのだった)ことを強調しているだけなので神経質になる必要はない．一方で，$\frac{\mathrm{d}\bar{x}(\tau_1)}{\mathrm{d}\tau_1}$が$x_1(\tau_1)$に比例することから，この``変形''は$x_1$に対応する係数$c_1$を調整することで実現できるので
+\begin{equation*}
+\bar{x}(\tau_1+\mathrm{d}\tau_1)=\bar{x}(\tau_1)+x_1\mathrm{d}c_1=\bar{x}(\tau_1)+S_0^{-\frac{1}{2}}\frac{\mathrm{d}\bar{x}(\tau_1)}{\mathrm{d}\tau_1}\mathrm{d}c_1
+\end{equation*}
+とも書ける．これらを比較すると$\mathrm{d}c_1=S_0^{\frac{1}{2}}\mathrm{d}\tau_1$となるので
+\begin{equation*}
+\left(2\pi\hbar\right)^{-\frac{1}{2}}\mathrm{d}c_1=\left(\frac{S_0}{2\pi\hbar}\right)^{\frac{1}{2}}\mathrm{d}\tau_1
+\end{equation*}
+と変換できることがわかった．よって，結局1-インスタントンの寄与は
+\begin{eqnarray*}
+\braket{-a|e^{-\frac{HT}{\hbar}}|a}_{one{\ }inst}&=&\mathcal{N}e^{-S_0/\hbar}[\mathrm{det}'(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}\int\left(2\pi\hbar\right)^{-\frac{1}{2}}\mathrm{d}c_1 \\
+&=&\mathcal{N}e^{-S_0/\hbar}[\mathrm{det}'(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}\int_{-\frac{T}{2}}^{\frac{T}{2}}\left(\frac{S_0}{2\pi\hbar}\right)^{\frac{1}{2}}\mathrm{d}\tau_1 \\
+&=&\mathcal{N}T\left(\frac{S_0}{2\pi\hbar}\right)^{\frac{1}{2}}e^{-S_0/\hbar}[\mathrm{det}'(-\partial_\tau^2+V''(\bar{x}))]^{-\frac{1}{2}}
+\end{eqnarray*}
+となる．これと，$K$を用いて表した1-インスタントンの寄与
+\begin{eqnarray*}
+\braket{-a|e^{-\frac{HT}{\hbar}}|a}_{one{\ }inst}&=&\int_{-\frac{T}{2}}^{\frac{T}{2}}\mathrm{d}\tau e^{-S_0/\hbar}\left(\frac{\omega}{\pi\hbar}\right)^{\frac{1}{2}} e^{-\omega T/2}K \\
+&=&Te^{-S_0/\hbar}\mathcal{N}[\mathrm{det}'(-\partial_\tau^2+\omega^2)]^{-\frac{1}{2}}K
+\end{eqnarray*}
+と比較して
+\begin{equation*}
+K=\left(\frac{S_0}{2\pi\hbar}\right)^{\frac{1}{2}}\left\{\frac{\mathrm{det}'(-\partial_\tau^2+V''(\bar{x}))}{\mathrm{det}'(-\partial_\tau^2+\omega^2)}\right\}^{-\frac{1}{2}}
+\end{equation*}
+を得る．\par
+最後に1つだけ補足する．$\{\lambda_n\}_{n=1}^\infty$は$\lambda_1$を除いて正であるとして計算したが，これは今以下のように容易に見ることができる．$\bar{x}(\tau)$を1-インスタントンとする．$x_1\sim\frac{\mathrm{d}\bar{x}(\tau)}{\mathrm{d}\tau}$であり，$1$-インスタントンは零点を1つ持っていたので，$x_1$は零点を持たない．よってストゥルムリュウビル型固有値問題の一般論より，$x_1$は最低固有値に対応する固有関数であることがわかり，また縮退がないので他の固有値は全て正であることがわかる．
+%
+%
+%
+\end{document}
